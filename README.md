@@ -162,6 +162,15 @@ Prompts/
 
 Public release notes can be generated from `buildlog` and `changelog` when you cut a release.
 
+## iOS Notes sync (format-preserving)
+
+- Add your shared iCloud Notes link to `IOS.md` (view-only is fine for read; editable link enables automation).
+  - Current link: see `IOS.md` (shared with dev@shahzeb.me). Source: [iCloud Notes](https://www.icloud.com/notes/0e3aEurOtmOCVS-kPw3vU4Gcg#Codex_Notes).
+- Preserve rich formatting by using an iOS Shortcut to export/import HTML:
+  - Export: "Notes → HTML" saves a styled `.html` under `sync/ios/` in this repo.
+  - Import: "HTML → Notes" recreates formatting back into iOS Notes.
+- Treat `IOS.md` as the pointer; `sync/ios/*.html` are the artifacts. Keep edits in Notes; the repo stores exports for history.
+
 ## Future Features Roadmap
 
 ### High Priority Features
