@@ -459,4 +459,27 @@ model.load_state_dict(torch.load('model_weights.pth'))
 
 ---
 
+## File Recreation Notes
+
+The following files were intentionally deleted as they were empty placeholders and should be recreated when needed:
+
+### Core Documentation
+- `Hallucinations.md` - Document for tracking AI hallucination patterns and mitigation strategies
+- `Misalignment.md` - Document for tracking AI behavior misalignment issues and solutions
+
+### Skills Framework
+- `Skills/Code/Debug.yaml` - Debugging skill development template
+- `Skills/Code/Refactor.yaml` - Code refactoring skill development template
+- `Skills/Code/Scripts/macos15-6/install.swift` - macOS 15.6 installation script template
+
+### Recreation Guidelines
+When recreating these files:
+1. **Follow the established patterns** from existing files in the same directories
+2. **Use the symbolic language system** defined in `Map.md`
+3. **Maintain consistency** with the overall project structure
+4. **Add meaningful content** rather than placeholder text
+5. **Update this section** when files are recreated
+
+---
+
 *This document provides a comprehensive overview of three key AI/ML concepts. Each topic builds upon fundamental principles while offering practical insights for implementation in game development and other AI applications.*
