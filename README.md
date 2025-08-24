@@ -1,6 +1,6 @@
 # Codex - AI Development Workspace
 
-**Developer**: sqazi  
+**Developer**: shahzebqazi  
 **Email**: dev@shahzeb.me  
 **Created**: August 18th, 2025  
 **Last Updated**: August 23, 2025  
@@ -46,7 +46,3 @@ Codex/
 - `ios` branch is checked out at `../Prompts-ios/` using git worktree
 - Use iOS Shortcuts to export notes as HTML
 - Commit changes from the worktree folder
-
----
-
-*Keep it simple. This is just a workspace, not a corporate project.*

@@ -100,3 +100,11 @@ Behavior guidelines
 
 Tags
 - Always include: #worklog #buildlog #changelog
+
+## How we log
+
+- Logs live under `/var/log/[project_name]` as plain `.log` files. Ordering: `worklog`/`buildlog`/`changelog`/`errors` are append-only (newest-last); `server.log` is newest-first per deployment.
+- Work tracking uses `worklog` entries with priorities P1/P2/P3 and status tags `#planned`, `#in-development`, `#completed`.
+- Change tracking uses `buildlog` entries with conventional commits (`feat|fix|refactor|docs|test|perf`), optionally including `files:[path1, path2]`.
+- Release summaries use `changelog` one-liners. README release notes can be generated from logs when needed. No YAML change logs or in-repo `Buildlog.yaml`/`Changelog.yaml`.
+- Quick view: `tail -n 50 /var/log/[project]/worklog/worklog.log` · `tail -n 50 /var/log/[project]/buildlog/build.log` · `tail -n 50 /var/log/[project]/changelog/change.log` · `head -n 200 /var/log/[project]/server.log`.
