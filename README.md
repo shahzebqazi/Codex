@@ -9,6 +9,17 @@
 
 A simple workspace for AI-assisted development. It's just you, some AI tools, and a way to keep track of what you're working on.
 
+## Current AI Configuration
+
+This project includes a `.cursorrules` file that configures the AI to operate as a **Technical Writer Background Agent**. When you open this project in Cursor IDE, the AI will automatically:
+
+- **Log all development activities** in the background
+- **Track code changes, commits, and progress** automatically
+- **Maintain development history** using structured logging
+- **Provide logging commands** like `#log-status`, `#log-work`, `#log-change`
+
+The AI operates silently in the background, only interrupting when clarification is needed. You can interact with the logging system using the provided commands or let it work automatically.
+
 ## Quick Start
 
 1. **Map.md** - Style guide, patterns, and AI interaction rules
@@ -21,6 +32,7 @@ A simple workspace for AI-assisted development. It's just you, some AI tools, an
 ```
 Codex/
 ├── README.md                    # This file
+├── .cursorrules                 # AI behavior configuration for Cursor IDE
 ├── Map/                         # Style guide, patterns, and AI rules
 │   └── Map.md                   # Main style guide and patterns
 ├── Memories/                    # AI learning and current context
