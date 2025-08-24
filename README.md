@@ -34,8 +34,7 @@ Codex/
 │   ├── ai-personality.md       # AI personality configuration
 │   └── permissions.md          # Access control and permissions
 ├── AI-ML-Topics-Guide.md       # AI/ML reference and mods system
-├── Skills/                      # Skill templates
-└── Tasks/                       # Task templates
+└── Tools/                       # Skill and task templates
 ```
 
 ## How to Use
