@@ -1,11 +1,11 @@
 {
-  "scan_root": "/Volumes/X4-SD/Author Letter Bucket Collection",
-  "scanned_at": "2026-02-12T04:09:27+00:00",
-  "total_books": 231,
+  "scan_root": "/Volumes/X4-SD/Books",
+  "scanned_at": "2026-02-12T04:24:39+00:00",
+  "total_books": 249,
   "by_bucket": {
     "A": 13,
     "B": 14,
-    "C": 12,
+    "C": 16,
     "D": 15,
     "E": 14,
     "F": 11,
@@ -14,14 +14,14 @@
     "I": 1,
     "J": 9,
     "K": 4,
-    "L": 6,
-    "M": 15,
+    "L": 8,
+    "M": 17,
     "N": 10,
     "O": 0,
-    "P": 17,
+    "P": 23,
     "Q": 0,
     "R": 15,
-    "S": 19,
+    "S": 23,
     "T": 11,
     "U": 1,
     "V": 10,
@@ -33,7 +33,7 @@
   "non_zero_buckets": {
     "A": 13,
     "B": 14,
-    "C": 12,
+    "C": 16,
     "D": 15,
     "E": 14,
     "F": 11,
@@ -42,12 +42,12 @@
     "I": 1,
     "J": 9,
     "K": 4,
-    "L": 6,
-    "M": 15,
+    "L": 8,
+    "M": 17,
     "N": 10,
-    "P": 17,
+    "P": 23,
     "R": 15,
-    "S": 19,
+    "S": 23,
     "T": 11,
     "U": 1,
     "V": 10,
@@ -71,8 +71,8 @@
     {
       "bucket": "C",
       "old_count": 0,
-      "new_count": 12,
-      "delta": 12
+      "new_count": 16,
+      "delta": 16
     },
     {
       "bucket": "D",
@@ -125,14 +125,14 @@
     {
       "bucket": "L",
       "old_count": 0,
-      "new_count": 6,
-      "delta": 6
+      "new_count": 8,
+      "delta": 8
     },
     {
       "bucket": "M",
       "old_count": 0,
-      "new_count": 15,
-      "delta": 15
+      "new_count": 17,
+      "delta": 17
     },
     {
       "bucket": "N",
@@ -143,8 +143,8 @@
     {
       "bucket": "P",
       "old_count": 0,
-      "new_count": 17,
-      "delta": 17
+      "new_count": 23,
+      "delta": 23
     },
     {
       "bucket": "R",
@@ -155,8 +155,8 @@
     {
       "bucket": "S",
       "old_count": 0,
-      "new_count": 19,
-      "delta": 19
+      "new_count": 23,
+      "delta": 23
     },
     {
       "bucket": "T",

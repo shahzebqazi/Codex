@@ -1,12 +1,49 @@
 {
-  "scan_root": "/Volumes/X4-SD/Author Letter Bucket Collection",
-  "scanned_at": "2026-02-12T04:10:14+00:00",
-  "total_files": 231,
+  "scan_root": "/Volumes/X4-SD/Books",
+  "scanned_at": "2026-02-12T04:24:39+00:00",
+  "total_files": 249,
   "by_format": {
-    ".epub": 229,
+    ".epub": 247,
     ".pdf": 2
   },
-  "duplicate_work_keys": [],
+  "duplicate_work_keys": [
+    {
+      "work_key": "argonauts of the western pacific an account of native enterprise and adventure in the archipelagoes of melanesian new guinea|malinowski bronislaw",
+      "count": 2
+    },
+    {
+      "work_key": "hung lou meng or the dream of the red chamber a chinese novel book ii|cao xueqin",
+      "count": 2
+    },
+    {
+      "work_key": "hung lou meng or the dream of the red chamber a chinese novel book i|cao xueqin",
+      "count": 2
+    },
+    {
+      "work_key": "romeo and juliet|shakespeare william",
+      "count": 2
+    },
+    {
+      "work_key": "select works of porphyry|porphyry",
+      "count": 2
+    },
+    {
+      "work_key": "simple sabotage field manual|services united states office of strategic",
+      "count": 2
+    },
+    {
+      "work_key": "the einstein theory of relativity a concise statement|lorentz h a",
+      "count": 2
+    },
+    {
+      "work_key": "the philosophical and mathematical commentaries of proclus on the first book of euclid s elements vol 1 of 2|proclus",
+      "count": 2
+    },
+    {
+      "work_key": "the six books of proclus the platonic successor on the theology of plato vol 1 of 2|proclus",
+      "count": 2
+    }
+  ],
   "sample_files": [
     {
       "rel_path": "A/Alcott, Louisa May/Jack and Jill - Alcott, Louisa May.epub",
@@ -171,6 +208,30 @@
       "fmt": ".epub"
     },
     {
+      "rel_path": "C/Cao, Xueqin/._Hung Lou Meng, or, the Dream of the Red Chamber, a Chinese Novel, Book I - Cao, Xueqin.epub",
+      "title": "._Hung Lou Meng, or, the Dream of the Red Chamber, a Chinese Novel, Book I",
+      "author": "Cao, Xueqin",
+      "fmt": ".epub"
+    },
+    {
+      "rel_path": "C/Cao, Xueqin/._Hung Lou Meng, or, the Dream of the Red Chamber, a Chinese Novel, Book II - Cao, Xueqin.epub",
+      "title": "._Hung Lou Meng, or, the Dream of the Red Chamber, a Chinese Novel, Book II",
+      "author": "Cao, Xueqin",
+      "fmt": ".epub"
+    },
+    {
+      "rel_path": "C/Cao, Xueqin/Hung Lou Meng, or, the Dream of the Red Chamber, a Chinese Novel, Book I - Cao, Xueqin.epub",
+      "title": "Hung Lou Meng, or, the Dream of the Red Chamber, a Chinese Novel, Book I",
+      "author": "Cao, Xueqin",
+      "fmt": ".epub"
+    },
+    {
+      "rel_path": "C/Cao, Xueqin/Hung Lou Meng, or, the Dream of the Red Chamber, a Chinese Novel, Book II - Cao, Xueqin.epub",
+      "title": "Hung Lou Meng, or, the Dream of the Red Chamber, a Chinese Novel, Book II",
+      "author": "Cao, Xueqin",
+      "fmt": ".epub"
+    },
+    {
       "rel_path": "C/Carroll, Lewis/Alice's Adventures in Wonderland - Carroll, Lewis.epub",
       "title": "Alice's Adventures in Wonderland",
       "author": "Carroll, Lewis",
@@ -282,30 +343,6 @@
       "rel_path": "D/Descartes, Rene\u0301/Discourse on the Method of Rightly Conducting One's Reason and of Seeking Truth in the Sciences - Descartes, Rene\u0301.epub",
       "title": "Discourse on the Method of Rightly Conducting One's Reason and of Seeking Truth in the Sciences",
       "author": "Descartes, Rene\u0301",
-      "fmt": ".epub"
-    },
-    {
-      "rel_path": "D/Dewey, John/Human Nature and Conduct- An introduction to social psychology - Dewey, John.epub",
-      "title": "Human Nature and Conduct- An introduction to social psychology",
-      "author": "Dewey, John",
-      "fmt": ".epub"
-    },
-    {
-      "rel_path": "D/Dickens, Charles/A Tale of Two Cities - Dickens, Charles.epub",
-      "title": "A Tale of Two Cities",
-      "author": "Dickens, Charles",
-      "fmt": ".epub"
-    },
-    {
-      "rel_path": "D/Dickens, Charles/Great Expectations - Dickens, Charles.epub",
-      "title": "Great Expectations",
-      "author": "Dickens, Charles",
-      "fmt": ".epub"
-    },
-    {
-      "rel_path": "D/Dickens, Charles/Oliver Twist - Dickens, Charles.epub",
-      "title": "Oliver Twist",
-      "author": "Dickens, Charles",
       "fmt": ".epub"
     }
   ]

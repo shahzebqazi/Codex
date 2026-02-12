@@ -1,17 +1,25 @@
 # Collection Review
 
-- Scan root: `/Volumes/X4-SD/Author Letter Bucket Collection`
-- Scanned at: `2026-02-12T04:10:14+00:00`
-- Total files: `231`
+- Scan root: `/Volumes/X4-SD/Books`
+- Scanned at: `2026-02-12T04:24:39+00:00`
+- Total files: `249`
 
 ## Format Counts
 
-- `.epub`: `229`
+- `.epub`: `247`
 - `.pdf`: `2`
 
 ## Top Duplicate Work Keys
 
-- None
+- `argonauts of the western pacific an account of native enterprise and adventure in the archipelagoes of melanesian new guinea|malinowski bronislaw`: `2`
+- `hung lou meng or the dream of the red chamber a chinese novel book ii|cao xueqin`: `2`
+- `hung lou meng or the dream of the red chamber a chinese novel book i|cao xueqin`: `2`
+- `romeo and juliet|shakespeare william`: `2`
+- `select works of porphyry|porphyry`: `2`
+- `simple sabotage field manual|services united states office of strategic`: `2`
+- `the einstein theory of relativity a concise statement|lorentz h a`: `2`
+- `the philosophical and mathematical commentaries of proclus on the first book of euclid s elements vol 1 of 2|proclus`: `2`
+- `the six books of proclus the platonic successor on the theology of plato vol 1 of 2|proclus`: `2`
 
 ## Sample Files
 
@@ -42,6 +50,10 @@
 - `B/Bryde, C. W./From Chart House to Bush Hut - Being the Record of a Sailor's 7 Years in the Queensland Bush - Bryde, C. W..epub`
 - `B/Burckhardt, Jacob/The Civilisation of the Renaissance in Italy - Burckhardt, Jacob.epub`
 - `B/Burrage, Henry S. (Henry Sweetser) & Hodgkins, William H. (William Henry) & Noyes, Edmund W. & Ranlett, S. Alonzo & White, Alonzo A./History of the Thirty-sixth Regiment Massachusetts Volunteers. 1862-1865 - Burrage, Henry S. (Henry Sweetser) & Hodgkins, William H. (William Henry) & Noyes, Edmund W. & Ranlett, S. Alonzo & White, Alonzo A..epub`
+- `C/Cao, Xueqin/._Hung Lou Meng, or, the Dream of the Red Chamber, a Chinese Novel, Book I - Cao, Xueqin.epub`
+- `C/Cao, Xueqin/._Hung Lou Meng, or, the Dream of the Red Chamber, a Chinese Novel, Book II - Cao, Xueqin.epub`
+- `C/Cao, Xueqin/Hung Lou Meng, or, the Dream of the Red Chamber, a Chinese Novel, Book I - Cao, Xueqin.epub`
+- `C/Cao, Xueqin/Hung Lou Meng, or, the Dream of the Red Chamber, a Chinese Novel, Book II - Cao, Xueqin.epub`
 - `C/Carroll, Lewis/Alice's Adventures in Wonderland - Carroll, Lewis.epub`
 - `C/Carroll, Lewis/Symbolic Logic - Carroll, Lewis.epub`
 - `C/Chambers, George F. (George Frederick)/The Story of the Solar System - Chambers, George F. (George Frederick).epub`
@@ -61,7 +73,3 @@
 - `D/De Morgan, Augustus/A Budget of Paradoxes, Volume I - De Morgan, Augustus.epub`
 - `D/Dearmer, Percy/Bell's Cathedrals- The Cathedral Church of Wells - A Description of Its Fabric and a Brief History of the Episcopal See - Dearmer, Percy.epub`
 - `D/Descartes, René/Discourse on the Method of Rightly Conducting One's Reason and of Seeking Truth in the Sciences - Descartes, René.epub`
-- `D/Dewey, John/Human Nature and Conduct- An introduction to social psychology - Dewey, John.epub`
-- `D/Dickens, Charles/A Tale of Two Cities - Dickens, Charles.epub`
-- `D/Dickens, Charles/Great Expectations - Dickens, Charles.epub`
-- `D/Dickens, Charles/Oliver Twist - Dickens, Charles.epub`

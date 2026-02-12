@@ -1,0 +1,330 @@
+# AI Librarian Instructions
+
+You are the AI Librarian for this digital library.
+
+## When Asked to Check for Updates
+1. Scan `/Volumes/X4-SD/Books/` for newly added books
+2. Scan `/Volumes/X4-SD/Manuals/` for new reference materials
+3. Compare found items against this catalog
+4. Add new items with proper genre classification (alphabetical within each genre)
+5. Delete macOS metadata files (`._*`), log files (`.log`), and `.DS_Store`
+6. Sort misplaced files into correct alphabetical folders by author last name
+
+## When Asked to Find/Download Books
+1. Check `Recommendations.txt` for books to acquire
+2. Search Project Gutenberg (gutenberg.org) for public domain editions
+3. Download EPUBs to: `/Volumes/X4-SD/Books/[Letter]/[Author Name]/`
+4. Use naming convention: `Title - Author.epub`
+5. Update this catalog with new entries
+6. Mark acquired books as [ACQUIRED] in `Recommendations.txt`
+7. Log sources in `Manuals/References/Book_Sources_Reference.txt`
+
+## File Locations
+- Books: `/Volumes/X4-SD/Books/`
+- Manuals: `/Volumes/X4-SD/Manuals/`
+- Recommendations: `/Volumes/X4-SD/Librarian/Recommendations.txt`
+- Sources Log: `/Volumes/X4-SD/Manuals/References/Book_Sources_Reference.txt`
+
+## Naming Conventions
+- Books: `Title - Author.epub` in folder `/[First Letter]/[Author Name]/`
+- Catalog entries: `- Author Name - Title` (alphabetical by author within genre)
+
+---
+
+# Library Catalog
+
+## Ancient Philosophy
+- Aristotle - Athenian Constitution
+- Aristotle - Nicomachean Ethics
+- Aristotle - Poetics
+- Cicero - Academica
+- Cicero - The Republic
+- Cicero - Tusculan Disputations
+- Diogenes Laertius - Lives of the Eminent Philosophers
+- Epictetus - Discourses
+- Epictetus - Golden Sayings
+- Epictetus - The Enchiridion
+- Epictetus - The Teaching of Epictetus
+- Iamblichus - Life of Pythagoras
+- Lucretius - On the Nature of Things
+- Marcus Aurelius - Meditations
+- Marcus Aurelius - Meditations (Foulis)
+- Plato - Apology Crito and Phaedo
+- Plato - Complete Works Vol 1
+- Plato - Complete Works Vol 3
+- Plato - Complete Works Vol 4
+- Plato - Dialogues Vol 2
+- Plato - Gorgias
+- Plato - Meno
+- Plato - Phaedrus
+- Plato - Philebus
+- Plato - Protagoras
+- Plato - Symposium
+- Plato - The Republic
+- Plato - Timaeus
+- Plotinus - The Enneads Vol 1
+- Plutarch - Morals
+- Plutarch - Parallel Lives
+- Seneca - Morals
+- Xenophon - Memorabilia
+
+## Art History & Aesthetics
+- Ruskin John - The Stones of Venice Vol 1
+- Vasari Giorgio - Lives of the Artists Vol 1
+
+## Biology & Natural History
+- Darwin Charles - On the Origin of Species
+- Darwin Charles - The Descent of Man
+- Darwin Charles - The Voyage of the Beagle
+- Harvey William - On the Motion of the Heart and Blood
+- Huxley Thomas - Evidence as to Mans Place in Nature
+- Huxley Thomas - Method and Results
+- Loeb Jacques - Comparative Physiology of the Brain
+- Wallace Alfred Russel - The Malay Archipelago
+
+## Chemistry
+- Davy Humphry - Elements of Chemical Philosophy
+- Lavoisier Antoine - Elements of Chemistry
+
+## Christian Theology
+- Aquinas Thomas - Summa Theologica Part I
+- Aquinas Thomas - Summa Theologica Part I-II
+- Aquinas Thomas - Summa Theologica Part III
+- Augustine - City of God Vol 1
+- Augustine - Confessions
+
+## Classic Fiction
+- Austen Jane - Pride and Prejudice
+- Austen Jane - Sense and Sensibility
+- Balzac Honore de - Pere Goriot
+- Brontë Charlotte - Jane Eyre An Autobiography
+- Chekhov Anton - The Darling and Other Stories
+- Conrad Joseph - Heart of Darkness
+- Dickens Charles - A Tale of Two Cities
+- Dickens Charles - Great Expectations
+- Dickens Charles - Oliver Twist
+- Dostoevsky Fyodor - Brothers Karamazov
+- Dostoevsky Fyodor - Notes from Underground
+- Eliot George - Middlemarch
+- Eliot George - The Mill on the Floss
+- Flaubert Gustave - Madame Bovary
+- Gogol Nikolai - Dead Souls
+- Hardy Thomas - Jude the Obscure
+- Hardy Thomas - Tess of the DUrbervilles
+- Hawthorne Nathaniel - The Scarlet Letter
+- James Henry - The Portrait of a Lady Vol 1
+- James Henry - The Portrait of a Lady Vol 2
+- Melville Herman - Moby Dick Or The Whale
+- Stendhal - The Red and the Black
+- Tolstoy Leo - War and Peace
+- Turgenev Ivan - Fathers and Sons
+- Twain Mark - Adventures of Huckleberry Finn
+- Voltaire - Candide
+- Voltaire - Candide (French)
+- Zola Emile - Germinal
+
+## Drama
+- Shakespeare William - Complete Works of Shakespeare
+
+## Economics
+- Ricardo David - Principles of Political Economy
+- Smith Adam - The Wealth of Nations
+- Veblen Thorstein - The Theory of the Leisure Class
+
+## Eastern Philosophy & Religion
+- Arnold Edwin - Bhagavad Gita
+- Confucius - Analects
+- Confucius - Sayings of Confucius
+- Confucius - Wisdom of Confucius
+- Lao Tzu - Tao Te Ching
+- Lao Tzu - Tao Te Ching (Chinese)
+- Paramananda Swami - The Upanishads
+- Small Annie H. - Buddhism
+- Sun Tzu - Art of War
+- Sun Tzu - Art of War (Giles)
+
+## Fantasy & Children's Literature
+- Carroll Lewis - Alices Adventures in Wonderland
+
+## Gothic Horror
+- James Henry - The Turn of the Screw
+- Shelley Mary Wollstonecraft - Frankenstein Or The Modern Prometheus
+- Stoker Bram - Dracula
+- Wilde Oscar - The Picture of Dorian Gray
+
+## History
+- Burckhardt Jacob - The Civilization of the Renaissance in Italy
+- Gibbon Edward - The Decline and Fall of the Roman Empire
+- Herodotus - The Histories
+- Tacitus - The Histories
+- Thucydides - History of the Peloponnesian War
+
+## Logic & Mathematics
+- Boole George - The Laws of Thought
+- Carroll Lewis - Symbolic Logic
+- Cayley Arthur - Collected Mathematical Papers Vol 1
+- Clifford William Kingdon - The Common Sense of the Exact Sciences
+- Euclid - Elements
+- Hastie Tibshirani Friedman - The Elements of Statistical Learning
+- Jevons William Stanley - The Principles of Science
+- Klein Felix - Famous Problems of Elementary Geometry
+- Lagrange Joseph-Louis - Lectures on Elementary Mathematics
+- Russell Bertrand - Introduction to Mathematical Philosophy
+
+## Modern Philosophy
+- Bacon Francis - Essays
+- Bacon Francis - Novum Organum
+- Berkeley George - Treatise Concerning Human Knowledge
+- Bergson Henri - Creative Evolution
+- Bradley F.H. - Appearance and Reality
+- Coffey P. - Ontology
+- Cousin Victor - Lectures on the True Beautiful and Good
+- Descartes Rene - Discourse on Method
+- Descartes Rene - Meditations on First Philosophy
+- Dewey John - Human Nature and Conduct
+- Emerson Ralph Waldo - Essays First Series
+- Emerson Ralph Waldo - Miscellanies
+- Emerson Ralph Waldo - Nature
+- Emerson Ralph Waldo - Society and Solitude
+- Hegel Georg Wilhelm Friedrich - Lectures on History of Philosophy
+- Hegel Georg Wilhelm Friedrich - Phenomenology of Spirit
+- Hegel Georg Wilhelm Friedrich - Philosophy of Mind
+- Hobbes Thomas - Leviathan
+- Hume David - Enquiry Concerning Human Understanding
+- Hume David - Philosophical Works Vol 1
+- Kant Immanuel - Critique of Judgment
+- Kant Immanuel - Critique of Pure Reason
+- Kant Immanuel - Works of Kant
+- Kierkegaard Soren - Selections (incl Fear and Trembling)
+- Leibniz Gottfried - Discourse on Metaphysics
+- Locke John - Second Treatise of Government
+- Machiavelli Niccolo - The Prince
+- Machiavelli Niccolo - The Prince (Ricci)
+- Mill John Stuart - On Liberty
+- Mill John Stuart - System of Logic Vol 1
+- Mill John Stuart - System of Logic Vol 2
+- Mill John Stuart - Utilitarianism
+- Nietzsche Friedrich - Also sprach Zarathustra
+- Nietzsche Friedrich - Beyond Good and Evil
+- Nietzsche Friedrich - Genealogy of Morals
+- Nietzsche Friedrich - Thus Spake Zarathustra
+- Nietzsche Friedrich - Will to Power Books I-II
+- Nietzsche Friedrich - Will to Power Books III-IV
+- Pascal Blaise - Pensees
+- Poincare Henri - The Foundations of Science
+- Rousseau Jean-Jacques - Discourse on Inequality
+- Rousseau Jean-Jacques - Emile
+- Rousseau Jean-Jacques - Social Contract
+- Russell Bertrand - Mysticism and Logic
+- Russell Bertrand - Our Knowledge of the External World
+- Russell Bertrand - Philosophy
+- Russell Bertrand - Problems of Philosophy
+- Russell Bertrand - Roads to Freedom
+- Russell Bertrand - The Problems of Philosophy
+- Schopenhauer Arthur - Essays
+- Schopenhauer Arthur - Studies in Pessimism
+- Schopenhauer Arthur - World as Will and Idea
+- Spinoza Baruch - Ethics
+- Spinoza Baruch - Philosophy of Spinoza
+- Spinoza Baruch - Theologico-Political Treatise
+- Thoreau Henry David - Walden
+- Voltaire - Philosophical Dictionary
+- Watts Alan - The Book On the Taboo Against Knowing Who You Are
+- Watts Alan - The Wisdom of Insecurity
+- Whewell William - The Philosophy of the Inductive Sciences Vol 1
+- Wittgenstein Ludwig - Tractatus Logico-Philosophicus
+
+## Music Production
+- Thomas Nick - Guide to Mixing
+
+## Mystery & Detective Fiction
+- Doyle Arthur Conan - The Adventures of Sherlock Holmes
+
+## Poetry
+- Dante Alighieri - The Divine Comedy
+- Homer - The Iliad
+- Homer - The Odyssey
+- Milton John - Paradise Lost
+- Whitman Walt - Leaves of Grass
+
+## Physics
+- Boltzmann Ludwig - Lectures on Gas Theory
+- Copernicus Nicolaus - On the Revolutions of Heavenly Spheres
+- Einstein Albert - Relativity The Special and General Theory
+- Faraday Michael - Experimental Researches in Electricity Vol 1
+- Faraday Michael - On the Various Forces of Nature
+- Galileo - Dialogues Concerning Two New Sciences
+- Gilbert William - On the Magnet
+- Helmholtz Hermann - On the Sensations of Tone
+- Herschel John - A Preliminary Discourse on Natural Philosophy
+- Hertz Heinrich - Electric Waves
+- Kelvin Lord - Popular Lectures Vol 1
+- Mach Ernst - The Science of Mechanics
+- Maxwell James Clerk - A Treatise on Electricity and Magnetism Vol 1
+- Newton Isaac - Principia Mathematica
+- Tyndall John - Heat as a Mode of Motion
+
+## Political Philosophy
+- Marx Karl - Communist Manifesto
+- Tolstoy Leo - What Is Art
+
+## Psychology
+- Bain Alexander - Mind and Body
+- Freud Sigmund - Beyond the Pleasure Principle
+- Freud Sigmund - Group Psychology and the Analysis of the Ego
+- Freud Sigmund - Psychopathology of Everyday Life
+- Freud Sigmund - The Interpretation of Dreams
+- Freud Sigmund - Three Contributions to the Theory of Sex
+- Freud Sigmund - Totem and Taboo
+- James William - Pragmatism
+- James William - Psychology Briefer Course
+- James William - The Principles of Psychology Vol 1
+- James William - The Will to Believe
+- James William - Varieties of Religious Experience
+- Jung Carl - Psychology of the Unconscious
+- Le Bon Gustave - The Crowd
+- Lotze Hermann - Outlines of Psychology
+- McDougall William - An Introduction to Social Psychology
+- Ribot Theodule - The Psychology of Attention
+- Sidis Boris - The Psychology of Suggestion
+- Spencer Herbert - Principles of Psychology
+- Stout G.F. - Analytic Psychology
+- Trotter Wilfred - Instincts of the Herd in Peace and War
+- Ward James - Psychological Principles
+- Wundt Wilhelm - Outlines of Psychology
+
+## Religious Texts
+- Brinton Daniel - Rig Veda Americanus
+- The Holy Bible (King James Version)
+- The Holy Quran (English) - Rodwell
+- The Holy Quran (Three Translations) - Ali Pickthall Shakir
+
+## Romantic Fiction
+- Brontë Emily - Wuthering Heights
+
+## Science Fiction
+- Shelley Mary - The Last Man
+- Verne Jules - Twenty Thousand Leagues Under the Sea
+- Wells H.G. - The Time Machine
+- Wells H.G. - The War of the Worlds
+
+## World Literature
+- Murasaki Shikibu - The Tale of Genji
+- Tagore Rabindranath - Gitanjali
+
+---
+
+# Manuals
+
+## Dictionaries & Lexicons
+- Heath - French-English Dictionary
+- Lane - Arabic-English Lexicon Vol 1-8
+- Platts - Urdu-Hindi-English Dictionary Parts 1-2
+- Websters Unabridged Dictionary (English)
+
+## Music Production Software
+- Ableton - Live 12 Manual
+
+## Reference Documents
+- Book Sources Reference
+- Project Gutenberg Collection Links
