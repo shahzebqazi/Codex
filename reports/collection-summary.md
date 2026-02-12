@@ -1,17 +1,17 @@
 # Collection Review
 
 - Scan root: `/Volumes/X4-SD/My Books`
-- Scanned at: `2026-02-12T04:01:48+00:00`
-- Total files: `233`
+- Scanned at: `2026-02-12T04:03:22+00:00`
+- Total files: `231`
 
 ## Format Counts
 
-- `.epub`: `231`
+- `.epub`: `229`
 - `.pdf`: `2`
 
 ## Top Duplicate Work Keys
 
-- `the upanishads|paramananda`: `2`
+- None
 
 ## Sample Files
 

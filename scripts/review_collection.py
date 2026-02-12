@@ -69,9 +69,11 @@ def normalize_text(value: str) -> str:
 
 def parse_title_author(stem: str) -> tuple[str, str]:
     if " - " in stem:
-        parts = [p.strip() for p in stem.split(" - ") if p.strip()]
-        if len(parts) >= 2:
-            return parts[0], " - ".join(parts[1:])
+        title, author = stem.rsplit(" - ", 1)
+        title = title.strip()
+        author = author.strip()
+        if title and author:
+            return title, author
     return stem.strip(), ""
 
 

@@ -1,17 +1,12 @@
 {
   "scan_root": "/Volumes/X4-SD/My Books",
-  "scanned_at": "2026-02-12T04:01:48+00:00",
-  "total_files": 233,
+  "scanned_at": "2026-02-12T04:03:22+00:00",
+  "total_files": 231,
   "by_format": {
-    ".epub": 231,
+    ".epub": 229,
     ".pdf": 2
   },
-  "duplicate_work_keys": [
-    {
-      "work_key": "the upanishads|paramananda",
-      "count": 2
-    }
-  ],
+  "duplicate_work_keys": [],
   "sample_files": [
     {
       "rel_path": "A/Alcott, Louisa May/Jack and Jill - Alcott, Louisa May.epub",
@@ -51,8 +46,8 @@
     },
     {
       "rel_path": "A/Arnold/The Song Celestial; Or, Bhagavad-Gi\u0302ta\u0302 (from the Maha\u0302bha\u0302rata) - Being a discourse between Arjuna, Prince of India, and the Supreme Being under the form of Krishna - Arnold.epub",
-      "title": "The Song Celestial; Or, Bhagavad-Gi\u0302ta\u0302 (from the Maha\u0302bha\u0302rata)",
-      "author": "Being a discourse between Arjuna, Prince of India, and the Supreme Being under the form of Krishna - Arnold",
+      "title": "The Song Celestial; Or, Bhagavad-Gi\u0302ta\u0302 (from the Maha\u0302bha\u0302rata) - Being a discourse between Arjuna, Prince of India, and the Supreme Being under the form of Krishna",
+      "author": "Arnold",
       "fmt": ".epub"
     },
     {
@@ -135,8 +130,8 @@
     },
     {
       "rel_path": "B/Brinton/Rig Veda Americanus - Sacred Songs of the Ancient Mexicans, With a Gloss in Nahuatl - Brinton.epub",
-      "title": "Rig Veda Americanus",
-      "author": "Sacred Songs of the Ancient Mexicans, With a Gloss in Nahuatl - Brinton",
+      "title": "Rig Veda Americanus - Sacred Songs of the Ancient Mexicans, With a Gloss in Nahuatl",
+      "author": "Brinton",
       "fmt": ".epub"
     },
     {
@@ -159,8 +154,8 @@
     },
     {
       "rel_path": "B/Bryde, C. W./From Chart House to Bush Hut - Being the Record of a Sailor's 7 Years in the Queensland Bush - Bryde, C. W..epub",
-      "title": "From Chart House to Bush Hut",
-      "author": "Being the Record of a Sailor's 7 Years in the Queensland Bush - Bryde, C. W.",
+      "title": "From Chart House to Bush Hut - Being the Record of a Sailor's 7 Years in the Queensland Bush",
+      "author": "Bryde, C. W.",
       "fmt": ".epub"
     },
     {
@@ -207,14 +202,14 @@
     },
     {
       "rel_path": "C/Cicero, Marcus Tullius/Cicero's Tusculan Disputations - Also, Treatises On The Nature Of The Gods, And On The Commonwealth - Cicero, Marcus Tullius.epub",
-      "title": "Cicero's Tusculan Disputations",
-      "author": "Also, Treatises On The Nature Of The Gods, And On The Commonwealth - Cicero, Marcus Tullius",
+      "title": "Cicero's Tusculan Disputations - Also, Treatises On The Nature Of The Gods, And On The Commonwealth",
+      "author": "Cicero, Marcus Tullius",
       "fmt": ".epub"
     },
     {
       "rel_path": "C/Cicero, Marcus Tullius/The republic of Cicero - Translated from the Latin; and Accompanied With a Critical and Historical Introduction. - Cicero, Marcus Tullius.epub",
-      "title": "The republic of Cicero",
-      "author": "Translated from the Latin; and Accompanied With a Critical and Historical Introduction. - Cicero, Marcus Tullius",
+      "title": "The republic of Cicero - Translated from the Latin; and Accompanied With a Critical and Historical Introduction.",
+      "author": "Cicero, Marcus Tullius",
       "fmt": ".epub"
     },
     {
@@ -231,8 +226,8 @@
     },
     {
       "rel_path": "C/Confucius/The Wisdom of Confucius - with Critical and Biographical Sketches - Confucius.epub",
-      "title": "The Wisdom of Confucius",
-      "author": "with Critical and Biographical Sketches - Confucius",
+      "title": "The Wisdom of Confucius - with Critical and Biographical Sketches",
+      "author": "Confucius",
       "fmt": ".epub"
     },
     {
@@ -243,8 +238,8 @@
     },
     {
       "rel_path": "C/Crummell, Alexander/Civilization the Primal Need of the Race, and The Attitude of the American Mind Toward the Negro Intellect - The American Negro Academy. Occasional Paper No. 3 - Crummell, Alexander.epub",
-      "title": "Civilization the Primal Need of the Race, and The Attitude of the American Mind Toward the Negro Intellect",
-      "author": "The American Negro Academy. Occasional Paper No. 3 - Crummell, Alexander",
+      "title": "Civilization the Primal Need of the Race, and The Attitude of the American Mind Toward the Negro Intellect - The American Negro Academy. Occasional Paper No. 3",
+      "author": "Crummell, Alexander",
       "fmt": ".epub"
     },
     {
@@ -279,8 +274,8 @@
     },
     {
       "rel_path": "D/Dearmer, Percy/Bell's Cathedrals- The Cathedral Church of Wells - A Description of Its Fabric and a Brief History of the Episcopal See - Dearmer, Percy.epub",
-      "title": "Bell's Cathedrals- The Cathedral Church of Wells",
-      "author": "A Description of Its Fabric and a Brief History of the Episcopal See - Dearmer, Percy",
+      "title": "Bell's Cathedrals- The Cathedral Church of Wells - A Description of Its Fabric and a Brief History of the Episcopal See",
+      "author": "Dearmer, Percy",
       "fmt": ".epub"
     },
     {
