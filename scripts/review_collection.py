@@ -13,9 +13,10 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 DEFAULT_FORMATS = ".epub,.pdf,.mobi,.azw,.azw3,.txt"
+WRITE_ROOT = Path("/Volumes/X4-SD").resolve()
 CANDIDATE_ROOTS = [
+    "/Volumes/X4-SD/Books",
     "/Volumes/X4-SD/Author Letter Bucket Collection",
-    "/Volumes/X4-SD/My Books",
 ]
 
 
@@ -24,6 +25,15 @@ def default_root() -> str:
         if Path(candidate).exists():
             return candidate
     return CANDIDATE_ROOTS[0]
+
+
+def ensure_inside_write_root(path: Path, label: str) -> Path:
+    resolved = path.expanduser().resolve()
+    try:
+        resolved.relative_to(WRITE_ROOT)
+    except ValueError as exc:
+        raise SystemExit(f"{label} must be inside {WRITE_ROOT}: {resolved}") from exc
+    return resolved
 
 
 @dataclass(frozen=True)
@@ -113,6 +123,8 @@ def scan_collection(root: Path, extensions: set[str]) -> list[FileRecord]:
     records: list[FileRecord] = []
     for path in root.rglob("*"):
         if not path.is_file():
+            continue
+        if path.is_symlink():
             continue
         ext = path.suffix.lower()
         if ext not in extensions:
@@ -218,7 +230,7 @@ def build_summary(root: Path, records: list[FileRecord], max_duplicate_rows: int
 def main() -> int:
     args = parse_args()
 
-    root = Path(args.root).expanduser().resolve()
+    root = ensure_inside_write_root(Path(args.root), "root")
     if not root.exists() or not root.is_dir():
         raise SystemExit(f"Root directory not found: {root}")
 
@@ -234,14 +246,18 @@ def main() -> int:
     cards = [token_card(record) for record in records]
     summary = build_summary(root, records, args.max_duplicate_rows)
 
-    write_json(Path(args.out_json), summary)
-    write_cards(Path(args.out_cards), cards)
-    write_markdown(Path(args.out_md), summary)
+    out_json = ensure_inside_write_root(Path(args.out_json), "out-json")
+    out_md = ensure_inside_write_root(Path(args.out_md), "out-md")
+    out_cards = ensure_inside_write_root(Path(args.out_cards), "out-cards")
+
+    write_json(out_json, summary)
+    write_cards(out_cards, cards)
+    write_markdown(out_md, summary)
 
     print(f"Scanned {len(records)} files under {root}")
-    print(f"Wrote summary JSON: {args.out_json}")
-    print(f"Wrote summary Markdown: {args.out_md}")
-    print(f"Wrote token cards: {args.out_cards}")
+    print(f"Wrote summary JSON: {out_json}")
+    print(f"Wrote summary Markdown: {out_md}")
+    print(f"Wrote token cards: {out_cards}")
     return 0
 
 

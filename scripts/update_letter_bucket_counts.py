@@ -12,9 +12,10 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 DEFAULT_FORMATS = ".epub,.pdf,.mobi,.azw,.azw3,.txt"
+WRITE_ROOT = Path("/Volumes/X4-SD").resolve()
 CANDIDATE_ROOTS = [
+    "/Volumes/X4-SD/Books",
     "/Volumes/X4-SD/Author Letter Bucket Collection",
-    "/Volumes/X4-SD/My Books",
 ]
 
 
@@ -23,6 +24,15 @@ def default_root() -> str:
         if Path(candidate).exists():
             return candidate
     return CANDIDATE_ROOTS[0]
+
+
+def ensure_inside_write_root(path: Path, label: str) -> Path:
+    resolved = path.expanduser().resolve()
+    try:
+        resolved.relative_to(WRITE_ROOT)
+    except ValueError as exc:
+        raise SystemExit(f"{label} must be inside {WRITE_ROOT}: {resolved}") from exc
+    return resolved
 
 
 def parse_args() -> argparse.Namespace:
@@ -107,6 +117,8 @@ def count_books_by_bucket(root: Path, extensions: set[str]) -> tuple[dict[str, i
 
     for path in root.rglob("*"):
         if not path.is_file():
+            continue
+        if path.is_symlink():
             continue
         if path.suffix.lower() not in extensions:
             continue
@@ -215,33 +227,39 @@ def update_outputs(
 
 
 def run_once(args: argparse.Namespace) -> int:
-    root = Path(args.root).expanduser().resolve()
+    root = ensure_inside_write_root(Path(args.root), "root")
     if not root.exists() or not root.is_dir():
         raise SystemExit(f"Root directory not found: {root}")
 
     extensions = parse_extensions(args.formats)
+    out_json = ensure_inside_write_root(Path(args.out_json), "out-json")
+    out_md = ensure_inside_write_root(Path(args.out_md), "out-md")
+    state_file = ensure_inside_write_root(Path(args.state_file), "state-file")
     payload, wrote = update_outputs(
         root=root,
         extensions=extensions,
-        out_json=Path(args.out_json),
-        out_md=Path(args.out_md),
-        state_file=Path(args.state_file),
+        out_json=out_json,
+        out_md=out_md,
+        state_file=state_file,
     )
 
     action = "updated" if wrote else "no changes detected"
     print(f"Bucket count run complete: {action}")
     print(f"Total books: {payload['total_books']}")
-    print(f"JSON report: {args.out_json}")
-    print(f"Markdown report: {args.out_md}")
+    print(f"JSON report: {out_json}")
+    print(f"Markdown report: {out_md}")
     return 0
 
 
 def run_watch(args: argparse.Namespace) -> int:
-    root = Path(args.root).expanduser().resolve()
+    root = ensure_inside_write_root(Path(args.root), "root")
     if not root.exists() or not root.is_dir():
         raise SystemExit(f"Root directory not found: {root}")
 
     extensions = parse_extensions(args.formats)
+    out_json = ensure_inside_write_root(Path(args.out_json), "out-json")
+    out_md = ensure_inside_write_root(Path(args.out_md), "out-md")
+    state_file = ensure_inside_write_root(Path(args.state_file), "state-file")
     print(f"Watching: {root}")
     print(f"Interval: {args.interval_seconds}s")
 
@@ -249,9 +267,9 @@ def run_watch(args: argparse.Namespace) -> int:
         payload, wrote = update_outputs(
             root=root,
             extensions=extensions,
-            out_json=Path(args.out_json),
-            out_md=Path(args.out_md),
-            state_file=Path(args.state_file),
+            out_json=out_json,
+            out_md=out_md,
+            state_file=state_file,
         )
         if wrote:
             print(
