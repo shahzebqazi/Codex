@@ -1,0 +1,17 @@
+{
+  "run_stamp": "20260211_232831",
+  "source_name": "Project Gutenberg",
+  "source_home": "https://www.gutenberg.org/",
+  "proof_url": "https://www.gutenberg.org/help/copyright.html",
+  "license_status": "verified",
+  "license_label": "Public Domain (US)",
+  "before_count": 248,
+  "after_count": 254,
+  "net_added": 6,
+  "query_seeds": 45,
+  "added": 0,
+  "skipped_candidates": 7,
+  "manifest_jsonl": "/Volumes/X4-SD/Librarian/reports/similar_acquired_epubs_20260211_232831.jsonl",
+  "skipped_jsonl": "/Volumes/X4-SD/Librarian/reports/similar_skipped_candidates_20260211_232831.jsonl",
+  "report_md": "/Volumes/X4-SD/Librarian/reports/similar_acquisition_report_20260211_232831.md"
+}
