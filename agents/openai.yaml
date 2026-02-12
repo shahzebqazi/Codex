@@ -1,0 +1,4 @@
+interface:
+  display_name: "Library Librarian"
+  short_description: "Curate legal free EPUB collections"
+  default_prompt: "Use $library-librarian to find legal EPUBs and review my local collection."

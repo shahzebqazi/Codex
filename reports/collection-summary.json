@@ -1,0 +1,317 @@
+{
+  "scan_root": "/Volumes/X4-SD/My Books",
+  "scanned_at": "2026-02-12T04:01:48+00:00",
+  "total_files": 233,
+  "by_format": {
+    ".epub": 231,
+    ".pdf": 2
+  },
+  "duplicate_work_keys": [
+    {
+      "work_key": "the upanishads|paramananda",
+      "count": 2
+    }
+  ],
+  "sample_files": [
+    {
+      "rel_path": "A/Alcott, Louisa May/Jack and Jill - Alcott, Louisa May.epub",
+      "title": "Jack and Jill",
+      "author": "Alcott, Louisa May",
+      "fmt": ".epub"
+    },
+    {
+      "rel_path": "A/Ali Pickthall Shakir/Three translations of the Koran (Al-Qur'an) side by side - Ali Pickthall Shakir.epub",
+      "title": "Three translations of the Koran (Al-Qur'an) side by side",
+      "author": "Ali Pickthall Shakir",
+      "fmt": ".epub"
+    },
+    {
+      "rel_path": "A/Anonymous/Glimpses of the dark ages - Anonymous.epub",
+      "title": "Glimpses of the dark ages",
+      "author": "Anonymous",
+      "fmt": ".epub"
+    },
+    {
+      "rel_path": "A/Aristotle/The Athenian Constitution - Aristotle.epub",
+      "title": "The Athenian Constitution",
+      "author": "Aristotle",
+      "fmt": ".epub"
+    },
+    {
+      "rel_path": "A/Aristotle/The Ethics of Aristotle - Aristotle.epub",
+      "title": "The Ethics of Aristotle",
+      "author": "Aristotle",
+      "fmt": ".epub"
+    },
+    {
+      "rel_path": "A/Aristotle/The Poetics of Aristotle - Aristotle.epub",
+      "title": "The Poetics of Aristotle",
+      "author": "Aristotle",
+      "fmt": ".epub"
+    },
+    {
+      "rel_path": "A/Arnold/The Song Celestial; Or, Bhagavad-Gi\u0302ta\u0302 (from the Maha\u0302bha\u0302rata) - Being a discourse between Arjuna, Prince of India, and the Supreme Being under the form of Krishna - Arnold.epub",
+      "title": "The Song Celestial; Or, Bhagavad-Gi\u0302ta\u0302 (from the Maha\u0302bha\u0302rata)",
+      "author": "Being a discourse between Arjuna, Prince of India, and the Supreme Being under the form of Krishna - Arnold",
+      "fmt": ".epub"
+    },
+    {
+      "rel_path": "A/Asp, Kaarlo/Ylla\u0308tys- Yksina\u0308yto\u0308ksinen na\u0308ytelma\u0308 - Asp, Kaarlo.epub",
+      "title": "Ylla\u0308tys- Yksina\u0308yto\u0308ksinen na\u0308ytelma\u0308",
+      "author": "Asp, Kaarlo",
+      "fmt": ".epub"
+    },
+    {
+      "rel_path": "A/Augustine, Saint, Bishop of Hippo/The City of God, Volume I - Augustine, Saint, Bishop of Hippo.epub",
+      "title": "The City of God, Volume I",
+      "author": "Augustine, Saint, Bishop of Hippo",
+      "fmt": ".epub"
+    },
+    {
+      "rel_path": "A/Augustine, of Hippo, Saint/The Confessions of St. Augustine - Augustine, of Hippo, Saint.epub",
+      "title": "The Confessions of St. Augustine",
+      "author": "Augustine, of Hippo, Saint",
+      "fmt": ".epub"
+    },
+    {
+      "rel_path": "A/Austen, Jane/Pride and Prejudice - Austen, Jane (2).epub",
+      "title": "Pride and Prejudice",
+      "author": "Austen, Jane (2)",
+      "fmt": ".epub"
+    },
+    {
+      "rel_path": "A/Austen, Jane/Pride and Prejudice - Austen, Jane.epub",
+      "title": "Pride and Prejudice",
+      "author": "Austen, Jane",
+      "fmt": ".epub"
+    },
+    {
+      "rel_path": "A/Austen, Jane/Sense and Sensibility - Austen, Jane.epub",
+      "title": "Sense and Sensibility",
+      "author": "Austen, Jane",
+      "fmt": ".epub"
+    },
+    {
+      "rel_path": "B/Bacon, Francis/Index of the Project Gutenberg Works of Francis Bacon - Bacon, Francis.epub",
+      "title": "Index of the Project Gutenberg Works of Francis Bacon",
+      "author": "Bacon, Francis",
+      "fmt": ".epub"
+    },
+    {
+      "rel_path": "B/Bacon, Francis/Novum organum - Bacon, Francis.epub",
+      "title": "Novum organum",
+      "author": "Bacon, Francis",
+      "fmt": ".epub"
+    },
+    {
+      "rel_path": "B/Balzac, Honore\u0301 de/Father Goriot - Balzac, Honore\u0301 de.epub",
+      "title": "Father Goriot",
+      "author": "Balzac, Honore\u0301 de",
+      "fmt": ".epub"
+    },
+    {
+      "rel_path": "B/Bardsley, Charles Wareing Endell/English Surnames- Their Sources and Significations - Bardsley, Charles Wareing Endell.epub",
+      "title": "English Surnames- Their Sources and Significations",
+      "author": "Bardsley, Charles Wareing Endell",
+      "fmt": ".epub"
+    },
+    {
+      "rel_path": "B/Bergson, Henri/Creative Evolution - Bergson, Henri.epub",
+      "title": "Creative Evolution",
+      "author": "Bergson, Henri",
+      "fmt": ".epub"
+    },
+    {
+      "rel_path": "B/Berkeley, George/A Treatise Concerning the Principles of Human Knowledge - Berkeley, George.epub",
+      "title": "A Treatise Concerning the Principles of Human Knowledge",
+      "author": "Berkeley, George",
+      "fmt": ".epub"
+    },
+    {
+      "rel_path": "B/Boole, George/The Laws of Thought - Boole.pdf",
+      "title": "The Laws of Thought",
+      "author": "Boole",
+      "fmt": ".pdf"
+    },
+    {
+      "rel_path": "B/Brinton/Rig Veda Americanus - Sacred Songs of the Ancient Mexicans, With a Gloss in Nahuatl - Brinton.epub",
+      "title": "Rig Veda Americanus",
+      "author": "Sacred Songs of the Ancient Mexicans, With a Gloss in Nahuatl - Brinton",
+      "fmt": ".epub"
+    },
+    {
+      "rel_path": "B/Bronte\u0308, Charlotte/Jane Eyre- An Autobiography - Bronte\u0308, Charlotte.epub",
+      "title": "Jane Eyre- An Autobiography",
+      "author": "Bronte\u0308, Charlotte",
+      "fmt": ".epub"
+    },
+    {
+      "rel_path": "B/Bronte\u0308, Emily/Wuthering Heights - Bronte\u0308, Emily.epub",
+      "title": "Wuthering Heights",
+      "author": "Bronte\u0308, Emily",
+      "fmt": ".epub"
+    },
+    {
+      "rel_path": "B/Bruner, Ludwik/Jeden miesia\u0328c z\u0307ycia- utwory proza\u0328 - Bruner, Ludwik.epub",
+      "title": "Jeden miesia\u0328c z\u0307ycia- utwory proza\u0328",
+      "author": "Bruner, Ludwik",
+      "fmt": ".epub"
+    },
+    {
+      "rel_path": "B/Bryde, C. W./From Chart House to Bush Hut - Being the Record of a Sailor's 7 Years in the Queensland Bush - Bryde, C. W..epub",
+      "title": "From Chart House to Bush Hut",
+      "author": "Being the Record of a Sailor's 7 Years in the Queensland Bush - Bryde, C. W.",
+      "fmt": ".epub"
+    },
+    {
+      "rel_path": "B/Burckhardt, Jacob/The Civilisation of the Renaissance in Italy - Burckhardt, Jacob.epub",
+      "title": "The Civilisation of the Renaissance in Italy",
+      "author": "Burckhardt, Jacob",
+      "fmt": ".epub"
+    },
+    {
+      "rel_path": "B/Burrage, Henry S. (Henry Sweetser) & Hodgkins, William H. (William Henry) & Noyes, Edmund W. & Ranlett, S. Alonzo & White, Alonzo A./History of the Thirty-sixth Regiment Massachusetts Volunteers. 1862-1865 - Burrage, Henry S. (Henry Sweetser) & Hodgkins, William H. (William Henry) & Noyes, Edmund W. & Ranlett, S. Alonzo & White, Alonzo A..epub",
+      "title": "History of the Thirty-sixth Regiment Massachusetts Volunteers. 1862-1865",
+      "author": "Burrage, Henry S. (Henry Sweetser) & Hodgkins, William H. (William Henry) & Noyes, Edmund W. & Ranlett, S. Alonzo & White, Alonzo A.",
+      "fmt": ".epub"
+    },
+    {
+      "rel_path": "C/Carroll, Lewis/Alice's Adventures in Wonderland - Carroll, Lewis.epub",
+      "title": "Alice's Adventures in Wonderland",
+      "author": "Carroll, Lewis",
+      "fmt": ".epub"
+    },
+    {
+      "rel_path": "C/Carroll, Lewis/Symbolic Logic - Carroll, Lewis.epub",
+      "title": "Symbolic Logic",
+      "author": "Carroll, Lewis",
+      "fmt": ".epub"
+    },
+    {
+      "rel_path": "C/Chambers, George F. (George Frederick)/The Story of the Solar System - Chambers, George F. (George Frederick).epub",
+      "title": "The Story of the Solar System",
+      "author": "Chambers, George F. (George Frederick)",
+      "fmt": ".epub"
+    },
+    {
+      "rel_path": "C/Chekhov, Anton Pavlovich/The Darling and Other Stories - Chekhov, Anton Pavlovich.epub",
+      "title": "The Darling and Other Stories",
+      "author": "Chekhov, Anton Pavlovich",
+      "fmt": ".epub"
+    },
+    {
+      "rel_path": "C/Cicero, Marcus Tullius/Academica - Cicero, Marcus Tullius.epub",
+      "title": "Academica",
+      "author": "Cicero, Marcus Tullius",
+      "fmt": ".epub"
+    },
+    {
+      "rel_path": "C/Cicero, Marcus Tullius/Cicero's Tusculan Disputations - Also, Treatises On The Nature Of The Gods, And On The Commonwealth - Cicero, Marcus Tullius.epub",
+      "title": "Cicero's Tusculan Disputations",
+      "author": "Also, Treatises On The Nature Of The Gods, And On The Commonwealth - Cicero, Marcus Tullius",
+      "fmt": ".epub"
+    },
+    {
+      "rel_path": "C/Cicero, Marcus Tullius/The republic of Cicero - Translated from the Latin; and Accompanied With a Critical and Historical Introduction. - Cicero, Marcus Tullius.epub",
+      "title": "The republic of Cicero",
+      "author": "Translated from the Latin; and Accompanied With a Critical and Historical Introduction. - Cicero, Marcus Tullius",
+      "fmt": ".epub"
+    },
+    {
+      "rel_path": "C/Confucius/The Analects of Confucius (from the Chinese Classics) - Confucius.epub",
+      "title": "The Analects of Confucius (from the Chinese Classics)",
+      "author": "Confucius",
+      "fmt": ".epub"
+    },
+    {
+      "rel_path": "C/Confucius/The Sayings of Confucius - Confucius.epub",
+      "title": "The Sayings of Confucius",
+      "author": "Confucius",
+      "fmt": ".epub"
+    },
+    {
+      "rel_path": "C/Confucius/The Wisdom of Confucius - with Critical and Biographical Sketches - Confucius.epub",
+      "title": "The Wisdom of Confucius",
+      "author": "with Critical and Biographical Sketches - Confucius",
+      "fmt": ".epub"
+    },
+    {
+      "rel_path": "C/Conrad, Joseph/Heart of Darkness - Conrad, Joseph.epub",
+      "title": "Heart of Darkness",
+      "author": "Conrad, Joseph",
+      "fmt": ".epub"
+    },
+    {
+      "rel_path": "C/Crummell, Alexander/Civilization the Primal Need of the Race, and The Attitude of the American Mind Toward the Negro Intellect - The American Negro Academy. Occasional Paper No. 3 - Crummell, Alexander.epub",
+      "title": "Civilization the Primal Need of the Race, and The Attitude of the American Mind Toward the Negro Intellect",
+      "author": "The American Negro Academy. Occasional Paper No. 3 - Crummell, Alexander",
+      "fmt": ".epub"
+    },
+    {
+      "rel_path": "D/Dante Alighieri/The Divine Comedy - Dante Alighieri.epub",
+      "title": "The Divine Comedy",
+      "author": "Dante Alighieri",
+      "fmt": ".epub"
+    },
+    {
+      "rel_path": "D/Darwin, Charles/The Descent of Man, and Selection in Relation to Sex - Darwin, Charles.epub",
+      "title": "The Descent of Man, and Selection in Relation to Sex",
+      "author": "Darwin, Charles",
+      "fmt": ".epub"
+    },
+    {
+      "rel_path": "D/Darwin, Charles/The Origin of Species- Or, the Preservation of Favoured Races in the Struggle for Life - Darwin, Charles.epub",
+      "title": "The Origin of Species- Or, the Preservation of Favoured Races in the Struggle for Life",
+      "author": "Darwin, Charles",
+      "fmt": ".epub"
+    },
+    {
+      "rel_path": "D/Darwin, Charles/The Voyage of the Beagle - Darwin, Charles.epub",
+      "title": "The Voyage of the Beagle",
+      "author": "Darwin, Charles",
+      "fmt": ".epub"
+    },
+    {
+      "rel_path": "D/De Morgan, Augustus/A Budget of Paradoxes, Volume I - De Morgan, Augustus.epub",
+      "title": "A Budget of Paradoxes, Volume I",
+      "author": "De Morgan, Augustus",
+      "fmt": ".epub"
+    },
+    {
+      "rel_path": "D/Dearmer, Percy/Bell's Cathedrals- The Cathedral Church of Wells - A Description of Its Fabric and a Brief History of the Episcopal See - Dearmer, Percy.epub",
+      "title": "Bell's Cathedrals- The Cathedral Church of Wells",
+      "author": "A Description of Its Fabric and a Brief History of the Episcopal See - Dearmer, Percy",
+      "fmt": ".epub"
+    },
+    {
+      "rel_path": "D/Descartes, Rene\u0301/Discourse on the Method of Rightly Conducting One's Reason and of Seeking Truth in the Sciences - Descartes, Rene\u0301.epub",
+      "title": "Discourse on the Method of Rightly Conducting One's Reason and of Seeking Truth in the Sciences",
+      "author": "Descartes, Rene\u0301",
+      "fmt": ".epub"
+    },
+    {
+      "rel_path": "D/Dewey, John/Human Nature and Conduct- An introduction to social psychology - Dewey, John.epub",
+      "title": "Human Nature and Conduct- An introduction to social psychology",
+      "author": "Dewey, John",
+      "fmt": ".epub"
+    },
+    {
+      "rel_path": "D/Dickens, Charles/A Tale of Two Cities - Dickens, Charles.epub",
+      "title": "A Tale of Two Cities",
+      "author": "Dickens, Charles",
+      "fmt": ".epub"
+    },
+    {
+      "rel_path": "D/Dickens, Charles/Great Expectations - Dickens, Charles.epub",
+      "title": "Great Expectations",
+      "author": "Dickens, Charles",
+      "fmt": ".epub"
+    },
+    {
+      "rel_path": "D/Dickens, Charles/Oliver Twist - Dickens, Charles.epub",
+      "title": "Oliver Twist",
+      "author": "Dickens, Charles",
+      "fmt": ".epub"
+    }
+  ]
+}
