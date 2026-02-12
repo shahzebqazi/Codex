@@ -13,7 +13,7 @@ It also updates:
 - Library.txt
 - Recommendations.txt
 - Book_Sources_Reference.txt
-- run reports/manifests under /Volumes/X4-SD/reports
+- run reports/manifests under /Volumes/X4-SD/Librarian/reports
 """
 
 from __future__ import annotations
@@ -45,7 +45,7 @@ DEFAULT_RECOMMENDATIONS_TXT = Path("/Volumes/X4-SD/Librarian/Recommendations.txt
 DEFAULT_SOURCES_LOG = Path(
     "/Volumes/X4-SD/Manuals/References/Book_Sources_Reference.txt"
 )
-DEFAULT_REPORTS_DIR = Path("/Volumes/X4-SD/reports")
+DEFAULT_REPORTS_DIR = Path("/Volumes/X4-SD/Librarian/reports")
 
 GUTENDEX_URL = "https://gutendex.com/books?mime_type=application%2Fepub%2Bzip"
 USER_AGENT = "Mozilla/5.0 (Codex-Librarian/1.0; +https://www.gutenberg.org/)"

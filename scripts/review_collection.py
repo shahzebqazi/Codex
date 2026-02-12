@@ -126,6 +126,8 @@ def scan_collection(root: Path, extensions: set[str]) -> list[FileRecord]:
             continue
         if path.is_symlink():
             continue
+        if path.name.startswith("._"):
+            continue
         ext = path.suffix.lower()
         if ext not in extensions:
             continue

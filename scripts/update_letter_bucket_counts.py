@@ -120,6 +120,8 @@ def count_books_by_bucket(root: Path, extensions: set[str]) -> tuple[dict[str, i
             continue
         if path.is_symlink():
             continue
+        if path.name.startswith("._"):
+            continue
         if path.suffix.lower() not in extensions:
             continue
 
