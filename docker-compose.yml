@@ -1,0 +1,33 @@
+version: "3.8"
+
+services:
+  # Local GGUF model serving via llama.cpp
+  # Provides OpenAI-compatible API at http://localhost:8080
+  llama-server:
+    image: ghcr.io/ggml-org/llama.cpp:server
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./models:/models
+    # Load your GGUF model by setting the MODEL env var
+    # Example: MODEL=/models/kimi-k2.5-Q4_K_M.gguf
+    environment:
+      - MODEL=${MODEL:-/models/default.gguf}
+    command: >
+      --model ${MODEL:-/models/default.gguf}
+      --host 0.0.0.0
+      --port 8080
+      --ctx-size 8192
+      --n-gpu-layers -1
+    restart: unless-stopped
+
+  # Orchestrator agent (future -- uncomment when multi-agent is ready)
+  # orchestrator:
+  #   build: .
+  #   volumes:
+  #     - .:/workspace
+  #   environment:
+  #     - DOTAI_ROLE=orchestrator
+  #     - DOTAI_MODEL_ENDPOINT=http://llama-server:8080
+  #   depends_on:
+  #     - llama-server
