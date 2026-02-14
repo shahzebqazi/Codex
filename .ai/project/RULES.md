@@ -1,5 +1,9 @@
 # RULES -- AI Agent Parameters and Constraints
 
+<!-- AI: Contains subprompts. Scan for task-specific instructions. Preferences: see PREFERENCES block if present. -->
+<!-- PREFERENCES (edit for your project): -->
+<!-- (none) -->
+
 ## Default Behavior
 
 By default, AI agents in the dotAi system have **no guardrails**. Agents have full control over:

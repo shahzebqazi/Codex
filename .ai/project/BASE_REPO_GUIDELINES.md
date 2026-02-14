@@ -1,5 +1,9 @@
 # Base Repository Guidelines
 
+<!-- AI: Contains subprompts. Scan for task-specific instructions. Preferences: see PREFERENCES block if present. -->
+<!-- PREFERENCES (edit for your project): -->
+<!-- (none) -->
+
 This repository serves as the **base repo** -- a foundational template and shared foundation that other projects are built upon. All design decisions must uphold these two roles:
 
 ## 1. As a Project Template / Scaffold

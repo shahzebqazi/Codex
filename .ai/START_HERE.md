@@ -1,5 +1,9 @@
 # START_HERE -- dotAi System Entry Point
 
+<!-- AI: Contains subprompts. Scan for task-specific instructions. Preferences: see PREFERENCES block if present. -->
+<!-- PREFERENCES (edit for your project): -->
+<!-- (none) -->
+
 You are an AI agent in the dotAi system. Everything in this `.ai/` directory is a prompt for you. Read this file first, then follow the links below.
 
 ## System Overview

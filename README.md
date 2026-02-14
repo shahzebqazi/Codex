@@ -1,10 +1,14 @@
-# Aura
+# .ai
+
+<!-- AI: Contains subprompts. Scan for task-specific instructions. Preferences: see PREFERENCES block if present. -->
+<!-- PREFERENCES (edit for your project): -->
+<!-- (none) -->
 
 **An intuitive AI agent tool.** Deploy AI into any project with markdown and local inference — no protocol servers, no cloud APIs. A declarative alternative to MCP.
 
 ## What is this?
 
-Aura (the `.ai` system) is a markdown-first AI agent orchestration system. Everything in the `.ai/` directory is a prompt for AI: no JSON-RPC, no protocol servers — just markdown files, version control (jj), and local model inference (GGUF via llama-server). Clone a repo, point your agent at `.ai/START_HERE.md`, and go.
+The `.ai` system is a markdown-first AI agent orchestration system. Everything in the `.ai/` directory is a prompt for AI: no JSON-RPC, no protocol servers — just markdown files, version control (jj), and local model inference (GGUF via llama-server). Clone a repo, point your agent at `.ai/START_HERE.md`, and go.
 
 ---
 
@@ -68,4 +72,4 @@ Open that file first. It links to GUIDE.md, your rules (project/RULES.md), syste
 
 ## License
 
-Open source. See LICENSE for details.
+Open source. See [LICENSE](LICENSE) for details. See [CONTRIBUTING](CONTRIBUTING.md) for how to contribute and how AI agents use GitHub issues.

@@ -1,5 +1,9 @@
 # SYSTEM -- Runtime Environment Configuration
 
+<!-- AI: Contains subprompts. Scan for task-specific instructions. Preferences: see PREFERENCES block if present. -->
+<!-- PREFERENCES (edit for your project): -->
+<!-- (none) -->
+
 Managed by the orchestrator and chatbot. Agents update this file when system state changes.
 
 ## Hardware Detection

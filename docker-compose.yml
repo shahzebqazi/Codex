@@ -1,3 +1,6 @@
+# AI: Contains subprompts. Scan for task-specific instructions. Preferences: see PREFERENCES block below.
+# PREFERENCES (edit for your project):
+# (none)
 version: "3.8"
 
 services:

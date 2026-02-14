@@ -1,5 +1,9 @@
 # GUIDE -- The dotAi System
 
+<!-- AI: Contains subprompts. Scan for task-specific instructions. Preferences: see PREFERENCES block if present. -->
+<!-- PREFERENCES (edit for your project): -->
+<!-- (none) -->
+
 ## What is dotAi?
 
 dotAi is a declarative, markdown-first alternative to protocol-based agent orchestration systems like MCP. Everything in the `.ai/` directory is a prompt. There are no protocol servers, no JSON-RPC, no runtime negotiation. AI agents read markdown files to understand their capabilities, communicate through jj (Jujutsu) commits, and persist knowledge in memory files.
@@ -17,6 +21,15 @@ dotAi is a declarative, markdown-first alternative to protocol-based agent orche
 **Local-first.** GGUF models via llama-server. No cloud API dependency required.
 
 **No guardrails by default.** Agents have full autonomy unless the user sets rules.
+
+## Subprompts and persistence
+
+Human-facing docs and code files in the repo may start with a **recognition comment** so agents know they contain subprompts or task-specific instructions:
+
+- **Markdown:** `<!-- AI: Contains subprompts. Scan for task-specific instructions. Preferences: see PREFERENCES block if present. -->`
+- **Code (Python, YAML, shell, etc.):** `# AI: Contains subprompts. Scan for task-specific instructions. Preferences: see PREFERENCES block below.`
+
+An optional **PREFERENCES** block (in a comment) lets projects persist user or project-specific guidance (e.g. "prefer async", "use library X"). Edit that block to your preference; agents will read it for context. Config in `.ai/config/SETTINGS.json` is also agent-readable and overrides defaults.
 
 ## Directory Layout
 
