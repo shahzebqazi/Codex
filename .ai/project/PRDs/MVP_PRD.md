@@ -1,67 +1,107 @@
 ---
 name: "dotAi MVP -- Chatbot Agent with Local GGUF Model"
-overview: "Minimum viable prototype: a single chatbot agent that reads START_HERE.md, uses a local GGUF model via llama-server, follows dotAi conventions, and communicates via jj commits."
+overview: "Minimum viable prototype: a single chatbot agent that reads START_HERE.md, uses a local GGUF model via llama-server, follows dotAi conventions, and communicates via jj commits. This PRD is the continuation plan for an AI agent picking up work on this repo."
 todos:
   - id: scaffold
-    content: "Create complete .ai/ directory structure with all skills, references, memories, config, and documentation"
+    content: "Complete .ai/ directory structure with all skills, references, memories, config, and documentation"
     status: completed
   - id: start-here
-    content: "Write START_HERE.md driver prompt that bootstraps the chatbot agent"
-    status: in_progress
+    content: "START_HERE.md driver prompt that bootstraps the chatbot agent"
+    status: completed
   - id: guide
-    content: "Write GUIDE.md explaining the full dotAi system"
-    status: in_progress
-  - id: docker
-    content: "Create docker-compose.yml with orchestrator and llama-server services"
+    content: "GUIDE.md explaining the full dotAi system"
+    status: completed
+  - id: whitepaper-outline
+    content: "WHITEPAPER.md outline with research notes, references, and templates for human authorship"
+    status: completed
+  - id: base-repo-guidelines
+    content: "BASE_REPO_GUIDELINES.md defining dual role as template and shared foundation"
+    status: completed
+  - id: branch-cleanup
+    content: "Rename openaipluginmsgapi->openai, delete dev/ios-notes/ralphloop, push dotai, fix merge order on main"
+    status: completed
+  - id: case-sensitivity-fix
+    content: "Audit all .ai/ paths for case-sensitivity issues between macOS (insensitive) and Linux/git (sensitive). Ensure no duplicate paths exist. Consider renaming .ai/References/ to .ai/references/ to match convention."
     status: pending
-  - id: gitignore
-    content: "Update .gitignore for config/local/, .env, models/, *.gguf"
+  - id: references-dir-case
+    content: "Rename .ai/References/ to .ai/references/ (lowercase) to match the directory convention. Currently tracked as uppercase on git but should be lowercase per GUIDE.md."
     status: pending
-  - id: readme
-    content: "Write human-facing README.md"
+  - id: validate-skills
+    content: "Read every skill file in .ai/skills/ and verify content is substantive (not just a title). Some skills were written by subagents and may need review. Fix any that are stubs or have placeholder content."
     status: pending
-  - id: push
-    content: "Push dotai branch to GitHub"
+  - id: docker-test
+    content: "Test docker-compose.yml: run 'docker-compose up llama-server' with a real GGUF model. Verify OpenAI-compatible API responds at localhost:8080. Document any fixes needed."
     status: pending
-  - id: branch-ops
-    content: "Rename openaipluginmsgapi to openai, delete dev/ios-notes/ralphloop branches"
+  - id: jj-setup
+    content: "Install jj (jujutsu) in the dev environment. Initialize jj on the repo with 'jj git init --colocate'. Verify jj operations work alongside git. Document setup in GUIDE.md or a new SETUP.md."
     status: pending
-isProject: false
+  - id: chatbot-test
+    content: "Test the chatbot flow end-to-end: point an AI agent at START_HERE.md, have it read the system, navigate skills, and perform a simple coding task. Record what works and what breaks."
+    status: pending
+  - id: settings-validation
+    content: "Add JSON Schema validation for config/SETTINGS.json. Create .ai/config/SETTINGS.schema.json so agents and tools can validate config programmatically."
+    status: pending
+  - id: agent-template
+    content: "Create a template agent directory at .ai/agents/TEMPLATE/ with AGENT.md and PERSONA.md showing the expected format. This helps new agents bootstrap their own state files."
+    status: pending
+  - id: memories-bootstrap
+    content: "Run system detection and populate project/SYSTEM.md with actual hardware info (OS, arch, GPU, RAM). Update memories/MENTAL_MAP.md with real project patterns after the first agent session."
+    status: pending
+  - id: readme-setup
+    content: "Expand README.md with Prerequisites section (jj, Docker, a GGUF model), step-by-step Getting Started, and Troubleshooting. Align with BASE_REPO_GUIDELINES requirement for clone-to-running-in-minutes."
+    status: pending
+  - id: version-tag
+    content: "Tag the first stable scaffold as template/v0.1.0 per BASE_REPO_GUIDELINES versioning convention."
+    status: pending
+  - id: ci-basic
+    content: "Add a basic GitHub Actions workflow (.github/workflows/validate.yml) that checks: all .ai/ markdown files exist, SETTINGS.json is valid JSON, no case-sensitivity path conflicts."
+    status: pending
+  - id: github-issues-template
+    content: "Create .github/ISSUE_TEMPLATE/ with templates for: bug reports (agent-generated), feature suggestions (agent-generated), and human feature requests. Enable the github.report_bugs_to_issues config path."
+    status: pending
+isProject: true
 ---
 
 # dotAi MVP -- Chatbot Agent with Local GGUF Model
 
-## Summary
+## Context for Continuing Agent
 
-The MVP demonstrates the core dotAi thesis: a single markdown file (START_HERE.md) can bootstrap a fully functional AI coding agent without any protocol server, using only files as the protocol and VCS commits as communication.
+This repo contains the dotAi system -- a declarative, markdown-first AI agent orchestration system. The scaffold is complete (40+ files in `.ai/`). Your job is to pick up the pending tasks above and make the system actually runnable.
 
-## Problem Statement
+**Start by reading:** `.ai/START_HERE.md` -- it links to everything you need.
 
-Current AI coding agent systems require protocol servers (MCP), proprietary configurations, and runtime dependencies to coordinate agents. This creates unnecessary complexity for the common case: a developer who wants an AI assistant that understands their project and can code autonomously.
+**Key files to understand the system:**
+- `.ai/GUIDE.md` -- full system explanation, directory layout, conventions
+- `.ai/project/RULES.md` -- your rules (no guardrails by default)
+- `.ai/project/SYSTEM.md` -- runtime environment (populate with real data)
+- `.ai/project/BASE_REPO_GUIDELINES.md` -- this repo is both a template and a shared foundation
 
-## Goals
+**What has been done:**
+- Complete `.ai/` scaffold: 30+ skills, memory system, config, references (80+ URLs), whitepaper outline
+- All old branches cleaned up (epub/library files removed, branches renamed/deleted)
+- Merged to main, pushed to GitHub at shahzebqazi/Codex
 
-- Demonstrate that a `.ai/` directory with markdown prompts is sufficient to configure an AI coding agent
-- Show that a local GGUF model (Kimi K2.5) via llama-server can power autonomous coding
-- Establish the jj-as-communication-bus pattern for agent VCS operations
-- Provide a complete, documented scaffold that others can clone and use
-- Validate the "everything is a prompt" philosophy
+**What needs doing (priority order):**
 
-## Non-Goals
+### P0 -- Fix Before Anything Else
+1. **Case sensitivity fix** -- `.ai/References/` is uppercase but should be `.ai/references/` per convention. Fix this carefully (macOS is case-insensitive).
+2. **Validate skills** -- read every skill file, ensure content is real (not stubs from subagent failures).
 
-- Multi-agent orchestration (future: requires Docker Compose agent spawning)
-- Formal RL training (future: requires compute and training data)
-- IDE-specific integrations beyond Cursor plan.md compatibility
-- Production deployment or scaling
+### P1 -- Make It Runnable
+3. **jj setup** -- install jujutsu, init colocated repo, verify it works
+4. **Docker test** -- test llama-server with a real GGUF model
+5. **Chatbot test** -- end-to-end test of an agent reading START_HERE.md
+6. **System detection** -- populate SYSTEM.md with real hardware info
 
-## Success Criteria
+### P2 -- Polish and Harden
+7. **Agent template** -- create .ai/agents/TEMPLATE/ with example files
+8. **Settings schema** -- JSON Schema for SETTINGS.json
+9. **README expansion** -- prerequisites, getting started, troubleshooting
+10. **GitHub templates** -- issue templates for agent-generated reports
 
-1. An AI agent reading START_HERE.md can understand the full dotAi system
-2. The agent can navigate the .ai/ directory and invoke skills
-3. The agent can use jj for commits with group-chat style messages
-4. The agent can read/update memories and config
-5. The docker-compose.yml can start llama-server with a GGUF model
-6. The complete scaffold is pushed to GitHub on the dotai branch
+### P3 -- Release
+11. **Basic CI** -- GitHub Actions to validate the scaffold
+12. **Version tag** -- tag as template/v0.1.0
 
 ## Architecture
 
@@ -69,58 +109,27 @@ Current AI coding agent systems require protocol servers (MCP), proprietary conf
 User
   |
   v
-START_HERE.md (driver prompt)
+START_HERE.md (reads this first)
   |
   +-> GUIDE.md (system explanation)
   +-> project/RULES.md (constraints)
-  +-> project/SYSTEM.md (runtime config)
-  +-> skills/ (capabilities)
+  +-> project/SYSTEM.md (hardware/runtime)
+  +-> skills/ (30+ capability files)
   +-> memories/MENTAL_MAP.md (project knowledge)
   +-> config/SETTINGS.json (settings)
   |
   v
-Chatbot Agent (reads all above, uses llama-server for inference)
+Chatbot Agent (local GGUF via llama-server)
   |
   v
-jj commits (communication, audit trail)
+jj commits (communication + audit trail)
 ```
 
-## User Stories
+## Success Criteria
 
-### US-001: Agent Bootstrap
-As a developer, I want to point an AI agent at START_HERE.md and have it understand the entire dotAi system so that it can begin working on my project immediately.
-
-**Acceptance Criteria:**
-- START_HERE.md links to all essential files
-- An agent reading it can describe the system accurately
-- No external documentation needed
-
-### US-002: Local Model Inference
-As a developer, I want to run a local GGUF model via docker-compose so that I have AI inference without cloud API dependencies.
-
-**Acceptance Criteria:**
-- `docker-compose up llama-server` starts serving
-- OpenAI-compatible API available at localhost:8080
-- Any GGUF model works (Kimi K2.5 default)
-
-### US-003: Agent Communication via jj
-As a developer, I want AI agents to commit via jj with brief group-chat messages so that I can follow agent activity in the commit log.
-
-**Acceptance Criteria:**
-- Commits use `ai@dotai.dev` email
-- Messages follow `[agent-name] action @mention` format
-- jj revsets can query agent activity
-
-### US-004: Self-Update without Data Loss
-As a developer, I want to pull updates from the base repo without losing my agent's memories or local config.
-
-**Acceptance Criteria:**
-- `config/local/` is gitignored
-- `memories/` agent-created files survive updates
-- jj conflict-as-data preserves modifications
-
-## Risks
-
-- jj adoption is early; some developers may not have it installed -> mitigate with install instructions in GUIDE.md
-- GGUF model quality varies -> mitigate with model routing guide in SYSTEM.md
-- Docker dependency for llama-server -> mitigate with bare-metal install instructions in LLAMA_CPP.md skill
+1. A fresh AI agent reading START_HERE.md can understand and work within the system
+2. `docker-compose up llama-server` serves a GGUF model at localhost:8080
+3. jj is initialized and working alongside git
+4. All skill files contain substantive content (no empty stubs)
+5. README.md enables a human to go from clone to running in under 5 minutes
+6. First version tag (template/v0.1.0) is created
