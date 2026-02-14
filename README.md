@@ -1,26 +1,52 @@
-# dotAi
+# Aura
 
-A declarative, markdown-first AI agent orchestration system. An alternative to protocol-based systems like MCP.
+**An intuitive AI agent tool.** Deploy AI into any project with markdown and local inference — no protocol servers, no cloud APIs. A declarative alternative to MCP.
 
 ## What is this?
 
-Everything in the `.ai/` directory is a prompt for AI. There are no protocol servers, no JSON-RPC -- just markdown files, a version control system (jj), and local model inference (GGUF via llama-server).
+Aura (the `.ai` system) is a markdown-first AI agent orchestration system. Everything in the `.ai/` directory is a prompt for AI: no JSON-RPC, no protocol servers — just markdown files, version control (jj), and local model inference (GGUF via llama-server). Clone a repo, point your agent at `.ai/START_HERE.md`, and go.
 
-## Quick Start
-
-1. Clone this repo
-2. Read `.ai/START_HERE.md` -- that's the entry point for any AI agent
-3. Read `.ai/GUIDE.md` -- explains the full system
-
-## For AI Agents
-
-Point your AI coding agent at `.ai/START_HERE.md`. It will understand the system and begin working.
+---
 
 ## For Humans
 
-Read `.ai/GUIDE.md` for the complete system explanation, directory layout, and conventions.
+### Prerequisites
 
-## Local Model Serving
+- **Docker** — for running llama-server (local GGUF inference)
+- **jj** (Jujutsu) — optional but recommended; colocated with git for agent commits
+- **A GGUF model** — place in `./models/` (see Local Model Serving below)
+
+### Quick Start
+
+1. Clone this repo.
+2. Read `.ai/START_HERE.md` (entry point for agents) then `.ai/GUIDE.md` (full system).
+3. To run a local model: `docker-compose up llama-server` — API at `http://localhost:8080`.
+
+### Key Concepts
+
+- **Everything is a prompt** — all `.ai/` files are markdown designed for AI to read.
+- **Files are the protocol** — no servers; agents discover skills by scanning the filesystem.
+- **jj commits are the communication bus** — agents coordinate via Jujutsu commit messages.
+- **Local-first** — GGUF models via llama-server; no cloud APIs required.
+- **No guardrails by default** — agents have full autonomy unless you set rules.
+
+### Structure
+
+```
+.ai/
+  START_HERE.md      — agent entry point
+  GUIDE.md           — system documentation
+  project/           — rules, system config, PRDs
+  skills/            — agent capabilities (30+ skills)
+  agents/            — per-agent state files
+  memories/          — reinforcement and project knowledge
+  config/            — settings (with gitignored local overrides)
+  references/        — cataloged external links
+  documentation/     — whitepaper and formal docs
+  extensions/        — add-ons
+```
+
+### Local Model Serving
 
 ```bash
 # Place a GGUF model in ./models/
@@ -30,29 +56,15 @@ docker-compose up llama-server
 
 The server exposes an OpenAI-compatible API at `http://localhost:8080`.
 
-## Key Concepts
+---
 
-- **Everything is a prompt** -- all `.ai/` files are markdown designed for AI to read
-- **Files are the protocol** -- no servers needed, agents discover skills by scanning the filesystem
-- **jj commits are the group chat** -- AI agents communicate via brief Jujutsu commit messages
-- **Local-first** -- runs on GGUF models via llama-server, no cloud APIs required
-- **No guardrails by default** -- agents have full autonomy unless you set rules
+## For AI Agents
 
-## Structure
+**Entry point:** [.ai/START_HERE.md](.ai/START_HERE.md)
 
-```
-.ai/
-  START_HERE.md      -- agent entry point
-  GUIDE.md           -- system documentation
-  project/           -- rules, system config, PRDs
-  skills/            -- agent capabilities (30+ skills)
-  agents/            -- per-agent state files
-  memories/          -- RL data and project knowledge
-  config/            -- settings (with gitignored local overrides)
-  references/        -- 80+ cataloged external links
-  documentation/     -- whitepaper and formal docs
-  extensions/        -- add-ons
-```
+Open that file first. It links to GUIDE.md, your rules (project/RULES.md), system config (project/SYSTEM.md), and the skills directory. You will understand the system and can begin working in under two minutes.
+
+---
 
 ## License
 
