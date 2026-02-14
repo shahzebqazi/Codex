@@ -1,0 +1,39 @@
+{
+  "version": "0.1.0",
+  "project": {
+    "name": "dotai",
+    "description": "Declarative markdown-first AI agent orchestration system"
+  },
+  "agents": {
+    "email": "ai@dotai.dev",
+    "execution_level": "full-auto",
+    "default_model": "kimi-k2.5",
+    "model_endpoint": "http://localhost:8080",
+    "commit_style": "groupchat"
+  },
+  "github": {
+    "report_bugs_to_issues": true,
+    "allow_agent_suggestions": true,
+    "allow_agent_branches": true,
+    "auto_create_pr": false
+  },
+  "behavior": {
+    "response_style": "concise",
+    "examples": "only_when_requested",
+    "emoji": "never",
+    "paradigm": "functional",
+    "testing_required": true
+  },
+  "budget": {
+    "max_actions_before_pivot": 5,
+    "verification_after_every_edit": true,
+    "dense_reward_tracking": true
+  },
+  "self_update": {
+    "auto_pull_on_reinit": true,
+    "preserve_agent_files": true,
+    "preserve_memories": true,
+    "preserve_local_config": true,
+    "base_repo": "shahzebqazi/Codex"
+  }
+}

@@ -1,4 +1,0 @@
-interface:
-  display_name: "Ralph Loop Parallel Agents"
-  short_description: "Parallel PRD-to-code agent coordination"
-  default_prompt: "Coordinate parallel coding agents from a PRD by producing a requirements pool, interface contracts, task graph, and progress logs."

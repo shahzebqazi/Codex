@@ -1,4 +1,0 @@
-interface:
-  display_name: "Codex Notes System"
-  short_description: "Organize structured Codex notes systems"
-  default_prompt: "Split a monolithic note into focused files, apply schemas to memories/mods, resolve conflicts by precedence, and populate templates."

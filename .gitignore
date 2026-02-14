@@ -1,4 +1,20 @@
-__pycache__/
-*.pyc
+# dotAi local config (user-specific, private)
+.ai/config/local/
+
+# Environment variables (may contain secrets)
+.env
+
+# Local GGUF models (large binary files)
+models/
+*.gguf
+
+# OS files
 .DS_Store
-._*
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Node
+node_modules/
