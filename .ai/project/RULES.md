@@ -18,6 +18,7 @@ By default, AI agents in the dotAi system have **no guardrails**. Agents have fu
 1. **Architectural decisions** require human approval. The LEAD_ARCHITECT agent enforces this.
 2. **User-defined rules** in `.ai/config/local/RULES.md` (gitignored) override defaults.
 3. **Environment variables** in `.env` (gitignored) can set hidden constraints.
+4. **Merging to `main`** — Do **not** merge any branch (including `prod` or `benchmarks`) into `main` unless the user has explicitly approved. You may propose a merge, open a PR, or summarize what would be merged, but the final merge to `main` must be done by the user or after explicit user approval.
 
 ## Budget-Aware Agent Protocol
 
