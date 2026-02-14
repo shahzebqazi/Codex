@@ -26,6 +26,7 @@ dotAi is a declarative, markdown-first alternative to protocol-based agent orche
   GUIDE.md               This file -- system explanation
 
   project/               Project management
+    BASE_REPO_GUIDELINES.md  Base repo roles: template + shared foundation
     RULES.md             Agent parameters and constraints
     SYSTEM.md            Runtime environment (OS, GPU, models, deps)
     PRDs/                Product requirement documents (plan.md format)

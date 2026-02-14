@@ -8,6 +8,12 @@ dotAi is a declarative, markdown-first agent orchestration system. There are no 
 
 Read: [GUIDE.md](GUIDE.md) for the complete system explanation.
 
+## Base Repo Guidelines
+
+This repo is a **base repo** -- both a project template and a shared foundation for dependent repos. All changes must respect both roles.
+
+Read: [project/BASE_REPO_GUIDELINES.md](project/BASE_REPO_GUIDELINES.md)
+
 ## Your Rules
 
 Read: [project/RULES.md](project/RULES.md)
