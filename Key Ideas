@@ -1,0 +1,149 @@
+Key Ideas
+
+    [[Category Theory]]
+
+    [[AI (Artificial Intelligence)]]
+
+    [[Reinforcement Learning (RL)]]
+
+    [[Formal Methods]]
+
+    [[Software Engineering]]
+
+    [[Object-Oriented Programming (OOP)]]
+
+    [[Functional Programming]]
+
+Category Theory Concepts
+
+    [[Object (Category Theory)]]
+
+    [[Morphism]]
+
+    [[Functor]]
+
+    [[Monad]]
+
+    [[Natural Transformation]]
+
+    [[Composition]]
+
+    [[Context]]
+
+AI & Machine Learning Concepts
+
+    [[Agentic AI]]
+
+    [[Prompt]]
+
+    [[Tokens]]
+
+    [[Few-shot learning]]
+
+    [[Situation Calculus]]
+
+    [[Fluents]]
+
+    [[AI Planning]]
+
+    [[State-space graph]]
+
+    [[Natural Language Processing (NLP)]]
+
+Reinforcement Learning
+
+    [[Agent (RL)]]
+
+    [[Environment (RL)]]
+
+    [[State (RL)]]
+
+    [[Action (RL)]]
+
+    [[Reward (RL)]]
+
+Software Engineering & Architecture
+
+    [[Domain Modeling]]
+
+    [[Self-healing code]]
+
+    [[Resilient System Design]]
+
+    [[Fault-tolerant System]]
+
+    [[State Transition System]]
+
+    [[Model Checking]]
+
+    [[Safety Properties]]
+
+    [[Liveness Properties]]
+
+    [[Literate Programming]]
+
+    [[Circuit Breaker Pattern]]
+
+    [[Feature Flags]]
+
+    [[Graceful Degradation]]
+
+    [[Version Control System (VCS)]]
+
+    [[Package Manager]]
+
+    [[CI/CD (Continuous Integration/Continuous Deployment)]]
+
+Programming Languages & Tools
+
+    [[TypeScript]]
+
+    [[Haskell]]
+
+    [[Idris]]
+
+    [[Go (Golang)]]
+
+    [[Smalltalk]]
+
+    [[JavaScript]]
+
+    [[PostgreSQL]]
+
+    [[Git]]
+
+    [[Jujutsu]]
+
+    [[Spack]]
+
+    [[npm (Node Package Manager)]]
+
+    [[LLVM]]
+
+    [[Obsidian]]
+
+Computer Science Concepts
+
+    [[Dependent Types]]
+
+    [[Type System]]
+
+    [[Side Effect]]
+
+    [[Pure function]]
+
+    [[Generics]]
+
+    [[Higher-Order Functions]]
+
+    [[Message Passing]]
+
+    [[Graph Algorithms]]
+
+    [[Pathfinding Algorithms]]
+
+    [[Minimum Spanning Tree (MST)]]
+
+    [[A* Algorithm]]
+
+    [[Dijkstra's Algorithm]]
