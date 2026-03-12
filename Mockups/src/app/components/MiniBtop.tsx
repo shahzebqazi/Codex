@@ -58,51 +58,54 @@ export function MiniBtop() {
   return (
     <div className="flex flex-col h-full min-h-0 bg-[#0d1117] text-[#e6edf3] font-mono overflow-hidden">
       {/* Title bar */}
-      <div className="px-2 py-1 border-b border-[#30363d] text-[10px] text-[#8b949e] shrink-0 flex items-center justify-between">
-        <span>btop — system</span>
-        <span className="text-[#6e7681]">{d.time}  BAT▼ {d.battery}% ■■■■■■■■■■</span>
+      <div className="px-2 py-1 border-b border-[#30363d] text-[10px] shrink-0 flex items-center justify-between bg-[#161b22]">
+        <span className="text-[#58a6ff]">btop</span>
+        <span className="text-[#8b949e]">— system</span>
+        <span className="text-[#f0883e]">{d.time}</span>
+        <span className="text-[#7ee787]">BAT▼ {d.battery}%</span>
+        <span className="text-[#a371f7]">■■■■■■■■■■</span>
       </div>
 
-      {/* Content — compact btop layout */}
-      <div className="flex-1 min-h-0 overflow-auto p-1.5 text-[10px] leading-tight whitespace-pre">
+      {/* Content — fills entire Diagnostics area, btop layout with color */}
+      <div className="flex-1 min-h-0 overflow-auto p-1.5 text-[10px] leading-tight whitespace-pre flex flex-col">
         {/* Top: cpu box + mem box side by side */}
-        <div className="flex gap-2 mb-1">
+        <div className="flex gap-2 mb-1 flex-shrink-0">
           {/* CPU panel */}
-          <div className="flex-shrink-0 border border-[#30363d] rounded bg-[#161b22] overflow-hidden">
-            <div className="px-1.5 py-0.5 border-b border-[#30363d] text-[#8b949e]">¹cpu  M3 Pro</div>
+          <div className="flex-shrink-0 border border-[#388bfd] rounded bg-[#0d1117] overflow-hidden">
+            <div className="px-1.5 py-0.5 border-b border-[#30363d] text-[#58a6ff] bg-[#161b22]">¹cpu  M3 Pro</div>
             <div className="px-1.5 py-0.5">
-              <div className="text-[#8b949e]">CPU {bar(d.cpuTotal, 16)} {d.cpuTotal.toFixed(0)}%</div>
+              <div className="text-[#7ee787]">CPU {bar(d.cpuTotal, 16)} <span className="text-[#f0883e]">{d.cpuTotal.toFixed(0)}%</span></div>
               {d.cores.slice(0, 4).map((pct, i) => (
                 <div key={i} className="text-[#8b949e]">
-                  C{i} {bar(pct, 12)} {pct.toFixed(0)}%
+                  <span className="text-[#58a6ff]">C{i}</span> {bar(pct, 12)} <span className="text-[#a371f7]">{pct.toFixed(0)}%</span>
                 </div>
               ))}
-              <div className="text-[#6e7681] mt-0.5">Load: {d.loadAvg.join(' ')}</div>
+              <div className="text-[#6e7681] mt-0.5">Load: <span className="text-[#f0883e]">{d.loadAvg.join(' ')}</span></div>
             </div>
           </div>
           {/* Mem panel */}
-          <div className="flex-1 min-w-0 border border-[#30363d] rounded bg-[#161b22] overflow-hidden">
-            <div className="px-1.5 py-0.5 border-b border-[#30363d] text-[#8b949e]">²mem</div>
+          <div className="flex-1 min-w-0 border border-[#388bfd] rounded bg-[#0d1117] overflow-hidden">
+            <div className="px-1.5 py-0.5 border-b border-[#30363d] text-[#79c0ff] bg-[#161b22]">²mem</div>
             <div className="px-1.5 py-0.5 space-y-0.5">
-              <div>Total: {d.memTotal} GiB  Used: {d.memUsed} GiB  {memPct}%</div>
-              <div className="text-[#8b949e]">{bar(memPct, 24)}</div>
-              <div>Available: {d.memAvailable} GiB  Cached: {d.memCached} GiB</div>
-              <div>Swap: {d.swapUsed}% used</div>
+              <div><span className="text-[#8b949e]">Total:</span> <span className="text-[#e6edf3]">{d.memTotal} GiB</span>  <span className="text-[#7ee787]">Used: {d.memUsed} GiB</span>  <span className="text-[#f0883e]">{memPct}%</span></div>
+              <div className="text-[#79c0ff]">{bar(memPct, 24)}</div>
+              <div><span className="text-[#8b949e]">Available:</span> <span className="text-[#7ee787]">{d.memAvailable} GiB</span>  <span className="text-[#a371f7]">Cached: {d.memCached} GiB</span></div>
+              <div><span className="text-[#8b949e]">Swap:</span> <span className="text-[#f0883e]">{d.swapUsed}%</span> used</div>
             </div>
           </div>
         </div>
 
-        {/* Processes */}
-        <div className="border border-[#30363d] rounded bg-[#161b22] overflow-hidden">
-          <div className="px-1.5 py-0.5 border-b border-[#30363d] text-[#8b949e]">
-            ⁴proc  Pid  Program           Mem    Cpu%
+        {/* Processes — flex-1 so it fills remaining space */}
+        <div className="flex-1 min-h-0 flex flex-col border border-[#a371f7] rounded bg-[#0d1117] overflow-hidden">
+          <div className="px-1.5 py-0.5 border-b border-[#30363d] text-[#a371f7] bg-[#161b22] flex-shrink-0">
+            ⁴proc  <span className="text-[#8b949e]">Pid  Program           Mem    Cpu%</span>
           </div>
-          <div className="px-1.5 py-0.5">
+          <div className="px-1.5 py-0.5 overflow-auto flex-1 min-h-0">
             {d.proc.map((p, i) => (
               <div key={i} className="flex gap-2 truncate">
-                <span className="w-6 text-[#8b949e]">{p.pid}</span>
+                <span className="w-6 text-[#58a6ff]">{p.pid}</span>
                 <span className="flex-1 min-w-0 truncate text-[#e6edf3]">{p.name}</span>
-                <span className="text-[#8b949e]">{p.mem}</span>
+                <span className="text-[#79c0ff]">{p.mem}</span>
                 <span className="text-[#7ee787]">{p.cpu}%</span>
               </div>
             ))}
@@ -110,11 +113,11 @@ export function MiniBtop() {
         </div>
 
         {/* Bottom tab bar (btop style) */}
-        <div className="mt-1 px-1.5 py-0.5 border border-[#30363d] rounded bg-[#161b22] text-[#6e7681] flex flex-wrap gap-x-2 gap-y-0">
+        <div className="mt-1 px-1.5 py-0.5 border border-[#30363d] rounded bg-[#161b22] text-[#6e7681] flex flex-wrap gap-x-2 gap-y-0 flex-shrink-0">
           <span className="text-[#7ee787]">¹cpu</span>
-          <span>²mem</span>
+          <span className="text-[#79c0ff]">²mem</span>
           <span>³net</span>
-          <span>⁴proc</span>
+          <span className="text-[#a371f7]">⁴proc</span>
           <span>filter</span>
           <span>per-core</span>
           <span>reverse</span>

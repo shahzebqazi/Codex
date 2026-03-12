@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useMemo } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { ChevronLeft, ChevronRight, Menu, Settings, User, Paperclip, Mic, Target, ChevronDown, Circle, PanelLeft, PanelRight, PanelBottom, X, Terminal, FileCode, Cpu, Zap, Shield, Database, Code2, Layers, Activity, Bug, GitCommit, FolderOpen, File, Files, Puzzle, GitBranch, Search, ChevronRight as ChevronRightIcon, Folder, MessageCircle, Network, Globe, Image as ImageIcon, LayoutList, Bot, MoreVertical, SlidersHorizontal, Percent, DollarSign, ZoomIn, ZoomOut, RotateCcw, Filter, Plus } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Menu, Settings, User, Paperclip, Mic, Target, ChevronDown, Circle, PanelLeft, PanelRight, PanelBottom, X, Terminal, FileCode, Cpu, Zap, Shield, Database, Code2, Layers, Activity, Bug, GitCommit, FolderOpen, File, Files, Puzzle, GitBranch, Search, ChevronRight as ChevronRightIcon, Folder, MessageCircle, Network, Globe, Image as ImageIcon, LayoutList, Bot, MoreVertical, SlidersHorizontal, Percent, DollarSign, ZoomIn, ZoomOut, RotateCcw, Filter, Plus, HandMetal } from 'lucide-react';
 import { ThreadGraph3D, type ThreadNode, type ThreadLink } from './components/ThreadGraph3D';
 import { MiniBtop } from './components/MiniBtop';
 import {
@@ -706,7 +706,7 @@ zfs mount rpool/root/arch`}</pre>
                   </div>
                 </div>
               </div>
-              {/* Mini btop — system monitor style */}
+              {/* Diagnostics: btop fills entire section */}
               <div className="flex-1 min-h-0 overflow-hidden flex flex-col">
                 <MiniBtop />
               </div>
@@ -721,7 +721,10 @@ zfs mount rpool/root/arch`}</pre>
           >
             <div className="w-[220px] h-full flex flex-col min-w-0">
               <div className="flex items-center justify-between gap-2 p-2 border-b border-[#1A1A1A] bg-[#0A0A0A] shrink-0">
-                <span className="text-xs font-mono text-[#666666] uppercase tracking-wide">Threads</span>
+                <span className="flex items-center gap-1.5 text-xs font-mono text-[#666666] uppercase tracking-wide">
+                  <HandMetal className="w-3.5 h-3.5 text-[#8b949e]" aria-hidden />
+                  Threads
+                </span>
                 <button onClick={() => setRightSidebarOpen(false)} className="p-1.5 rounded text-[#666666] hover:bg-[#1A1A1A] hover:text-[#E5E5E5]" title="Hide sidebar">
                   <PanelRight className="w-4 h-4 rotate-180" />
                 </button>
@@ -743,19 +746,11 @@ zfs mount rpool/root/arch`}</pre>
           </motion.div>
         </div>
 
-        {/* Status bar: sidebar icons, SSH/JJ status, terminal */}
+        {/* Status bar: only show/hide left, bottom, and right sidebar */}
         <div className="flex items-center gap-0.5 px-2 py-1 border-t border-[#1A1A1A] bg-[#0A0A0A] shrink-0 min-h-[28px] text-[#666666]">
-          <button onClick={() => { setLeftSidebarOpen(true); setActiveSidebarTab('files'); }} className={`p-1.5 rounded ${leftSidebarOpen && activeSidebarTab === 'files' ? 'bg-[#E5E5E5]/10 text-[#E5E5E5]' : 'hover:bg-[#1A1A1A] hover:text-[#E5E5E5]'}`} title="Explorer"><Folder className="w-3.5 h-3.5" /></button>
-          <button onClick={() => { setLeftSidebarOpen(true); setActiveSidebarTab('search'); }} className={`p-1.5 rounded ${!leftSidebarOpen ? 'hover:bg-[#1A1A1A] hover:text-[#E5E5E5]' : activeSidebarTab === 'search' ? 'bg-[#E5E5E5]/10 text-[#E5E5E5]' : 'hover:text-[#E5E5E5]'}`} title="Search"><Search className="w-3.5 h-3.5" /></button>
-          <button onClick={() => { setLeftSidebarOpen(true); setActiveSidebarTab('git'); }} className={`p-1.5 rounded ${!leftSidebarOpen ? 'hover:bg-[#1A1A1A] hover:text-[#E5E5E5]' : activeSidebarTab === 'git' ? 'bg-[#E5E5E5]/10 text-[#E5E5E5]' : 'hover:text-[#E5E5E5]'}`} title="Git"><GitBranch className="w-3.5 h-3.5" /></button>
-          <button onClick={() => { setLeftSidebarOpen(true); setActiveSidebarTab('extensions'); }} className={`p-1.5 rounded ${!leftSidebarOpen ? 'hover:bg-[#1A1A1A] hover:text-[#E5E5E5]' : activeSidebarTab === 'extensions' ? 'bg-[#E5E5E5]/10 text-[#E5E5E5]' : 'hover:text-[#E5E5E5]'}`} title="Extensions"><Puzzle className="w-3.5 h-3.5" /></button>
-          <div className="w-px h-4 bg-[#333333] mx-0.5" />
-          <button onClick={() => setRightSidebarOpen(!rightSidebarOpen)} className={`p-1.5 rounded ${rightSidebarOpen ? 'bg-[#E5E5E5]/10 text-[#E5E5E5]' : 'hover:bg-[#1A1A1A] hover:text-[#E5E5E5]'}`} title="Threads"><MessageCircle className="w-3.5 h-3.5" /></button>
-          <div className="w-px h-4 bg-[#333333] mx-0.5" />
-          <span className="text-[10px] font-mono text-[#8b949e] px-1.5 py-0.5 rounded bg-[#1A1A1A]/80" title="SSH">SSH: dev@host</span>
-          <span className="text-[10px] font-mono text-[#8b949e] px-1.5 py-0.5 rounded bg-[#1A1A1A]/80" title="JJ">JJ: main 3↑</span>
-          <div className="flex-1" />
-          <button onClick={() => setTerminalOpen(true)} className="p-1.5 rounded hover:bg-[#1A1A1A] hover:text-[#10B981] text-[#10B981]" title="Terminal"><Terminal className="w-3.5 h-3.5" /></button>
+          <button onClick={() => setLeftSidebarOpen(!leftSidebarOpen)} className={`p-1.5 rounded ${leftSidebarOpen ? 'bg-[#E5E5E5]/10 text-[#E5E5E5]' : 'hover:bg-[#1A1A1A] hover:text-[#E5E5E5]'}`} title="Toggle left sidebar"><PanelLeft className="w-3.5 h-3.5" /></button>
+          <button onClick={() => setTerminalOpen(!terminalOpen)} className={`p-1.5 rounded ${terminalOpen ? 'bg-[#E5E5E5]/10 text-[#E5E5E5]' : 'hover:bg-[#1A1A1A] hover:text-[#E5E5E5]'}`} title="Toggle bottom panel"><PanelBottom className="w-3.5 h-3.5" /></button>
+          <button onClick={() => setRightSidebarOpen(!rightSidebarOpen)} className={`p-1.5 rounded ${rightSidebarOpen ? 'bg-[#E5E5E5]/10 text-[#E5E5E5]' : 'hover:bg-[#1A1A1A] hover:text-[#E5E5E5]'}`} title="Toggle right sidebar"><PanelRight className="w-3.5 h-3.5" /></button>
         </div>
       </div>
 
