@@ -34,11 +34,19 @@ So: add this base repo to your project, point your AI agent at `Project/START_HE
 - **Bugs and ideas** — Open a [GitHub issue](https://github.com/shahzebqazi/Codex/issues). Use the issue templates if present (e.g. bug report, feature suggestion).
 - **Base repo changes** — Keep backward compatibility in mind; this repo is a template and foundation for other projects. See the README (Base repo guidelines section) for design principles.
 
+### Branch and release flow
+
+- **Feature work** — Branch from `main` using `feature/*` (or `docs/*`, `chore/*`) and open PRs into `main`.
+- **Release promotion** — Promote through PRs from `main` to `Production`.
+- **Hotfixes** — Branch from `Production` using `hotfix/*`, merge into `Production`, then back-merge into `main`.
+- **Development branch** — `development` is transitional and retained temporarily for in-flight work only; avoid creating new work on it.
+
 ## How to contribute (AI agents)
 
 - Read `Project/START_HERE.md` first.
 - Follow `Orchestration/Constraints/RULES.md` and respect `Orchestration/Memories/SETTINGS.json` (including GitHub integration settings).
 - For bugs or suggestions, create GitHub issues when allowed by config; use the repository’s issue templates when available.
+- Prefer feature branches that target `main`; use `main -> Production` PRs for release promotions.
 
 ## License
 

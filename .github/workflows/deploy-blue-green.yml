@@ -12,7 +12,7 @@ on:
         type: choice
         options: [staging, production]
   push:
-    branches: [main]
+    branches: [Production]
     paths:
       - "Project/Orchestration/Tasks/SWE/api/**"
       - "Project/Orchestration/Tasks/INFRA/**"
