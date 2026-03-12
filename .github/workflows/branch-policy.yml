@@ -1,0 +1,27 @@
+name: Branch Policy
+
+on:
+  pull_request:
+    branches: [main, production]
+
+jobs:
+  validate-pr-lanes:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate source branch for production PRs
+        if: ${{ github.base_ref == 'production' }}
+        run: |
+          HEAD_REF="${{ github.head_ref }}"
+          if [[ "$HEAD_REF" == "main" || "$HEAD_REF" == "development" || "$HEAD_REF" == hotfix/* ]]; then
+            echo "Allowed release source branch: $HEAD_REF"
+            exit 0
+          fi
+
+          echo "::error::PRs targeting production must come from main, development (temporary), or hotfix/*."
+          echo "::error::Found head branch: $HEAD_REF"
+          exit 1
+
+      - name: Warn if development branch is used
+        if: ${{ github.head_ref == 'development' || github.base_ref == 'development' }}
+        run: |
+          echo "::warning::The development branch is transitional. Prefer feature/* -> main and promote main -> production."
