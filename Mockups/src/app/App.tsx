@@ -47,20 +47,24 @@ export default function App() {
         )}
       </div>
 
-      {/* Floating mockup window — true tabs: only one tab content visible at a time */}
+      {/* Floating mockup window — fixed 1440p size; scale only from resize, not from content */}
       <div className="relative min-h-screen flex items-center justify-center p-8">
         <div
-          className="origin-center shrink-0"
+          className="origin-center"
           style={{
             width: MOCKUP_WIDTH,
             height: MOCKUP_HEIGHT,
+            minWidth: MOCKUP_WIDTH,
+            minHeight: MOCKUP_HEIGHT,
+            flex: '0 0 auto',
             transform: `scale(${scale})`,
           }}
         >
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="w-full h-full rounded-xl overflow-hidden shadow-2xl border border-[#333333]/80 bg-[#0a0a0a] flex flex-col"
+            className="rounded-xl overflow-hidden shadow-2xl border border-[#333333]/80 bg-[#0a0a0a] flex flex-col"
+            style={{ width: MOCKUP_WIDTH, height: MOCKUP_HEIGHT }}
           >
             {/* Single top bar: macOS window controls + tabs (Home | Settings | Mods) */}
             <div className="flex items-center gap-2 border-b border-[#1A1A1A] bg-[#0A0A0A] px-2 py-1.5 shrink-0 min-h-[36px]">
@@ -308,10 +312,10 @@ function MainChatView(
             </div>
           </motion.div>
 
-          {/* Center: main (list/kanban/calendar) + right column (AI chat pane, btop) */}
+          {/* Center: half (main) + quarter/quarter (right column, two panes stacked) */}
           <div className="flex-1 flex min-w-0 bg-[#0a0a0a] relative">
-            {/* Major section: togglable list / kanban / calendar */}
-            <div className="flex-1 flex flex-col min-w-0 border-r border-[#1A1A1A] bg-[#0a0a0a]">
+            {/* Major section: 1/2 width — list / kanban / calendar / graph */}
+            <div className="w-1/2 min-w-0 flex flex-col border-r border-[#1A1A1A] bg-[#0a0a0a] shrink-0">
               <div className="flex items-center gap-1 px-2 py-1.5 border-b border-[#1A1A1A] shrink-0 bg-[#0a0a0a]">
                 <button onClick={() => setMainViewMode('list')} className={`px-2 py-1 rounded text-xs font-mono ${mainViewMode === 'list' ? 'bg-[#E5E5E5]/15 text-[#E5E5E5]' : 'text-[#666666] hover:text-[#E5E5E5]'}`}>List</button>
                 <button onClick={() => setMainViewMode('kanban')} className={`px-2 py-1 rounded text-xs font-mono ${mainViewMode === 'kanban' ? 'bg-[#E5E5E5]/15 text-[#E5E5E5]' : 'text-[#666666] hover:text-[#E5E5E5]'}`}>Kanban</button>
@@ -528,9 +532,9 @@ function ImagePaneMock() {
 
 function SettingsView({ onBack }: { onBack: () => void }) {
   return (
-    <div className="bg-[#000000] overflow-hidden">
+    <div className="bg-[#000000] overflow-hidden flex flex-col h-full min-h-0">
       {/* Header */}
-      <div className="bg-[#0A0A0A] border-b border-[#1A1A1A] px-6 py-4 flex items-center justify-between">
+      <div className="bg-[#0A0A0A] border-b border-[#1A1A1A] px-6 py-4 flex items-center justify-between shrink-0">
         <button onClick={onBack} className="flex items-center gap-2 text-sm text-[#666666] hover:text-white transition-colors">
           <ChevronLeft className="w-4 h-4" />
           <span>Back to Chat</span>
@@ -542,8 +546,8 @@ function SettingsView({ onBack }: { onBack: () => void }) {
         <div className="w-20" />
       </div>
 
-      {/* Settings Content */}
-      <div className="p-8 space-y-8 max-h-[600px] overflow-y-auto">
+      {/* Settings Content — fills remaining space so tab area does not shrink */}
+      <div className="p-8 space-y-8 flex-1 min-h-0 overflow-y-auto">
         {/* Config Path */}
         <div>
           <div className="text-xs text-[#666666] mb-2 font-mono flex items-center gap-2">
@@ -634,30 +638,17 @@ function SettingsView({ onBack }: { onBack: () => void }) {
 
 function ModsView() {
   return (
-    <div className="bg-[#000000] rounded-xl overflow-hidden shadow-2xl border border-[#1A1A1A]">
-      {/* Window Chrome */}
-      <div className="bg-[#0A0A0A] border-b border-[#1A1A1A] px-4 py-3 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <div className="flex gap-1.5">
-            <div className="w-3 h-3 rounded-full bg-[#FF5F57]" />
-            <div className="w-3 h-3 rounded-full bg-[#FEBC2E]" />
-            <div className="w-3 h-3 rounded-full bg-[#28C840]" />
-          </div>
-        </div>
-        <div className="text-xs text-[#666666] font-mono">dotAi — Mods & Personas</div>
-        <div className="w-12" />
-      </div>
-
+    <div className="bg-[#000000] overflow-hidden flex flex-col h-full min-h-0">
       {/* Header */}
-      <div className="bg-[#0A0A0A] border-b border-[#1A1A1A] px-6 py-4">
+      <div className="bg-[#0A0A0A] border-b border-[#1A1A1A] px-6 py-4 shrink-0">
         <div className="text-lg font-medium flex items-center gap-2">
           <Wrench className="w-5 h-5 text-[#0EA5E9]" />
           Select Active Mod / Persona
         </div>
       </div>
 
-      {/* Mods List */}
-      <div className="p-8 space-y-4 max-h-[600px] overflow-y-auto">
+      {/* Mods List — fills remaining space so tab area does not shrink */}
+      <div className="p-8 space-y-4 flex-1 min-h-0 overflow-y-auto">
         {/* Standard Chatbot */}
         <label className="block p-5 rounded-lg border-2 border-[#0EA5E9] bg-[#0EA5E9]/10 cursor-pointer transition-all">
           <div className="flex items-start gap-4">
