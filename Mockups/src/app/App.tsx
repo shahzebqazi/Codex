@@ -9,6 +9,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from './components/ui/dropdown-menu';
+import { useIsNarrowViewport } from './components/ui/use-mobile';
 
 // File-type tagging: derive tag from name (and isDir) for consistent icon + color
 export type FileTag = 'dir' | 'md' | 'txt' | 'js' | 'ts' | 'tsx' | 'json' | 'license' | 'default';
@@ -71,6 +72,7 @@ function nextTabId() {
 }
 
 export default function App() {
+  const isNarrow = useIsNarrowViewport();
   const [tabs, setTabs] = useState<Tab[]>([
     { id: 'tab-home', kind: 'home' },
     { id: 'tab-settings', kind: 'settings' },
@@ -98,8 +100,9 @@ export default function App() {
     });
   };
 
-  // Fit mockup to viewport on load and resize
+  // Fit mockup to viewport on load and resize (desktop only; narrow uses full-width layout)
   useEffect(() => {
+    if (isNarrow) return;
     const updateScaleToFit = () => {
       const s = Math.min(
         (window.innerWidth - MOCKUP_PADDING) / MOCKUP_WIDTH,
@@ -111,10 +114,11 @@ export default function App() {
     updateScaleToFit();
     window.addEventListener('resize', updateScaleToFit);
     return () => window.removeEventListener('resize', updateScaleToFit);
-  }, []);
+  }, [isNarrow]);
 
-  // Cmd/Ctrl +/- zoom the mockup (app), not the page — prevent browser zoom
+  // Cmd/Ctrl +/- zoom the mockup (app), not the page — prevent browser zoom (desktop only)
   useEffect(() => {
+    if (isNarrow) return;
     const onKeyDown = (e: KeyboardEvent) => {
       if (!e.metaKey && !e.ctrlKey) return;
       const zoomIn = e.key === '=' || e.key === '+';
@@ -128,11 +132,126 @@ export default function App() {
     };
     window.addEventListener('keydown', onKeyDown, { capture: true });
     return () => window.removeEventListener('keydown', onKeyDown, { capture: true });
-  }, []);
+  }, [isNarrow]);
 
+  const tabBar = (
+    <div className="flex items-center gap-2 border-b border-[#1A1A1A] bg-[#0A0A0A] px-2 py-1.5 shrink-0 min-h-[36px]">
+      {!isNarrow && (
+        <div className="flex items-center gap-1.5 shrink-0 pointer-events-none">
+          <div className="w-3 h-3 rounded-full bg-[#FF5F57]" />
+          <div className="w-3 h-3 rounded-full bg-[#FEBC2E]" />
+          <div className="w-3 h-3 rounded-full bg-[#28C840]" />
+        </div>
+      )}
+      <div className="flex items-center gap-0.5 flex-1 min-w-0 overflow-x-auto">
+        {tabs.map((tab) => (
+          <button
+            key={tab.id}
+            onClick={() => setActiveTabId(tab.id)}
+            className={`px-3 py-2 rounded-t text-sm font-mono flex items-center gap-1.5 shrink-0 ${activeTabId === tab.id ? 'bg-[#0a0a0a] text-[#E5E5E5] border border-[#1A1A1A] border-b-transparent -mb-px' : 'text-[#666666] hover:text-[#E5E5E5]'}`}
+          >
+            {TAB_LABELS[tab.kind]}
+            {tabs.length > 1 && (
+              <span
+                className="opacity-70 hover:opacity-100 rounded p-0.5 hover:bg-[#333]"
+                onClick={(e) => { e.stopPropagation(); closeTab(tab.id); }}
+                aria-label="Close tab"
+              >
+                <X className="w-3 h-3" />
+              </span>
+            )}
+          </button>
+        ))}
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <button
+              type="button"
+              className="p-2 rounded-t text-sm font-mono text-[#666666] hover:text-[#E5E5E5] hover:bg-[#1A1A1A] shrink-0"
+              title="New tab"
+              aria-label="New tab"
+            >
+              <Plus className="w-4 h-4" />
+            </button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent
+            align="end"
+            sideOffset={4}
+            className="min-w-[11rem] bg-[#161b22] border-[#30363d] text-[#e6edf3] p-1 rounded-md shadow-lg"
+          >
+            <DropdownMenuItem className="focus:bg-[#30363d] focus:text-[#e6edf3] cursor-pointer rounded px-2 py-1.5 text-sm font-mono flex items-center gap-2" onSelect={() => addTab('home')}>
+              <Home className="w-4 h-4" /> Home
+            </DropdownMenuItem>
+            <DropdownMenuItem className="focus:bg-[#30363d] focus:text-[#e6edf3] cursor-pointer rounded px-2 py-1.5 text-sm font-mono flex items-center gap-2" onSelect={() => addTab('settings')}>
+              <Settings className="w-4 h-4" /> .config
+            </DropdownMenuItem>
+            <DropdownMenuItem className="focus:bg-[#30363d] focus:text-[#e6edf3] cursor-pointer rounded px-2 py-1.5 text-sm font-mono flex items-center gap-2" onSelect={() => addTab('editor')}>
+              <FileCode className="w-4 h-4" /> Editor
+            </DropdownMenuItem>
+            <DropdownMenuItem className="focus:bg-[#30363d] focus:text-[#e6edf3] cursor-pointer rounded px-2 py-1.5 text-sm font-mono flex items-center gap-2" onSelect={() => addTab('terminal')}>
+              <Terminal className="w-4 h-4" /> Terminal
+            </DropdownMenuItem>
+            <DropdownMenuItem className="focus:bg-[#30363d] focus:text-[#e6edf3] cursor-pointer rounded px-2 py-1.5 text-sm font-mono flex items-center gap-2" onSelect={() => addTab('agent')}>
+              <Bot className="w-4 h-4" /> Agent
+            </DropdownMenuItem>
+            <DropdownMenuItem className="focus:bg-[#30363d] focus:text-[#e6edf3] cursor-pointer rounded px-2 py-1.5 text-sm font-mono flex items-center gap-2" onSelect={() => addTab('planner')}>
+              <LayoutList className="w-4 h-4" /> Planner
+            </DropdownMenuItem>
+            <DropdownMenuItem className="focus:bg-[#30363d] focus:text-[#e6edf3] cursor-pointer rounded px-2 py-1.5 text-sm font-mono flex items-center gap-2" onSelect={() => addTab('chat')}>
+              <MessageCircle className="w-4 h-4" /> Chat
+            </DropdownMenuItem>
+            <DropdownMenuItem className="focus:bg-[#30363d] focus:text-[#e6edf3] cursor-pointer rounded px-2 py-1.5 text-sm font-mono flex items-center gap-2" onSelect={() => addTab('assistant')}>
+              <Zap className="w-4 h-4" /> Assistant
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
+    </div>
+  );
+
+  const paneContent = (
+    <>
+      {activeTab.kind === 'home' && (
+        <MainChatView
+          narrow={isNarrow}
+          sidebarOpen={sidebarOpen}
+          setSidebarOpen={setSidebarOpen}
+          onOpenSettings={() => addTab('settings')}
+        />
+      )}
+      {activeTab.kind === 'settings' && <ConfigFileView onBack={() => setActiveTabId(tabs[0]?.id ?? activeTabId)} />}
+      {activeTab.kind === 'editor' && <EditorPaneMock />}
+      {activeTab.kind === 'terminal' && <TerminalPaneMock />}
+      {activeTab.kind === 'agent' && <AgentPaneMock />}
+      {activeTab.kind === 'planner' && <PlannerPaneMock />}
+      {activeTab.kind === 'chat' && <ChatPaneMock />}
+      {activeTab.kind === 'assistant' && <AssistantPaneMock />}
+    </>
+  );
+
+  // Narrow viewport: full-width responsive layout (no scaled mockup)
+  if (isNarrow) {
+    return (
+      <div className="min-h-screen h-dvh overflow-hidden relative flex flex-col bg-black">
+        {activeTab.kind === 'home' && (
+          <div
+            className="absolute inset-0 bg-cover bg-center pointer-events-none"
+            style={{
+              backgroundImage: `url(${FLOWERS_BG})`,
+              filter: 'blur(4px) saturate(1.2) contrast(0.95) brightness(0.5)',
+            }}
+          />
+        )}
+        <div className="relative z-10 flex flex-col flex-1 min-h-0 bg-[#0a0a0a]/95 rounded-t-xl overflow-hidden shadow-2xl">
+          {tabBar}
+          <div className="flex-1 min-h-0 overflow-hidden">{paneContent}</div>
+        </div>
+      </div>
+    );
+  }
+
+  // Desktop: floating scaled mockup window
   return (
     <div className="min-h-screen overflow-hidden relative">
-      {/* Flowers background (home tab only); black fallback */}
       <div className="absolute inset-0 overflow-hidden bg-black">
         {activeTab.kind === 'home' && (
           <div
@@ -144,8 +263,6 @@ export default function App() {
           />
         )}
       </div>
-
-      {/* Floating mockup window — fixed 1440p size; scale to fit viewport, no scroll */}
       <div className="absolute inset-0 flex items-center justify-center p-4 sm:p-6">
         <div
           className="origin-center"
@@ -164,92 +281,8 @@ export default function App() {
             className="rounded-xl overflow-hidden shadow-2xl border border-[#333333]/80 bg-[#0a0a0a] flex flex-col"
             style={{ width: MOCKUP_WIDTH, height: MOCKUP_HEIGHT }}
           >
-            {/* Single top bar: macOS window controls + tabs + new tab button (click opens tab menu) */}
-            <div className="flex items-center gap-2 border-b border-[#1A1A1A] bg-[#0A0A0A] px-2 py-1.5 shrink-0 min-h-[36px]">
-              <div className="flex items-center gap-1.5 shrink-0 pointer-events-none">
-                <div className="w-3 h-3 rounded-full bg-[#FF5F57]" />
-                <div className="w-3 h-3 rounded-full bg-[#FEBC2E]" />
-                <div className="w-3 h-3 rounded-full bg-[#28C840]" />
-              </div>
-              <div className="flex items-center gap-0.5 flex-1 min-w-0">
-                {tabs.map((tab) => (
-                  <button
-                    key={tab.id}
-                    onClick={() => setActiveTabId(tab.id)}
-                    className={`px-3 py-2 rounded-t text-sm font-mono flex items-center gap-1.5 shrink-0 ${activeTabId === tab.id ? 'bg-[#0a0a0a] text-[#E5E5E5] border border-[#1A1A1A] border-b-transparent -mb-px' : 'text-[#666666] hover:text-[#E5E5E5]'}`}
-                  >
-                    {TAB_LABELS[tab.kind]}
-                    {tabs.length > 1 && (
-                      <span
-                        className="opacity-70 hover:opacity-100 rounded p-0.5 hover:bg-[#333]"
-                        onClick={(e) => { e.stopPropagation(); closeTab(tab.id); }}
-                        aria-label="Close tab"
-                      >
-                        <X className="w-3 h-3" />
-                      </span>
-                    )}
-                  </button>
-                ))}
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <button
-                      type="button"
-                      className="p-2 rounded-t text-sm font-mono text-[#666666] hover:text-[#E5E5E5] hover:bg-[#1A1A1A] shrink-0"
-                      title="New tab"
-                      aria-label="New tab"
-                    >
-                      <Plus className="w-4 h-4" />
-                    </button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent
-                    align="end"
-                    sideOffset={4}
-                    className="min-w-[11rem] bg-[#161b22] border-[#30363d] text-[#e6edf3] p-1 rounded-md shadow-lg"
-                  >
-                    <DropdownMenuItem className="focus:bg-[#30363d] focus:text-[#e6edf3] cursor-pointer rounded px-2 py-1.5 text-sm font-mono flex items-center gap-2" onSelect={() => addTab('home')}>
-                      <Home className="w-4 h-4" /> Home
-                    </DropdownMenuItem>
-                    <DropdownMenuItem className="focus:bg-[#30363d] focus:text-[#e6edf3] cursor-pointer rounded px-2 py-1.5 text-sm font-mono flex items-center gap-2" onSelect={() => addTab('settings')}>
-                      <Settings className="w-4 h-4" /> .config
-                    </DropdownMenuItem>
-                    <DropdownMenuItem className="focus:bg-[#30363d] focus:text-[#e6edf3] cursor-pointer rounded px-2 py-1.5 text-sm font-mono flex items-center gap-2" onSelect={() => addTab('editor')}>
-                      <FileCode className="w-4 h-4" /> Editor
-                    </DropdownMenuItem>
-                    <DropdownMenuItem className="focus:bg-[#30363d] focus:text-[#e6edf3] cursor-pointer rounded px-2 py-1.5 text-sm font-mono flex items-center gap-2" onSelect={() => addTab('terminal')}>
-                      <Terminal className="w-4 h-4" /> Terminal
-                    </DropdownMenuItem>
-                    <DropdownMenuItem className="focus:bg-[#30363d] focus:text-[#e6edf3] cursor-pointer rounded px-2 py-1.5 text-sm font-mono flex items-center gap-2" onSelect={() => addTab('agent')}>
-                      <Bot className="w-4 h-4" /> Agent
-                    </DropdownMenuItem>
-                    <DropdownMenuItem className="focus:bg-[#30363d] focus:text-[#e6edf3] cursor-pointer rounded px-2 py-1.5 text-sm font-mono flex items-center gap-2" onSelect={() => addTab('planner')}>
-                      <LayoutList className="w-4 h-4" /> Planner
-                    </DropdownMenuItem>
-                    <DropdownMenuItem className="focus:bg-[#30363d] focus:text-[#e6edf3] cursor-pointer rounded px-2 py-1.5 text-sm font-mono flex items-center gap-2" onSelect={() => addTab('chat')}>
-                      <MessageCircle className="w-4 h-4" /> Chat
-                    </DropdownMenuItem>
-                    <DropdownMenuItem className="focus:bg-[#30363d] focus:text-[#e6edf3] cursor-pointer rounded px-2 py-1.5 text-sm font-mono flex items-center gap-2" onSelect={() => addTab('assistant')}>
-                      <Zap className="w-4 h-4" /> Assistant
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </div>
-            </div>
-            <div className="flex-1 min-h-0 overflow-hidden">
-              {activeTab.kind === 'home' && (
-                <MainChatView
-                  sidebarOpen={sidebarOpen}
-                  setSidebarOpen={setSidebarOpen}
-                  onOpenSettings={() => addTab('settings')}
-                />
-              )}
-              {activeTab.kind === 'settings' && <ConfigFileView onBack={() => setActiveTabId(tabs[0]?.id ?? activeTabId)} />}
-              {activeTab.kind === 'editor' && <EditorPaneMock />}
-              {activeTab.kind === 'terminal' && <TerminalPaneMock />}
-              {activeTab.kind === 'agent' && <AgentPaneMock />}
-              {activeTab.kind === 'planner' && <PlannerPaneMock />}
-              {activeTab.kind === 'chat' && <ChatPaneMock />}
-              {activeTab.kind === 'assistant' && <AssistantPaneMock />}
-            </div>
+            {tabBar}
+            <div className="flex-1 min-h-0 overflow-hidden">{paneContent}</div>
           </motion.div>
         </div>
       </div>
@@ -446,10 +479,10 @@ function GraphView({
 }
 
 function MainChatView(
-  { sidebarOpen, setSidebarOpen, onOpenSettings }: { sidebarOpen: boolean; setSidebarOpen: (open: boolean) => void; onOpenSettings: () => void }
+  { narrow = false, sidebarOpen, setSidebarOpen, onOpenSettings }: { narrow?: boolean; sidebarOpen: boolean; setSidebarOpen: (open: boolean) => void; onOpenSettings: () => void }
 ) {
-  const [leftSidebarOpen, setLeftSidebarOpen] = useState(true);
-  const [rightSidebarOpen, setRightSidebarOpen] = useState(true);
+  const [leftSidebarOpen, setLeftSidebarOpen] = useState(!narrow);
+  const [rightSidebarOpen, setRightSidebarOpen] = useState(!narrow);
   const [activeSidebarTab, setActiveSidebarTab] = useState<'files' | 'search' | 'git' | 'extensions'>('files');
   const [mainViewMode, setMainViewMode] = useState<MainViewMode>('list');
   const [selectedThreadId, setSelectedThreadId] = useState<string>('general');
@@ -464,151 +497,173 @@ function MainChatView(
     );
   };
 
+  const leftSidebarContent = (
+    <div className="w-[260px] h-full flex flex-col min-w-0">
+      <div className="flex items-center justify-between gap-2 p-2 border-b border-[#1A1A1A] bg-[#0A0A0A] shrink-0">
+        <span className="text-xs font-mono text-[#666666] uppercase tracking-wide">Explorer</span>
+        <button onClick={() => setLeftSidebarOpen(false)} className="p-1.5 rounded text-[#666666] hover:bg-[#1A1A1A] hover:text-[#E5E5E5]" title="Hide sidebar">
+          <PanelLeft className="w-4 h-4" />
+        </button>
+      </div>
+      <div className="flex items-center gap-0.5 px-2 py-1 border-b border-[#1A1A1A] bg-[#0A0A0A]/50">
+        <button onClick={() => setActiveSidebarTab('files')} className={`p-2 rounded transition-colors ${activeSidebarTab === 'files' ? 'bg-[#E5E5E5]/10 text-[#E5E5E5]' : 'text-[#666666] hover:text-[#E5E5E5]'}`} title="Files"><Folder className="w-4 h-4" /></button>
+        <button onClick={() => setActiveSidebarTab('search')} className={`p-2 rounded transition-colors ${activeSidebarTab === 'search' ? 'bg-[#E5E5E5]/10 text-[#E5E5E5]' : 'text-[#666666] hover:text-[#E5E5E5]'}`} title="Search"><Search className="w-4 h-4" /></button>
+        <button onClick={() => setActiveSidebarTab('git')} className={`p-2 rounded transition-colors ${activeSidebarTab === 'git' ? 'bg-[#E5E5E5]/10 text-[#E5E5E5]' : 'text-[#666666] hover:text-[#E5E5E5]'}`} title="Source Control"><GitBranch className="w-4 h-4" /></button>
+        <button onClick={() => setActiveSidebarTab('extensions')} className={`p-2 rounded transition-colors ${activeSidebarTab === 'extensions' ? 'bg-[#E5E5E5]/10 text-[#E5E5E5]' : 'text-[#666666] hover:text-[#E5E5E5]'}`} title="Extensions"><Puzzle className="w-4 h-4" /></button>
+      </div>
+      <div className="flex-1 overflow-y-auto p-2">
+      {activeSidebarTab === 'files' && (
+        <div className="space-y-0.5">
+          <div>
+            <button
+              onClick={() => toggleFolder('Orchestration')}
+              className="w-full flex items-center gap-1 px-2 py-1 hover:bg-[#1A1A1A] rounded text-sm transition-colors"
+            >
+              <ChevronRightIcon className={`w-3 h-3 transition-transform ${expandedFolders.includes('Orchestration') ? 'rotate-90' : ''}`} />
+              {(() => {
+                const { color, Icon } = FILE_TAG_STYLES.dir;
+                return <Icon className="w-4 h-4 shrink-0" style={{ color }} />;
+              })()}
+              <span style={{ color: FILE_TAG_STYLES.dir.color }}>Orchestration</span>
+            </button>
+            {expandedFolders.includes('Orchestration') && (
+              <div className="ml-4 space-y-0.5">
+                {[
+                  { name: 'Agents', isDir: true },
+                  { name: 'Memories', isDir: true },
+                  { name: 'MVP_PRD.md', isDir: false },
+                  { name: 'CHATBOT.md', isDir: false },
+                  { name: 'README.md', isDir: false },
+                  { name: 'notes.txt', isDir: false },
+                  { name: 'index.js', isDir: false },
+                  { name: 'LICENSE', isDir: false },
+                ].map(({ name, isDir }) => {
+                  const tag = getFileTag(name, isDir);
+                  const { color, Icon } = FILE_TAG_STYLES[tag];
+                  const isSelected = name === 'MVP_PRD.md';
+                  return (
+                    <div
+                      key={name}
+                      className={`flex items-center gap-1 px-2 py-1 rounded text-sm cursor-pointer transition-colors ${isSelected ? 'bg-[#E5E5E5]/5' : 'hover:bg-[#1A1A1A]'}`}
+                    >
+                      <Icon className="w-4 h-4 shrink-0" style={{ color }} />
+                      <span style={{ color }}>{name}</span>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
+      {activeSidebarTab === 'git' && (
+        <div className="space-y-4">
+          <div>
+            <div className="text-xs text-[#666666] mb-2 font-mono">CHANGES</div>
+            <div className="space-y-1 text-sm">
+              <div className="flex items-center gap-2 px-2 py-1 hover:bg-[#1A1A1A] rounded cursor-pointer transition-colors">
+                <span className="text-[#10B981]">M</span>
+                <span style={{ color: FILE_TAG_STYLES[getFileTag('MVP_PRD.md', false)].color }}>MVP_PRD.md</span>
+              </div>
+              <div className="flex items-center gap-2 px-2 py-1 hover:bg-[#1A1A1A] rounded cursor-pointer transition-colors">
+                <span className="text-[#F59E0B]">A</span>
+                <span style={{ color: FILE_TAG_STYLES[getFileTag('FEATURES.md', false)].color }}>FEATURES.md</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {activeSidebarTab === 'extensions' && (
+        <div className="space-y-4 p-2">
+          <div>
+            <div className="flex items-center gap-1.5 px-2 py-1 text-xs font-mono text-[#0EA5E9] uppercase tracking-wide">
+              <LayoutList className="w-3.5 h-3.5" /> Planner
+            </div>
+            <div className="mt-1 space-y-1">
+              <div className="px-2 py-1.5 rounded text-sm text-[#E5E5E5] bg-[#1A1A1A]/50">Task planning</div>
+              <div className="px-2 py-1.5 rounded text-sm text-[#666666]">Roadmap view</div>
+            </div>
+          </div>
+          <div>
+            <div className="flex items-center gap-1.5 px-2 py-1 text-xs font-mono text-[#10B981] uppercase tracking-wide">
+              <Bot className="w-3.5 h-3.5" /> AI Agents
+            </div>
+            <div className="mt-1 space-y-1">
+              <div className="px-2 py-1.5 rounded text-sm flex items-center gap-2">
+                <Zap className="w-4 h-4 text-[#10B981]" />
+                <span className="text-[#E5E5E5]">SWE Developer</span>
+              </div>
+              <div className="px-2 py-1.5 rounded text-sm text-[#666666]">Orchestrator</div>
+            </div>
+          </div>
+          <div>
+            <div className="flex items-center gap-1.5 px-2 py-1 text-xs font-mono text-[#8B5CF6] uppercase tracking-wide">
+              <MessageCircle className="w-3.5 h-3.5" /> AI Chat bots
+            </div>
+            <div className="mt-1 space-y-1">
+              <div className="px-2 py-1.5 rounded text-sm flex items-center gap-2 bg-[#E5E5E5]/5">
+                <MessageCircle className="w-4 h-4 text-[#8B5CF6]" />
+                <span className="text-[#E5E5E5]">Standard Chatbot</span>
+              </div>
+              <div className="px-2 py-1.5 rounded text-sm text-[#666666]">Q&A assistant</div>
+            </div>
+          </div>
+          <div>
+            <div className="flex items-center gap-1.5 px-2 py-1 text-xs font-mono text-[#F59E0B] uppercase tracking-wide">
+              <Bug className="w-3.5 h-3.5" /> AI Debuggers
+            </div>
+            <div className="mt-1 space-y-1">
+              <div className="px-2 py-1.5 rounded text-sm flex items-center gap-2">
+                <Bug className="w-4 h-4 text-[#F59E0B]" />
+                <span className="text-[#E5E5E5]">Tech Lead / Reviewer</span>
+              </div>
+              <div className="px-2 py-1.5 rounded text-sm text-[#666666]">Trace analyzer</div>
+            </div>
+          </div>
+        </div>
+      )}
+      </div>
+    </div>
+  );
+
   return (
     <div className="bg-[#0a0a0a] overflow-hidden flex flex-col h-full min-h-0">
-      {/* Main Content Area: left sidebar | center | right sidebar — fills 1440p frame (single top bar is in App) */}
       <div className="flex flex-col flex-1 min-h-0">
-        <div className="flex flex-1 min-h-0">
-          {/* Left Sidebar - Explorer, Search, Git, Extensions (toggle via status bar) */}
+        <div className={`flex flex-1 min-h-0 ${narrow ? 'flex-col' : ''}`}>
+          {/* Left Sidebar — inline on desktop, overlay drawer on narrow */}
+          {narrow ? (
+            <AnimatePresence>
+              {leftSidebarOpen && (
+                <>
+                  <div className="fixed inset-0 bg-black/60 z-40" aria-hidden onClick={() => setLeftSidebarOpen(false)} />
+                  <motion.div
+                    initial={{ x: '-100%' }}
+                    animate={{ x: 0 }}
+                    exit={{ x: '-100%' }}
+                    transition={{ type: 'tween', duration: 0.2 }}
+                    className="fixed left-0 top-0 bottom-0 w-[min(280px,85vw)] bg-[#000000] border-r border-[#1A1A1A] z-50 flex flex-col shadow-xl"
+                  >
+                    {leftSidebarContent}
+                  </motion.div>
+                </>
+              )}
+            </AnimatePresence>
+          ) : (
           <motion.div
             initial={false}
             animate={{ width: leftSidebarOpen ? 260 : 0 }}
             className="bg-[#000000] border-r border-[#1A1A1A] overflow-hidden flex flex-col shrink-0"
           >
-            <div className="w-[260px] h-full flex flex-col min-w-0">
-              <div className="flex items-center justify-between gap-2 p-2 border-b border-[#1A1A1A] bg-[#0A0A0A] shrink-0">
-                <span className="text-xs font-mono text-[#666666] uppercase tracking-wide">Explorer</span>
-                <button onClick={() => setLeftSidebarOpen(false)} className="p-1.5 rounded text-[#666666] hover:bg-[#1A1A1A] hover:text-[#E5E5E5]" title="Hide sidebar">
-                  <PanelLeft className="w-4 h-4" />
-                </button>
-              </div>
-              <div className="flex items-center gap-0.5 px-2 py-1 border-b border-[#1A1A1A] bg-[#0A0A0A]/50">
-                <button onClick={() => setActiveSidebarTab('files')} className={`p-2 rounded transition-colors ${activeSidebarTab === 'files' ? 'bg-[#E5E5E5]/10 text-[#E5E5E5]' : 'text-[#666666] hover:text-[#E5E5E5]'}`} title="Files"><Folder className="w-4 h-4" /></button>
-                <button onClick={() => setActiveSidebarTab('search')} className={`p-2 rounded transition-colors ${activeSidebarTab === 'search' ? 'bg-[#E5E5E5]/10 text-[#E5E5E5]' : 'text-[#666666] hover:text-[#E5E5E5]'}`} title="Search"><Search className="w-4 h-4" /></button>
-                <button onClick={() => setActiveSidebarTab('git')} className={`p-2 rounded transition-colors ${activeSidebarTab === 'git' ? 'bg-[#E5E5E5]/10 text-[#E5E5E5]' : 'text-[#666666] hover:text-[#E5E5E5]'}`} title="Source Control"><GitBranch className="w-4 h-4" /></button>
-                <button onClick={() => setActiveSidebarTab('extensions')} className={`p-2 rounded transition-colors ${activeSidebarTab === 'extensions' ? 'bg-[#E5E5E5]/10 text-[#E5E5E5]' : 'text-[#666666] hover:text-[#E5E5E5]'}`} title="Extensions"><Puzzle className="w-4 h-4" /></button>
-              </div>
-              <div className="flex-1 overflow-y-auto p-2">
-              {activeSidebarTab === 'files' && (
-                <div className="space-y-0.5">
-                  <div>
-                    <button
-                      onClick={() => toggleFolder('Orchestration')}
-                      className="w-full flex items-center gap-1 px-2 py-1 hover:bg-[#1A1A1A] rounded text-sm transition-colors"
-                    >
-                      <ChevronRightIcon className={`w-3 h-3 transition-transform ${expandedFolders.includes('Orchestration') ? 'rotate-90' : ''}`} />
-                      {(() => {
-                        const { color, Icon } = FILE_TAG_STYLES.dir;
-                        return <Icon className="w-4 h-4 shrink-0" style={{ color }} />;
-                      })()}
-                      <span style={{ color: FILE_TAG_STYLES.dir.color }}>Orchestration</span>
-                    </button>
-                    {expandedFolders.includes('Orchestration') && (
-                      <div className="ml-4 space-y-0.5">
-                        {[
-                          { name: 'Agents', isDir: true },
-                          { name: 'Memories', isDir: true },
-                          { name: 'MVP_PRD.md', isDir: false },
-                          { name: 'CHATBOT.md', isDir: false },
-                          { name: 'README.md', isDir: false },
-                          { name: 'notes.txt', isDir: false },
-                          { name: 'index.js', isDir: false },
-                          { name: 'LICENSE', isDir: false },
-                        ].map(({ name, isDir }) => {
-                          const tag = getFileTag(name, isDir);
-                          const { color, Icon } = FILE_TAG_STYLES[tag];
-                          const isSelected = name === 'MVP_PRD.md';
-                          return (
-                            <div
-                              key={name}
-                              className={`flex items-center gap-1 px-2 py-1 rounded text-sm cursor-pointer transition-colors ${isSelected ? 'bg-[#E5E5E5]/5' : 'hover:bg-[#1A1A1A]'}`}
-                            >
-                              <Icon className="w-4 h-4 shrink-0" style={{ color }} />
-                              <span style={{ color }}>{name}</span>
-                            </div>
-                          );
-                        })}
-                      </div>
-                    )}
-                  </div>
-                </div>
-              )}
-
-              {activeSidebarTab === 'git' && (
-                <div className="space-y-4">
-                  <div>
-                    <div className="text-xs text-[#666666] mb-2 font-mono">CHANGES</div>
-                    <div className="space-y-1 text-sm">
-                      <div className="flex items-center gap-2 px-2 py-1 hover:bg-[#1A1A1A] rounded cursor-pointer transition-colors">
-                        <span className="text-[#10B981]">M</span>
-                        <span style={{ color: FILE_TAG_STYLES[getFileTag('MVP_PRD.md', false)].color }}>MVP_PRD.md</span>
-                      </div>
-                      <div className="flex items-center gap-2 px-2 py-1 hover:bg-[#1A1A1A] rounded cursor-pointer transition-colors">
-                        <span className="text-[#F59E0B]">A</span>
-                        <span style={{ color: FILE_TAG_STYLES[getFileTag('FEATURES.md', false)].color }}>FEATURES.md</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {activeSidebarTab === 'extensions' && (
-                <div className="space-y-4 p-2">
-                  <div>
-                    <div className="flex items-center gap-1.5 px-2 py-1 text-xs font-mono text-[#0EA5E9] uppercase tracking-wide">
-                      <LayoutList className="w-3.5 h-3.5" /> Planner
-                    </div>
-                    <div className="mt-1 space-y-1">
-                      <div className="px-2 py-1.5 rounded text-sm text-[#E5E5E5] bg-[#1A1A1A]/50">Task planning</div>
-                      <div className="px-2 py-1.5 rounded text-sm text-[#666666]">Roadmap view</div>
-                    </div>
-                  </div>
-                  <div>
-                    <div className="flex items-center gap-1.5 px-2 py-1 text-xs font-mono text-[#10B981] uppercase tracking-wide">
-                      <Bot className="w-3.5 h-3.5" /> AI Agents
-                    </div>
-                    <div className="mt-1 space-y-1">
-                      <div className="px-2 py-1.5 rounded text-sm flex items-center gap-2">
-                        <Zap className="w-4 h-4 text-[#10B981]" />
-                        <span className="text-[#E5E5E5]">SWE Developer</span>
-                      </div>
-                      <div className="px-2 py-1.5 rounded text-sm text-[#666666]">Orchestrator</div>
-                    </div>
-                  </div>
-                  <div>
-                    <div className="flex items-center gap-1.5 px-2 py-1 text-xs font-mono text-[#8B5CF6] uppercase tracking-wide">
-                      <MessageCircle className="w-3.5 h-3.5" /> AI Chat bots
-                    </div>
-                    <div className="mt-1 space-y-1">
-                      <div className="px-2 py-1.5 rounded text-sm flex items-center gap-2 bg-[#E5E5E5]/5">
-                        <MessageCircle className="w-4 h-4 text-[#8B5CF6]" />
-                        <span className="text-[#E5E5E5]">Standard Chatbot</span>
-                      </div>
-                      <div className="px-2 py-1.5 rounded text-sm text-[#666666]">Q&A assistant</div>
-                    </div>
-                  </div>
-                  <div>
-                    <div className="flex items-center gap-1.5 px-2 py-1 text-xs font-mono text-[#F59E0B] uppercase tracking-wide">
-                      <Bug className="w-3.5 h-3.5" /> AI Debuggers
-                    </div>
-                    <div className="mt-1 space-y-1">
-                      <div className="px-2 py-1.5 rounded text-sm flex items-center gap-2">
-                        <Bug className="w-4 h-4 text-[#F59E0B]" />
-                        <span className="text-[#E5E5E5]">Tech Lead / Reviewer</span>
-                      </div>
-                      <div className="px-2 py-1.5 rounded text-sm text-[#666666]">Trace analyzer</div>
-                    </div>
-                  </div>
-                </div>
-              )}
-              </div>
-            </div>
+            {leftSidebarContent}
           </motion.div>
+          )}
 
-          {/* Center: half (main) + quarter/quarter (right column, two panes stacked) */}
-          <div className="flex-1 flex min-w-0 bg-[#0a0a0a] relative">
-            {/* Major section: 1/2 width — list / kanban / calendar / graph */}
-            <div className="w-1/2 min-w-0 flex flex-col border-r border-[#1A1A1A] bg-[#0a0a0a] shrink-0">
+          {/* Center: half (main) + right column (chat + btop); on narrow they stack vertically */}
+          <div className={`flex-1 flex min-w-0 bg-[#0a0a0a] relative ${narrow ? 'flex-col' : ''}`}>
+            {/* Major section — list / kanban / calendar / graph */}
+            <div className={`min-w-0 flex flex-col border-[#1A1A1A] bg-[#0a0a0a] shrink-0 ${narrow ? 'w-full border-b min-h-[200px]' : 'w-1/2 border-r'}`}>
               <div className="flex items-center gap-1 px-2 py-1.5 border-b border-[#1A1A1A] shrink-0 bg-[#0a0a0a]">
                 <button onClick={() => setMainViewMode('list')} className={`px-2 py-1 rounded text-xs font-mono ${mainViewMode === 'list' ? 'bg-[#E5E5E5]/15 text-[#E5E5E5]' : 'text-[#666666] hover:text-[#E5E5E5]'}`}>List</button>
                 <button onClick={() => setMainViewMode('kanban')} className={`px-2 py-1 rounded text-xs font-mono ${mainViewMode === 'kanban' ? 'bg-[#E5E5E5]/15 text-[#E5E5E5]' : 'text-[#666666] hover:text-[#E5E5E5]'}`}>Kanban</button>
@@ -692,8 +747,8 @@ function MainChatView(
               </div>
             </div>
 
-            {/* Right column: 1/2 width — two quarters stacked (AI chat top, btop bottom) */}
-            <div className="w-1/2 min-w-0 flex flex-col shrink-0 border-l border-[#1A1A1A] bg-[#0a0a0a]">
+            {/* Right column — AI chat + btop; full width when narrow */}
+            <div className={`min-w-0 flex flex-col shrink-0 border-[#1A1A1A] bg-[#0a0a0a] ${narrow ? 'w-full flex-1 min-h-0 border-t' : 'w-1/2 border-l'}`}>
               {/* Chat: messages area + input at bottom with icons */}
               <div className="flex-1 min-h-0 flex flex-col border-b border-[#1A1A1A] bg-[#0a0a0a] overflow-hidden">
                 <div className="flex-1 min-h-0 overflow-auto p-2 space-y-3 font-mono text-xs">
@@ -764,7 +819,48 @@ zfs mount rpool/root/arch`}</pre>
             </div>
           </div>
 
-          {/* Right Sidebar - Threads (toggle via status bar) */}
+          {/* Right Sidebar - Threads: inline on desktop, overlay drawer on narrow */}
+          {narrow ? (
+            <AnimatePresence>
+              {rightSidebarOpen && (
+                <>
+                  <div className="fixed inset-0 bg-black/60 z-40" aria-hidden onClick={() => setRightSidebarOpen(false)} />
+                  <motion.div
+                    initial={{ x: '100%' }}
+                    animate={{ x: 0 }}
+                    exit={{ x: '100%' }}
+                    transition={{ type: 'tween', duration: 0.2 }}
+                    className="fixed right-0 top-0 bottom-0 w-[min(260px,85vw)] bg-[#000000] border-l border-[#1A1A1A] z-50 flex flex-col shadow-xl"
+                  >
+                    <div className="w-full h-full flex flex-col min-w-0">
+                      <div className="flex items-center justify-between gap-2 p-2 border-b border-[#1A1A1A] bg-[#0A0A0A] shrink-0">
+                        <span className="flex items-center gap-1.5 text-xs font-mono text-[#666666] uppercase tracking-wide">
+                          <HandMetal className="w-3.5 h-3.5 text-[#8b949e]" aria-hidden />
+                          Threads
+                        </span>
+                        <button onClick={() => setRightSidebarOpen(false)} className="p-1.5 rounded text-[#666666] hover:bg-[#1A1A1A] hover:text-[#E5E5E5]" title="Hide sidebar">
+                          <PanelRight className="w-4 h-4 rotate-180" />
+                        </button>
+                      </div>
+                      <div className="flex-1 overflow-y-auto p-2">
+                        <div className="space-y-0.5">
+                          {(['general', 'MVP PRD', 'docs'] as const).map((tid) => (
+                            <button
+                              key={tid}
+                              onClick={() => setSelectedThreadId(tid)}
+                              className={`w-full text-left px-2 py-1.5 rounded text-sm cursor-pointer transition-colors ${selectedThreadId === tid ? 'text-[#E5E5E5] bg-[#E5E5E5]/10' : 'text-[#666666] hover:bg-[#1A1A1A] hover:text-[#E5E5E5]'}`}
+                            >
+                              #{tid}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </motion.div>
+                </>
+              )}
+            </AnimatePresence>
+          ) : (
           <motion.div
             initial={false}
             animate={{ width: rightSidebarOpen ? 220 : 0 }}
@@ -795,6 +891,7 @@ zfs mount rpool/root/arch`}</pre>
               </div>
             </div>
           </motion.div>
+          )}
         </div>
 
         {/* Status bar: only show/hide left, bottom, and right sidebar */}
