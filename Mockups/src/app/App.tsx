@@ -38,22 +38,23 @@ export default function App() {
   );
 }
 
-type MainCenterTab = 'chat' | 'graph';
-type NewPaneType = 'chat' | 'xonsh' | 'file' | 'browser' | 'image' | null;
+// Project management mock data
+const MOCK_TASKS = [
+  { id: '1', title: 'Implement auth flow', status: 'in_progress' as const, assignee: 'Dev', due: 'Mar 14' },
+  { id: '2', title: 'API rate limiting', status: 'todo' as const, assignee: 'Backend', due: 'Mar 18' },
+  { id: '3', title: 'Dashboard redesign', status: 'done' as const, assignee: 'Design', due: 'Mar 10' },
+  { id: '4', title: 'E2E tests for checkout', status: 'in_progress' as const, assignee: 'QA', due: 'Mar 16' },
+  { id: '5', title: 'Document API v2', status: 'todo' as const, assignee: 'Dev', due: 'Mar 20' },
+  { id: '6', title: 'Fix mobile nav', status: 'todo' as const, assignee: 'Frontend', due: 'Mar 15' },
+];
+const MOCK_CALENDAR_EVENTS = [
+  { id: 'c1', title: 'Sprint planning', date: 'Mar 12', time: '10:00' },
+  { id: 'c2', title: 'API review', date: 'Mar 12', time: '14:00' },
+  { id: 'c3', title: 'Release cut-off', date: 'Mar 15', time: '17:00' },
+  { id: 'c4', title: 'Retro', date: 'Mar 16', time: '11:00' },
+];
 
-// Obsidian-style graph mock data (nodes + edges)
-const GRAPH_NODES = [
-  { id: '1', label: 'README', x: 120, y: 80 },
-  { id: '2', label: 'MVP_PRD', x: 320, y: 60 },
-  { id: '3', label: 'CHATBOT', x: 200, y: 180 },
-  { id: '4', label: 'SETTINGS', x: 80, y: 220 },
-  { id: '5', label: 'RULES', x: 280, y: 200 },
-  { id: '6', label: 'Orchestration', x: 180, y: 280 },
-];
-const GRAPH_EDGES = [
-  { from: '1', to: '2' }, { from: '1', to: '3' }, { from: '2', to: '3' },
-  { from: '3', to: '4' }, { from: '3', to: '5' }, { from: '4', to: '6' }, { from: '5', to: '6' },
-];
+type MainViewMode = 'list' | 'kanban' | 'calendar';
 
 function MainChatView(
   { sidebarOpen, setSidebarOpen, onOpenSettings }: { sidebarOpen: boolean; setSidebarOpen: (open: boolean) => void; onOpenSettings: () => void }
@@ -61,8 +62,8 @@ function MainChatView(
   const [leftSidebarOpen, setLeftSidebarOpen] = useState(true);
   const [rightSidebarOpen, setRightSidebarOpen] = useState(true);
   const [activeSidebarTab, setActiveSidebarTab] = useState<'files' | 'search' | 'git' | 'extensions'>('files');
-  const [mainCenterTab, setMainCenterTab] = useState<MainCenterTab>('chat');
-  const [newPane, setNewPane] = useState<NewPaneType>(null);
+  const [mainViewMode, setMainViewMode] = useState<MainViewMode>('list');
+  const [terminalOpen, setTerminalOpen] = useState(false);
   const [expandedFolders, setExpandedFolders] = useState<string[]>(['Orchestration']);
   const [menuOpen, setMenuOpen] = useState<string | null>(null);
 
@@ -131,19 +132,7 @@ function MainChatView(
       {/* Main Content Area: left sidebar | center | right sidebar */}
       <div className="flex flex-col flex-1 min-h-0">
         <div className="flex flex-1 min-h-0" style={{ height: '480px' }}>
-          {/* Left sidebar collapse tab */}
-          {!leftSidebarOpen && (
-            <button
-              onClick={() => setLeftSidebarOpen(true)}
-              className="flex flex-col items-center justify-center w-9 bg-[#0A0A0A] border-r border-[#1A1A1A] hover:bg-[#1A1A1A] text-[#666666] hover:text-[#E5E5E5] shrink-0 py-3"
-              title="Show Explorer"
-            >
-              <PanelRight className="w-4 h-4" />
-              <Folder className="w-4 h-4 mt-2" />
-            </button>
-          )}
-
-          {/* Left Sidebar - Explorer, Search, Git, Extensions only */}
+          {/* Left Sidebar - Explorer, Search, Git, Extensions (toggle via status bar) */}
           <motion.div
             initial={false}
             animate={{ width: leftSidebarOpen ? 260 : 0 }}
@@ -269,214 +258,85 @@ function MainChatView(
             </div>
           </motion.div>
 
-          {/* Center Area - Icon tabs + Content */}
-          <div className="flex-1 flex flex-col min-w-0 bg-[#000000] relative">
-          {/* Icon tab bar + New pane buttons */}
-          <div className="flex items-center border-b border-[#1A1A1A] px-2 py-1.5 gap-1">
-            <button
-              onClick={() => setMainCenterTab('chat')}
-              className={`p-2 rounded transition-colors ${mainCenterTab === 'chat' ? 'bg-[#E5E5E5]/15 text-[#E5E5E5]' : 'text-[#666666] hover:text-[#E5E5E5]'}`}
-              title="Chat"
-            >
-              <MessageCircle className="w-4 h-4" />
-            </button>
-            <button
-              onClick={() => setMainCenterTab('graph')}
-              className={`p-2 rounded transition-colors ${mainCenterTab === 'graph' ? 'bg-[#E5E5E5]/15 text-[#E5E5E5]' : 'text-[#666666] hover:text-[#E5E5E5]'}`}
-              title="Graph View"
-            >
-              <Network className="w-4 h-4" />
-            </button>
-            <div className="w-px h-5 bg-[#333333] mx-1" />
-            <button
-              onClick={() => setNewPane(newPane === 'chat' ? null : 'chat')}
-              className={`p-2 rounded transition-colors ${newPane === 'chat' ? 'bg-[#0EA5E9]/20 text-[#0EA5E9]' : 'text-[#666666] hover:bg-[#1A1A1A] hover:text-[#E5E5E5]'}`}
-              title="New chat"
-            >
-              <MessageCircle className="w-4 h-4" />
-            </button>
-            <button
-              onClick={() => setNewPane(newPane === 'xonsh' ? null : 'xonsh')}
-              className={`p-2 rounded transition-colors ${newPane === 'xonsh' ? 'bg-[#0EA5E9]/20 text-[#0EA5E9]' : 'text-[#666666] hover:bg-[#1A1A1A] hover:text-[#E5E5E5]'}`}
-              title="New xonsh"
-            >
-              <Terminal className="w-4 h-4" />
-            </button>
-            <button
-              onClick={() => setNewPane(newPane === 'file' ? null : 'file')}
-              className={`p-2 rounded transition-colors ${newPane === 'file' ? 'bg-[#0EA5E9]/20 text-[#0EA5E9]' : 'text-[#666666] hover:bg-[#1A1A1A] hover:text-[#E5E5E5]'}`}
-              title="New file"
-            >
-              <FileCode className="w-4 h-4" />
-            </button>
-            <button
-              onClick={() => setNewPane(newPane === 'browser' ? null : 'browser')}
-              className={`p-2 rounded transition-colors ${newPane === 'browser' ? 'bg-[#0EA5E9]/20 text-[#0EA5E9]' : 'text-[#666666] hover:bg-[#1A1A1A] hover:text-[#E5E5E5]'}`}
-              title="New browser"
-            >
-              <Globe className="w-4 h-4" />
-            </button>
-            <button
-              onClick={() => setNewPane(newPane === 'image' ? null : 'image')}
-              className={`p-2 rounded transition-colors ${newPane === 'image' ? 'bg-[#0EA5E9]/20 text-[#0EA5E9]' : 'text-[#666666] hover:bg-[#1A1A1A] hover:text-[#E5E5E5]'}`}
-              title="New image"
-            >
-              <ImageIcon className="w-4 h-4" />
-            </button>
-          </div>
-
-          {mainCenterTab === 'graph' ? (
-            <div className="flex-1 min-h-0 relative bg-[#0d1117] overflow-hidden" aria-label="Graph View canvas">
-              {/* Obsidian-style graph */}
-              <svg className="w-full h-full" viewBox="0 0 400 320" preserveAspectRatio="xMidYMid meet">
-                <defs>
-                  <linearGradient id="edgeGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-                    <stop offset="0%" stopColor="#3B82F6" stopOpacity="0.6" />
-                    <stop offset="100%" stopColor="#8B5CF6" stopOpacity="0.4" />
-                  </linearGradient>
-                </defs>
-                {GRAPH_EDGES.map((e, i) => {
-                  const a = GRAPH_NODES.find(n => n.id === e.from)!;
-                  const b = GRAPH_NODES.find(n => n.id === e.to)!;
-                  return (
-                    <line key={i} x1={a.x} y1={a.y} x2={b.x} y2={b.y} stroke="url(#edgeGrad)" strokeWidth="1.2" strokeOpacity="0.7" />
-                  );
-                })}
-                {GRAPH_NODES.map(node => (
-                  <g key={node.id}>
-                    <circle cx={node.x} cy={node.y} r="24" fill="#1a1f2e" stroke="#30363d" strokeWidth="1.5" className="hover:stroke-[#58a6ff]" />
-                    <text x={node.x} y={node.y + 5} textAnchor="middle" fill="#e6edf3" fontSize="11" fontFamily="ui-monospace, monospace">{node.label}</text>
-                  </g>
-                ))}
-              </svg>
-              {/* + New pane overlays */}
-            </div>
-          ) : (
-          <div className="flex-1 flex items-center justify-center p-8">
-            <div className="max-w-2xl w-full space-y-8">
-              {/* Greeting */}
-              <div className="text-center space-y-4">
-                <div className="text-4xl font-light text-[#E5E5E5]">
-                  Good evening.
-                </div>
-                <div className="text-lg text-[#666666]">
-                  What would you like to work on today?
-                </div>
+          {/* Center: main (list/kanban/calendar) + right column (AI chat pane, btop) */}
+          <div className="flex-1 flex min-w-0 bg-[#000000] relative">
+            {/* Major section: togglable list / kanban / calendar */}
+            <div className="flex-1 flex flex-col min-w-0 border-r border-[#1A1A1A]">
+              <div className="flex items-center gap-1 px-2 py-1.5 border-b border-[#1A1A1A] shrink-0">
+                <button onClick={() => setMainViewMode('list')} className={`px-2 py-1 rounded text-xs font-mono ${mainViewMode === 'list' ? 'bg-[#E5E5E5]/15 text-[#E5E5E5]' : 'text-[#666666] hover:text-[#E5E5E5]'}`}>List</button>
+                <button onClick={() => setMainViewMode('kanban')} className={`px-2 py-1 rounded text-xs font-mono ${mainViewMode === 'kanban' ? 'bg-[#E5E5E5]/15 text-[#E5E5E5]' : 'text-[#666666] hover:text-[#E5E5E5]'}`}>Kanban</button>
+                <button onClick={() => setMainViewMode('calendar')} className={`px-2 py-1 rounded text-xs font-mono ${mainViewMode === 'calendar' ? 'bg-[#E5E5E5]/15 text-[#E5E5E5]' : 'text-[#666666] hover:text-[#E5E5E5]'}`}>Calendar</button>
               </div>
-
-              {/* Zen Input */}
-              <div className="space-y-4">
-                <div className="relative">
-                  <input
-                    type="text"
-                    placeholder="Ask dotAi anything..."
-                    className="w-full bg-[#0A0A0A] border border-[#1A1A1A] rounded-lg px-6 py-4 text-base text-[#E5E5E5] placeholder:text-[#666666] outline-none focus:border-[#E5E5E5]/30 transition-colors"
-                  />
-                  <div className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center gap-2">
-                    <button className="p-2 hover:bg-[#1A1A1A] rounded transition-colors" title="Attach files">
-                      <Paperclip className="w-4 h-4 text-[#666666]" />
-                    </button>
-                    <button className="p-2 hover:bg-[#1A1A1A] rounded transition-colors" title="Voice input">
-                      <Mic className="w-4 h-4 text-[#666666]" />
-                    </button>
+              <div className="flex-1 overflow-auto p-3 min-h-0">
+                {mainViewMode === 'list' && (
+                  <ul className="space-y-1 font-mono text-sm">
+                    {MOCK_TASKS.map(t => (
+                      <li key={t.id} className="flex items-center gap-3 px-2 py-2 rounded bg-[#0A0A0A] border border-[#1A1A1A]">
+                        <span className="text-[#666666] w-6">{t.id}</span>
+                        <span className="text-[#E5E5E5] flex-1">{t.title}</span>
+                        <span className="text-[#10B981] text-xs">{t.status}</span>
+                        <span className="text-[#666666] text-xs">{t.assignee}</span>
+                        <span className="text-[#666666] text-xs">{t.due}</span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+                {mainViewMode === 'kanban' && (
+                  <div className="flex gap-3 h-full min-h-[200px]">
+                    {(['todo', 'in_progress', 'done'] as const).map(col => (
+                      <div key={col} className="flex-1 min-w-[140px] rounded bg-[#0A0A0A] border border-[#1A1A1A] p-2">
+                        <div className="text-xs font-mono text-[#666666] uppercase mb-2">{col.replace('_', ' ')}</div>
+                        <div className="space-y-2">
+                          {MOCK_TASKS.filter(t => t.status === col).map(t => (
+                            <div key={t.id} className="p-2 rounded bg-[#161b22] border border-[#30363d] text-sm text-[#E5E5E5]">{t.title}</div>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
                   </div>
-                </div>
-
-                {/* Quick Actions */}
-                <div className="flex items-center justify-center gap-3 text-xs">
-                  <button className="px-3 py-1.5 bg-[#0A0A0A] hover:bg-[#1A1A1A] border border-[#1A1A1A] rounded-md text-[#E5E5E5] transition-colors">
-                    <span className="flex items-center gap-1.5">
-                      <Cpu className="w-3 h-3" />
-                      Llama-3-8B
-                    </span>
-                  </button>
-                  <button className="px-3 py-1.5 bg-[#0A0A0A] hover:bg-[#1A1A1A] border border-[#1A1A1A] rounded-md text-[#E5E5E5] transition-colors">
-                    <span className="flex items-center gap-1.5">
-                      <Zap className="w-3 h-3" />
-                      SWE Developer
-                    </span>
-                  </button>
-                  <button className="px-3 py-1.5 bg-[#0A0A0A] hover:bg-[#1A1A1A] border border-[#1A1A1A] rounded-md text-[#E5E5E5] transition-colors">
-                    <span className="flex items-center gap-1.5">
-                      <Shield className="w-3 h-3" />
-                      Local Only
-                    </span>
-                  </button>
-                </div>
+                )}
+                {mainViewMode === 'calendar' && (
+                  <div className="grid grid-cols-7 gap-1 font-mono text-sm">
+                    {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map(d => (
+                      <div key={d} className="text-[#666666] text-xs p-1">{d}</div>
+                    ))}
+                    {Array.from({ length: 31 }, (_, i) => {
+                      const day = i + 1;
+                      const events = MOCK_CALENDAR_EVENTS.filter(e => e.date === `Mar ${day}`);
+                      return (
+                        <div key={i} className="min-h-[48px] p-1 rounded bg-[#0A0A0A] border border-[#1A1A1A]">
+                          <span className="text-[#666666]">{day}</span>
+                          {events.slice(0, 2).map(ev => (
+                            <div key={ev.id} className="text-[10px] text-[#0EA5E9] truncate mt-0.5">{ev.title}</div>
+                          ))}
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
               </div>
+            </div>
 
-              {/* Suggestions */}
-              <div className="space-y-3">
-                <div className="text-xs text-[#666666] uppercase tracking-wide font-mono">Suggestions</div>
-                <div className="grid grid-cols-2 gap-3">
-                  <button className="text-left p-4 bg-[#0A0A0A] hover:bg-[#1A1A1A] border border-[#1A1A1A] rounded-lg transition-colors group">
-                    <div className="flex items-start gap-2 mb-2">
-                      <GitCommit className="w-4 h-4 text-[#666666] group-hover:text-[#E5E5E5] transition-colors" />
-                      <span className="text-sm text-[#E5E5E5]">Review recent commits</span>
-                    </div>
-                    <div className="text-xs text-[#666666]">Analyze jj log and summarize changes</div>
-                  </button>
-                  <button className="text-left p-4 bg-[#0A0A0A] hover:bg-[#1A1A1A] border border-[#1A1A1A] rounded-lg transition-colors group">
-                    <div className="flex items-start gap-2 mb-2">
-                      <FileCode className="w-4 h-4 text-[#666666] group-hover:text-[#E5E5E5] transition-colors" />
-                      <span className="text-sm text-[#E5E5E5]">Update documentation</span>
-                    </div>
-                    <div className="text-xs text-[#666666]">Draft updates for project docs</div>
-                  </button>
-                  <button className="text-left p-4 bg-[#0A0A0A] hover:bg-[#1A1A1A] border border-[#1A1A1A] rounded-lg transition-colors group">
-                    <div className="flex items-start gap-2 mb-2">
-                      <Terminal className="w-4 h-4 text-[#666666] group-hover:text-[#E5E5E5] transition-colors" />
-                      <span className="text-sm text-[#E5E5E5]">Run diagnostic check</span>
-                    </div>
-                    <div className="text-xs text-[#666666]">System health and dependencies</div>
-                  </button>
-                  <button className="text-left p-4 bg-[#0A0A0A] hover:bg-[#1A1A1A] border border-[#1A1A1A] rounded-lg transition-colors group">
-                    <div className="flex items-start gap-2 mb-2">
-                      <Code2 className="w-4 h-4 text-[#666666] group-hover:text-[#E5E5E5] transition-colors" />
-                      <span className="text-sm text-[#E5E5E5]">Code review</span>
-                    </div>
-                    <div className="text-xs text-[#666666]">Check quality and patterns</div>
-                  </button>
+            {/* Right column: AI chat pane (top) + btop diagnostics (bottom) */}
+            <div className="w-[280px] flex flex-col shrink-0 border-l border-[#1A1A1A]">
+              <div className="border-b border-[#1A1A1A] p-2 shrink-0">
+                <input type="text" placeholder="Ask dotAi..." className="w-full bg-[#0A0A0A] border border-[#1A1A1A] rounded px-2 py-2 text-xs text-[#E5E5E5] placeholder:text-[#666666] outline-none focus:border-[#333333]" />
+              </div>
+              <div className="flex-1 min-h-0 overflow-hidden flex flex-col bg-[#0d1117]">
+                <div className="px-2 py-1 border-b border-[#30363d] text-[10px] font-mono text-[#8b949e]">btop — system</div>
+                <div className="flex-1 overflow-auto p-2 font-mono text-[10px] text-[#7ee787] space-y-0.5">
+                  <div className="flex justify-between text-[#8b949e]"><span>CPU</span><span>12%</span></div>
+                  <div className="h-1.5 bg-[#21262d] rounded overflow-hidden"><div className="h-full bg-[#10B981] rounded" style={{ width: '12%' }} /></div>
+                  <div className="flex justify-between text-[#8b949e]"><span>Mem</span><span>4.2G / 16G</span></div>
+                  <div className="h-1.5 bg-[#21262d] rounded overflow-hidden"><div className="h-full bg-[#0EA5E9] rounded" style={{ width: '26%' }} /></div>
+                  <div className="flex justify-between text-[#8b949e]"><span>Tasks</span><span>142</span></div>
+                  <div className="text-[#e6edf3] mt-1">node (8) · vite (2) · zsh (1)</div>
                 </div>
               </div>
             </div>
           </div>
-          )}
-          {/* In-layout pane (split/panel instead of floating) */}
-          {newPane && (
-            <div className="border-t border-[#1A1A1A] bg-[#161b22] flex flex-col min-h-0 flex-shrink-0" style={{ maxHeight: '40%' }}>
-              <div className="flex items-center justify-between px-2 py-1.5 border-b border-[#30363d] shrink-0">
-                <span className="text-xs font-mono text-[#e6edf3]">
-                  {newPane === 'chat' && 'Chat'}
-                  {newPane === 'xonsh' && 'xonsh'}
-                  {newPane === 'file' && 'file'}
-                  {newPane === 'browser' && 'Browser'}
-                  {newPane === 'image' && 'Image'}
-                </span>
-                <button onClick={() => setNewPane(null)} className="p-1 text-[#8b949e] hover:text-[#e6edf3] rounded"><X className="w-4 h-4" /></button>
-              </div>
-              <div className="flex-1 overflow-auto p-3 min-h-[120px]">
-                {newPane === 'chat' && <ChatPaneMock />}
-                {newPane === 'xonsh' && <XonshPaneMock />}
-                {newPane === 'file' && <FilePaneMock />}
-                {newPane === 'browser' && <BrowserPaneMock />}
-                {newPane === 'image' && <ImagePaneMock />}
-              </div>
-            </div>
-          )}
-          </div>
 
-          {/* Right Sidebar - Threads only */}
-          {!rightSidebarOpen && (
-            <button
-              onClick={() => setRightSidebarOpen(true)}
-              className="flex flex-col items-center justify-center w-9 bg-[#0A0A0A] border-l border-[#1A1A1A] hover:bg-[#1A1A1A] text-[#666666] hover:text-[#E5E5E5] shrink-0 py-3"
-              title="Show Threads"
-            >
-              <PanelLeft className="w-4 h-4 rotate-180" />
-              <span className="text-[10px] font-mono uppercase mt-2" style={{ writingMode: 'vertical-rl' }}>Threads</span>
-            </button>
-          )}
+          {/* Right Sidebar - Threads (toggle via status bar) */}
           <motion.div
             initial={false}
             animate={{ width: rightSidebarOpen ? 220 : 0 }}
@@ -500,18 +360,40 @@ function MainChatView(
           </motion.div>
         </div>
 
-        {/* Bottom bar - Terminal, selector, options */}
-        <div className="flex items-center gap-2 px-2 py-1.5 border-t border-[#1A1A1A] bg-[#0A0A0A] shrink-0 min-h-[36px]">
-          <Terminal className="w-4 h-4 text-[#10B981] shrink-0" title="Terminal" />
-          <button className="flex items-center gap-1 px-2 py-1 rounded text-xs font-mono text-[#E5E5E5] hover:bg-[#1A1A1A]">
-            <span>xonsh</span>
-            <ChevronDown className="w-3.5 h-3.5 text-[#666666]" />
-          </button>
-          <div className="w-px h-5 bg-[#333333]" />
-          <button className="p-1.5 rounded text-[#666666] hover:bg-[#1A1A1A] hover:text-[#E5E5E5]" title="Terminal options"><MoreVertical className="w-4 h-4" /></button>
-          <button className="p-1.5 rounded text-[#666666] hover:bg-[#1A1A1A] hover:text-[#E5E5E5]" title="New terminal"><Terminal className="w-4 h-4" /></button>
+        {/* Status bar: sidebar icons + terminal (terminal opens slide-up panel) */}
+        <div className="flex items-center gap-0.5 px-2 py-1 border-t border-[#1A1A1A] bg-[#0A0A0A] shrink-0 min-h-[28px] text-[#666666]">
+          <button onClick={() => { setLeftSidebarOpen(true); setActiveSidebarTab('files'); }} className={`p-1.5 rounded ${leftSidebarOpen && activeSidebarTab === 'files' ? 'bg-[#E5E5E5]/10 text-[#E5E5E5]' : 'hover:bg-[#1A1A1A] hover:text-[#E5E5E5]'}`} title="Explorer"><Folder className="w-3.5 h-3.5" /></button>
+          <button onClick={() => { setLeftSidebarOpen(true); setActiveSidebarTab('search'); }} className={`p-1.5 rounded ${!leftSidebarOpen ? 'hover:bg-[#1A1A1A] hover:text-[#E5E5E5]' : activeSidebarTab === 'search' ? 'bg-[#E5E5E5]/10 text-[#E5E5E5]' : 'hover:text-[#E5E5E5]'}`} title="Search"><Search className="w-3.5 h-3.5" /></button>
+          <button onClick={() => { setLeftSidebarOpen(true); setActiveSidebarTab('git'); }} className={`p-1.5 rounded ${!leftSidebarOpen ? 'hover:bg-[#1A1A1A] hover:text-[#E5E5E5]' : activeSidebarTab === 'git' ? 'bg-[#E5E5E5]/10 text-[#E5E5E5]' : 'hover:text-[#E5E5E5]'}`} title="Git"><GitBranch className="w-3.5 h-3.5" /></button>
+          <button onClick={() => { setLeftSidebarOpen(true); setActiveSidebarTab('extensions'); }} className={`p-1.5 rounded ${!leftSidebarOpen ? 'hover:bg-[#1A1A1A] hover:text-[#E5E5E5]' : activeSidebarTab === 'extensions' ? 'bg-[#E5E5E5]/10 text-[#E5E5E5]' : 'hover:text-[#E5E5E5]'}`} title="Extensions"><Puzzle className="w-3.5 h-3.5" /></button>
+          <div className="w-px h-4 bg-[#333333] mx-0.5" />
+          <button onClick={() => setRightSidebarOpen(!rightSidebarOpen)} className={`p-1.5 rounded ${rightSidebarOpen ? 'bg-[#E5E5E5]/10 text-[#E5E5E5]' : 'hover:bg-[#1A1A1A] hover:text-[#E5E5E5]'}`} title="Threads"><MessageCircle className="w-3.5 h-3.5" /></button>
+          <div className="flex-1" />
+          <button onClick={() => setTerminalOpen(true)} className="p-1.5 rounded hover:bg-[#1A1A1A] hover:text-[#10B981] text-[#10B981]" title="Terminal"><Terminal className="w-3.5 h-3.5" /></button>
         </div>
       </div>
+
+      {/* Slide-up terminal (opens from bottom) */}
+      <AnimatePresence>
+        {terminalOpen && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: '40%', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ type: 'tween', duration: 0.2 }}
+            className="absolute bottom-0 left-0 right-0 border-t border-[#1A1A1A] bg-[#0d1117] flex flex-col overflow-hidden z-50"
+            style={{ minHeight: 0 }}
+          >
+            <div className="flex items-center justify-between px-2 py-1.5 border-b border-[#30363d] shrink-0 bg-[#161b22]">
+              <span className="text-xs font-mono text-[#8b949e]">xonsh — Terminal</span>
+              <button onClick={() => setTerminalOpen(false)} className="p-1 text-[#8b949e] hover:text-[#e6edf3] rounded"><X className="w-4 h-4" /></button>
+            </div>
+            <div className="flex-1 overflow-auto p-3 font-mono text-sm min-h-0">
+              <pre className="text-[#7ee787]">$ <span className="text-[#e6edf3]">_</span></pre>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
