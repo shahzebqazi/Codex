@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useMemo } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { ChevronLeft, ChevronRight, Menu, Settings, User, Paperclip, Mic, Target, ChevronDown, Circle, PanelLeft, PanelRight, PanelBottom, X, Terminal, FileCode, Wrench, Cpu, Zap, Shield, Database, Code2, Layers, Activity, Bug, GitCommit, FolderOpen, File, Files, Puzzle, GitBranch, Search, ChevronRight as ChevronRightIcon, Folder, MessageCircle, Network, Globe, Image as ImageIcon, LayoutList, Bot, MoreVertical, SlidersHorizontal, Percent, DollarSign, ZoomIn, ZoomOut, RotateCcw, Filter, Plus } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Menu, Settings, User, Paperclip, Mic, Target, ChevronDown, Circle, PanelLeft, PanelRight, PanelBottom, X, Terminal, FileCode, Cpu, Zap, Shield, Database, Code2, Layers, Activity, Bug, GitCommit, FolderOpen, File, Files, Puzzle, GitBranch, Search, ChevronRight as ChevronRightIcon, Folder, MessageCircle, Network, Globe, Image as ImageIcon, LayoutList, Bot, MoreVertical, SlidersHorizontal, Percent, DollarSign, ZoomIn, ZoomOut, RotateCcw, Filter, Plus } from 'lucide-react';
 import { ThreadGraph3D, type ThreadNode, type ThreadLink } from './components/ThreadGraph3D';
 import { MiniBtop } from './components/MiniBtop';
 import {
@@ -21,13 +21,12 @@ const SCALE_MIN = 0.2;
 const SCALE_MAX = 2;
 const SCALE_STEP = 0.15;
 
-type TabKind = 'home' | 'settings' | 'mods' | 'editor' | 'terminal' | 'agent' | 'planner' | 'chat' | 'assistant';
+type TabKind = 'home' | 'settings' | 'editor' | 'terminal' | 'agent' | 'planner' | 'chat' | 'assistant';
 type Tab = { id: string; kind: TabKind };
 
 const TAB_LABELS: Record<TabKind, string> = {
   home: 'Home',
   settings: 'Settings',
-  mods: 'Mods',
   editor: 'Editor',
   terminal: 'Terminal',
   agent: 'Agent',
@@ -44,7 +43,6 @@ export default function App() {
   const [tabs, setTabs] = useState<Tab[]>([
     { id: 'tab-home', kind: 'home' },
     { id: 'tab-settings', kind: 'settings' },
-    { id: 'tab-mods', kind: 'mods' },
   ]);
   const [activeTabId, setActiveTabId] = useState<string>('tab-home');
   const [sidebarOpen, setSidebarOpen] = useState(true);
@@ -204,7 +202,6 @@ export default function App() {
                 />
               )}
               {activeTab.kind === 'settings' && <SettingsView onBack={() => setActiveTabId(tabs[0]?.id ?? activeTabId)} />}
-              {activeTab.kind === 'mods' && <ModsView />}
               {activeTab.kind === 'editor' && <EditorPaneMock />}
               {activeTab.kind === 'terminal' && <TerminalPaneMock />}
               {activeTab.kind === 'agent' && <AgentPaneMock />}
@@ -699,11 +696,14 @@ zfs mount rpool/root/arch`}</pre>
                     <button type="button" className="p-1.5 rounded text-[#666666] hover:bg-[#1A1A1A] hover:text-[#E5E5E5]" title="Image upload"><ImageIcon className="w-3.5 h-3.5" /></button>
                     <button type="button" className="p-1.5 rounded text-[#666666] hover:bg-[#1A1A1A] hover:text-[#E5E5E5]" title="Voice input"><Mic className="w-3.5 h-3.5" /></button>
                     <button type="button" className="p-1.5 rounded text-[#666666] hover:bg-[#1A1A1A] hover:text-[#E5E5E5] flex items-center gap-1" title="Mode"><SlidersHorizontal className="w-3.5 h-3.5" /><span className="text-[10px]">mode</span></button>
-                    <button type="button" className="p-1.5 rounded text-[#666666] hover:bg-[#1A1A1A] hover:text-[#E5E5E5] flex items-center gap-1" title="Model"><Bot className="w-3.5 h-3.5" /><span className="text-[10px]">model</span></button>
+                    <button type="button" className="p-1.5 rounded text-[#666666] hover:bg-[#1A1A1A] hover:text-[#E5E5E5] flex items-center gap-1" title="Model"><Bot className="w-3.5 h-3.5" /><span className="text-[10px]">model</span><span className="text-[10px] text-[#8b949e] font-mono ml-0.5" title="Llama 3.2">L3.2</span></button>
                     <span className="flex items-center gap-0.5 text-[10px] text-[#666666] ml-auto" title="Context rotation"><Percent className="w-3 h-3" /> rot 0%</span>
                     <span className="flex items-center gap-0.5 text-[10px] text-[#666666]" title="Cost"><DollarSign className="w-3 h-3" /> $0.00</span>
                   </div>
-                  <input type="text" placeholder="Ask dotAi..." className="w-full bg-[#0A0A0A] border border-[#1A1A1A] rounded px-2 py-2 text-xs text-[#E5E5E5] placeholder:text-[#666666] outline-none focus:border-[#333333]" />
+                  <div className="w-full bg-[#0A0A0A] border border-[#1A1A1A] rounded-xl px-2.5 py-2 flex items-center gap-0.5 font-mono text-xs text-white">
+                    <span className="text-white">Ask dotAi...</span>
+                    <span className="inline-block w-2 h-3.5 bg-[#7ee787] animate-cursor-blink flex-shrink-0" aria-hidden />
+                  </div>
                 </div>
               </div>
               {/* Mini btop — system monitor style */}
@@ -996,86 +996,6 @@ function SettingsView({ onBack }: { onBack: () => void }) {
             </button>
           </div>
         </div>
-      </div>
-    </div>
-  );
-}
-
-function ModsView() {
-  return (
-    <div className="bg-[#000000] overflow-hidden flex flex-col h-full min-h-0">
-      {/* Header */}
-      <div className="bg-[#0A0A0A] border-b border-[#1A1A1A] px-6 py-4 shrink-0">
-        <div className="text-lg font-medium flex items-center gap-2">
-          <Wrench className="w-5 h-5 text-[#0EA5E9]" />
-          Select Active Mod / Persona
-        </div>
-      </div>
-
-      {/* Mods List — fills remaining space so tab area does not shrink */}
-      <div className="p-8 space-y-4 flex-1 min-h-0 overflow-y-auto">
-        {/* Standard Chatbot */}
-        <label className="block p-5 rounded-lg border-2 border-[#0EA5E9] bg-[#0EA5E9]/10 cursor-pointer transition-all">
-          <div className="flex items-start gap-4">
-            <input type="radio" name="persona" defaultChecked className="mt-1 w-5 h-5 accent-[#0EA5E9]" />
-            <div className="flex-1">
-              <div className="flex items-center gap-2 mb-2">
-                <Terminal className="w-5 h-5 text-[#0EA5E9]" />
-                <div className="font-medium text-[#E5E5E5]">Standard Chatbot</div>
-                <span className="px-2 py-0.5 bg-[#1A1A1A] rounded text-xs text-[#666666] font-mono border border-[#333333]">Default</span>
-              </div>
-              <div className="text-sm text-[#999999]">
-                Lightweight, general assistance and project navigation.
-              </div>
-            </div>
-          </div>
-        </label>
-
-        {/* SWE Developer */}
-        <label className="block p-5 rounded-lg border-2 border-[#1A1A1A] hover:border-[#333333] bg-[#0A0A0A] hover:bg-[#0F0F0F] cursor-pointer transition-all">
-          <div className="flex items-start gap-4">
-            <input type="radio" name="persona" className="mt-1 w-5 h-5 accent-[#0EA5E9]" />
-            <div className="flex-1">
-              <div className="flex items-center gap-2 mb-2">
-                <Zap className="w-5 h-5 text-[#10B981]" />
-                <div className="font-medium text-[#E5E5E5]">SWE Developer (Orchestrator)</div>
-              </div>
-              <div className="text-sm text-[#999999] mb-3">
-                Full access to jj commits, Docker management, and file creation.
-              </div>
-              <div className="flex flex-wrap gap-2">
-                <span className="px-2 py-1 bg-[#000000] rounded text-xs text-[#666666] font-mono border border-[#1A1A1A]">jj commits</span>
-                <span className="px-2 py-1 bg-[#000000] rounded text-xs text-[#666666] font-mono border border-[#1A1A1A]">Docker</span>
-                <span className="px-2 py-1 bg-[#000000] rounded text-xs text-[#666666] font-mono border border-[#1A1A1A]">File creation</span>
-              </div>
-            </div>
-          </div>
-        </label>
-
-        {/* Tech Lead */}
-        <label className="block p-5 rounded-lg border-2 border-[#1A1A1A] hover:border-[#333333] bg-[#0A0A0A] hover:bg-[#0F0F0F] cursor-pointer transition-all">
-          <div className="flex items-start gap-4">
-            <input type="radio" name="persona" className="mt-1 w-5 h-5 accent-[#0EA5E9]" />
-            <div className="flex-1">
-              <div className="flex items-center gap-2 mb-2">
-                <Bug className="w-5 h-5 text-[#F59E0B]" />
-                <div className="font-medium text-[#E5E5E5]">Tech Lead / Reviewer</div>
-                <span className="px-2 py-0.5 bg-[#F59E0B]/10 rounded text-xs text-[#F59E0B] font-mono border border-[#F59E0B]/30">Read-only</span>
-              </div>
-              <div className="text-sm text-[#999999]">
-                Read-only mode. Criticizes code quality and checks against base repo guidelines.
-              </div>
-            </div>
-          </div>
-        </label>
-
-        {/* Load Custom */}
-        <button className="w-full p-5 rounded-lg border-2 border-dashed border-[#333333] hover:border-[#666666] bg-transparent hover:bg-[#0A0A0A] transition-all">
-          <div className="flex items-center justify-center gap-2 text-[#666666] hover:text-[#E5E5E5] transition-colors">
-            <span className="text-2xl">+</span>
-            <div className="text-sm font-medium font-mono">Load custom persona from Orchestration/Agents/Personas/</div>
-          </div>
-        </button>
       </div>
     </div>
   );
