@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 // Block character for bar fill (btop-style)
 const BLOCK = '⣀';
@@ -8,12 +8,16 @@ function bar(percent: number, width: number = 20): string {
   return BLOCK.repeat(filled) + ' '.repeat(Math.max(0, width - filled));
 }
 
+const CPU_HISTORY_LEN = 32;
+
 // Simulated data — wobble slightly for mockup realism
 function useBtopData() {
   const [tick, setTick] = useState(0);
   const [time, setTime] = useState(() =>
     new Date().toLocaleTimeString('en-GB', { hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' })
   );
+  const [cpuHistory, setCpuHistory] = useState<number[]>([]);
+
   useEffect(() => {
     const id = setInterval(() => setTick((t) => t + 1), 2000);
     return () => clearInterval(id);
@@ -27,11 +31,20 @@ function useBtopData() {
 
   const wobble = (base: number, range: number) =>
     Math.min(100, Math.max(0, base + (tick % 5) * (range / 4) - range / 2));
+  const cpuTotal = wobble(15, 8);
+
+  useEffect(() => {
+    setCpuHistory((prev) => {
+      const next = [...prev, cpuTotal].slice(-CPU_HISTORY_LEN);
+      return next;
+    });
+  }, [cpuTotal]);
 
   return {
     time,
     battery: 80,
-    cpuTotal: wobble(15, 8),
+    cpuTotal,
+    cpuHistory,
     loadAvg: [3.59, 3.68, 3.59],
     cores: Array.from({ length: 6 }, (_, i) => wobble(12 + i * 2, 6)),
     memTotal: 18,
@@ -49,6 +62,158 @@ function useBtopData() {
       { pid: 76171, name: 'Cursor', mem: '306M', cpu: 0 },
     ],
   };
+}
+
+const PANEL_CLASS = 'border border-[#30363d] rounded bg-[#0d1117] overflow-hidden';
+
+function BtopToolsRow({ cpuHistory }: { cpuHistory: number[] }) {
+  const [calcDisplay, setCalcDisplay] = useState('0');
+  const [calcPending, setCalcPending] = useState<string | null>(null);
+  const [calcPrev, setCalcPrev] = useState<number | null>(null);
+
+  const [timerSec, setTimerSec] = useState(0);
+  const [timerRunning, setTimerRunning] = useState(false);
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  const [color, setColor] = useState('#7ee787');
+
+  useEffect(() => {
+    if (!timerRunning) return;
+    timerRef.current = setInterval(() => setTimerSec((s) => s + 1), 1000);
+    return () => {
+      if (timerRef.current) clearInterval(timerRef.current);
+    };
+  }, [timerRunning]);
+
+  const handleCalc = (key: string) => {
+    if (key === 'C') {
+      setCalcDisplay('0');
+      setCalcPending(null);
+      setCalcPrev(null);
+      return;
+    }
+    if (key === '=' && calcPending && calcPrev !== null) {
+      const a = calcPrev;
+      const b = parseFloat(calcDisplay) || 0;
+      let result = 0;
+      if (calcPending === '+') result = a + b;
+      if (calcPending === '-') result = a - b;
+      if (calcPending === '×') result = a * b;
+      if (calcPending === '÷') result = b === 0 ? 0 : a / b;
+      setCalcDisplay(String(result));
+      setCalcPending(null);
+      setCalcPrev(null);
+      return;
+    }
+    if (['+', '-', '×', '÷'].includes(key)) {
+      setCalcPrev(parseFloat(calcDisplay) || 0);
+      setCalcPending(key);
+      setCalcDisplay('0');
+      return;
+    }
+    if (key >= '0' && key <= '9' || key === '.') {
+      setCalcDisplay((prev) => prev === '0' && key !== '.' ? key : prev + key);
+    }
+  };
+
+  const hexFromColor = (s: string) => {
+    if (/^#[0-9A-Fa-f]{6}$/.test(s)) return s;
+    return '#7ee787';
+  };
+
+  return (
+    <div className="grid grid-cols-2 gap-1.5 mt-1 flex-shrink-0">
+      {/* CPU sparkline */}
+      <div className={`${PANEL_CLASS} p-1`}>
+        <div className="px-1 py-0.5 border-b border-[#30363d] text-[#79c0ff] bg-[#161b22]/80 text-[10px]">³cpu hist</div>
+        <div className="flex items-end gap-px h-8 mt-0.5" style={{ minHeight: 32 }}>
+          {cpuHistory.length === 0 ? (
+            <span className="text-[#6e7681] text-[10px]">...</span>
+          ) : (
+            cpuHistory.map((pct, i) => (
+              <div
+                key={i}
+                className="flex-1 min-w-0 rounded-sm bg-[#7ee787]/70 hover:bg-[#7ee787] transition-colors"
+                style={{ height: `${Math.max(2, (pct / 100) * 100)}%` }}
+                title={`${pct.toFixed(0)}%`}
+              />
+            ))
+          )}
+        </div>
+      </div>
+
+      {/* Mini calculator */}
+      <div className={`${PANEL_CLASS} p-1`}>
+        <div className="px-1 py-0.5 border-b border-[#30363d] text-[#f0883e] bg-[#161b22]/80 text-[10px]">calc</div>
+        <div className="mt-0.5 font-mono text-[10px]">
+          <div className="bg-[#161b22] border border-[#30363d] rounded px-1.5 py-0.5 text-right text-[#e6edf3] mb-1 min-h-[18px] truncate">{calcDisplay}</div>
+          <div className="grid grid-cols-4 gap-0.5">
+            {['7', '8', '9', '÷', '4', '5', '6', '×', '1', '2', '3', '-', 'C', '0', '.', '+'].map((k) => (
+              <button
+                key={k}
+                type="button"
+                onClick={() => handleCalc(k)}
+                className="py-0.5 rounded bg-[#21262d] border border-[#30363d] text-[#e6edf3] hover:bg-[#30363d] text-[10px]"
+              >
+                {k}
+              </button>
+            ))}
+            <button
+              type="button"
+              onClick={() => handleCalc('=')}
+              className="col-span-4 py-0.5 rounded bg-[#238636] border border-[#2ea043] text-[#e6edf3] hover:bg-[#2ea043] text-[10px]"
+            >
+              =
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Timer */}
+      <div className={`${PANEL_CLASS} p-1`}>
+        <div className="px-1 py-0.5 border-b border-[#30363d] text-[#a371f7] bg-[#161b22]/80 text-[10px]">timer</div>
+        <div className="mt-0.5 flex items-center gap-1 flex-wrap">
+          <span className="font-mono text-[#e6edf3] text-[12px] tabular-nums">
+            {String(Math.floor(timerSec / 60)).padStart(2, '0')}:{String(timerSec % 60).padStart(2, '0')}
+          </span>
+          <button
+            type="button"
+            onClick={() => setTimerRunning((r) => !r)}
+            className="px-1.5 py-0.5 rounded bg-[#21262d] border border-[#30363d] text-[#7ee787] hover:bg-[#30363d] text-[10px]"
+          >
+            {timerRunning ? 'Stop' : 'Start'}
+          </button>
+          <button
+            type="button"
+            onClick={() => { setTimerSec(0); setTimerRunning(false); }}
+            className="px-1.5 py-0.5 rounded bg-[#21262d] border border-[#30363d] text-[#f0883e] hover:bg-[#30363d] text-[10px]"
+          >
+            Reset
+          </button>
+        </div>
+      </div>
+
+      {/* Color picker */}
+      <div className={`${PANEL_CLASS} p-1`}>
+        <div className="px-1 py-0.5 border-b border-[#30363d] text-[#58a6ff] bg-[#161b22]/80 text-[10px]">color</div>
+        <div className="mt-0.5 flex items-center gap-1.5">
+          <input
+            type="color"
+            value={hexFromColor(color)}
+            onChange={(e) => setColor(e.target.value)}
+            className="w-8 h-6 rounded border border-[#30363d] cursor-pointer bg-transparent"
+            title="Pick color"
+          />
+          <span className="font-mono text-[10px] text-[#e6edf3] truncate">{hexFromColor(color)}</span>
+          <div
+            className="w-6 h-4 rounded border border-[#30363d] shrink-0"
+            style={{ backgroundColor: hexFromColor(color) }}
+            title="Swatch"
+          />
+        </div>
+      </div>
+    </div>
+  );
 }
 
 export function MiniBtop() {
@@ -95,8 +260,8 @@ export function MiniBtop() {
           </div>
         </div>
 
-        {/* Processes — flex-1 so it fills remaining space */}
-        <div className="flex-1 min-h-0 flex flex-col border border-[#a371f7] rounded bg-[#0d1117] overflow-hidden">
+        {/* Processes — fixed height, scroll if needed */}
+        <div className="flex-shrink-0 flex flex-col border border-[#a371f7] rounded bg-[#0d1117] overflow-hidden max-h-[120px]">
           <div className="px-1.5 py-0.5 border-b border-[#30363d] text-[#a371f7] bg-[#161b22] flex-shrink-0">
             ⁴proc  <span className="text-[#8b949e]">Pid  Program           Mem    Cpu%</span>
           </div>
@@ -111,6 +276,9 @@ export function MiniBtop() {
             ))}
           </div>
         </div>
+
+        {/* Tools row: sparkline, calculator, timer, color picker */}
+        <BtopToolsRow cpuHistory={d.cpuHistory} />
 
         {/* Bottom tab bar (btop style) */}
         <div className="mt-1 px-1.5 py-0.5 border border-[#30363d] rounded bg-[#161b22] text-[#6e7681] flex flex-wrap gap-x-2 gap-y-0 flex-shrink-0">
