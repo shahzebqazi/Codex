@@ -1,4 +1,4 @@
-import { useCallback, useMemo, lazy, Suspense } from 'react';
+import { useCallback, useMemo, lazy, Suspense, forwardRef } from 'react';
 
 const ForceGraph3D = lazy(() =>
   import('react-force-graph-3d').then((mod) => ({ default: mod.default }))
@@ -6,6 +6,8 @@ const ForceGraph3D = lazy(() =>
 
 export type ThreadNode = { id: string; name?: string; role?: 'user' | 'assistant' | 'system' };
 export type ThreadLink = { source: string; target: string };
+
+export type ThreadGraph3DRef = { zoom: (level: number, ms: number) => void; zoomToFit: (ms: number, padding: number) => void } | null;
 
 type ThreadGraph3DProps = {
   nodes: ThreadNode[];
@@ -23,13 +25,16 @@ function GraphPlaceholder() {
   );
 }
 
-export function ThreadGraph3D({
-  nodes,
-  links,
-  width = 400,
-  height = 360,
-  backgroundColor = '#0d1117',
-}: ThreadGraph3DProps) {
+export const ThreadGraph3D = forwardRef<ThreadGraph3DRef, ThreadGraph3DProps>(function ThreadGraph3D(
+  {
+    nodes,
+    links,
+    width = 400,
+    height = 360,
+    backgroundColor = '#0d1117',
+  },
+  ref
+) {
   const graphData = useMemo(
     () => ({
       nodes: nodes.map((n) => ({ id: n.id, name: n.name ?? n.id, role: n.role })),
@@ -59,6 +64,7 @@ export function ThreadGraph3D({
     <Suspense fallback={<GraphPlaceholder />}>
       <div className="w-full rounded border border-[#30363d] overflow-hidden bg-[#0d1117]" style={{ width, height }}>
         <ForceGraph3D
+          ref={ref}
           graphData={graphData}
           nodeLabel={(node: { id: string; name?: string }) => node.name ?? node.id}
           nodeColor={nodeColor as (node: unknown) => string}
@@ -72,4 +78,4 @@ export function ThreadGraph3D({
       </div>
     </Suspense>
   );
-}
+});

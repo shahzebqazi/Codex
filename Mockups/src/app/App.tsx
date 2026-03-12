@@ -1,7 +1,14 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { ChevronLeft, ChevronRight, Menu, Settings, User, Paperclip, Mic, Target, ChevronDown, Circle, PanelLeft, PanelRight, PanelBottom, X, Terminal, FileCode, Wrench, Cpu, Zap, Shield, Database, Code2, Layers, Activity, Bug, GitCommit, FolderOpen, File, Files, Puzzle, GitBranch, Search, ChevronRight as ChevronRightIcon, Folder, MessageCircle, Network, Globe, Image as ImageIcon, LayoutList, Bot, MoreVertical } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Menu, Settings, User, Paperclip, Mic, Target, ChevronDown, Circle, PanelLeft, PanelRight, PanelBottom, X, Terminal, FileCode, Wrench, Cpu, Zap, Shield, Database, Code2, Layers, Activity, Bug, GitCommit, FolderOpen, File, Files, Puzzle, GitBranch, Search, ChevronRight as ChevronRightIcon, Folder, MessageCircle, Network, Globe, Image as ImageIcon, LayoutList, Bot, MoreVertical, SlidersHorizontal, Percent, DollarSign, ZoomIn, ZoomOut, RotateCcw, Filter, Plus } from 'lucide-react';
 import { ThreadGraph3D, type ThreadNode, type ThreadLink } from './components/ThreadGraph3D';
+import { MiniBtop } from './components/MiniBtop';
+import {
+  ContextMenu,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuTrigger,
+} from './components/ui/context-menu';
 
 // Flowers background (Unsplash, free to use) — static for mockup
 const FLOWERS_BG = 'https://images.unsplash.com/photo-1490750967868-88aa4486c946?w=1920&q=80';
@@ -14,12 +21,53 @@ const SCALE_MIN = 0.2;
 const SCALE_MAX = 2;
 const SCALE_STEP = 0.15;
 
-type AppTab = 'home' | 'settings' | 'mods';
+type TabKind = 'home' | 'settings' | 'mods' | 'editor' | 'terminal' | 'agent' | 'planner' | 'chat' | 'assistant';
+type Tab = { id: string; kind: TabKind };
+
+const TAB_LABELS: Record<TabKind, string> = {
+  home: 'Home',
+  settings: 'Settings',
+  mods: 'Mods',
+  editor: 'Editor',
+  terminal: 'Terminal',
+  agent: 'Agent',
+  planner: 'Planner',
+  chat: 'Chat',
+  assistant: 'Assistant',
+};
+
+function nextTabId() {
+  return `tab-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`;
+}
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState<AppTab>('home');
+  const [tabs, setTabs] = useState<Tab[]>([
+    { id: 'tab-home', kind: 'home' },
+    { id: 'tab-settings', kind: 'settings' },
+    { id: 'tab-mods', kind: 'mods' },
+  ]);
+  const [activeTabId, setActiveTabId] = useState<string>('tab-home');
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [scale, setScale] = useState(1);
+
+  const activeTab = tabs.find((t) => t.id === activeTabId) ?? tabs[0];
+
+  const addTab = (kind: TabKind) => {
+    const id = nextTabId();
+    setTabs((prev) => [...prev, { id, kind }]);
+    setActiveTabId(id);
+  };
+
+  const closeTab = (id: string) => {
+    setTabs((prev) => {
+      const next = prev.filter((t) => t.id !== id);
+      if (activeTabId === id && next.length) {
+        const idx = Math.max(0, prev.findIndex((t) => t.id === id) - 1);
+        setActiveTabId(next[idx].id);
+      }
+      return next;
+    });
+  };
 
   // Fit mockup to viewport on load and resize
   useEffect(() => {
@@ -57,7 +105,7 @@ export default function App() {
     <div className="min-h-screen overflow-hidden relative">
       {/* Flowers background (home tab only); black fallback */}
       <div className="absolute inset-0 overflow-hidden bg-black">
-        {activeTab === 'home' && (
+        {activeTab.kind === 'home' && (
           <div
             className="absolute inset-0 bg-cover bg-center"
             style={{
@@ -87,29 +135,82 @@ export default function App() {
             className="rounded-xl overflow-hidden shadow-2xl border border-[#333333]/80 bg-[#0a0a0a] flex flex-col"
             style={{ width: MOCKUP_WIDTH, height: MOCKUP_HEIGHT }}
           >
-            {/* Single top bar: macOS window controls + tabs (Home | Settings | Mods) */}
-            <div className="flex items-center gap-2 border-b border-[#1A1A1A] bg-[#0A0A0A] px-2 py-1.5 shrink-0 min-h-[36px]">
-              <div className="flex items-center gap-1.5 shrink-0 pointer-events-none">
-                <div className="w-3 h-3 rounded-full bg-[#FF5F57]" />
-                <div className="w-3 h-3 rounded-full bg-[#FEBC2E]" />
-                <div className="w-3 h-3 rounded-full bg-[#28C840]" />
-              </div>
-              <div className="flex items-center gap-0.5">
-                <button onClick={() => setActiveTab('home')} className={`px-3 py-2 rounded-t text-sm font-mono ${activeTab === 'home' ? 'bg-[#0a0a0a] text-[#E5E5E5] border border-[#1A1A1A] border-b-transparent -mb-px' : 'text-[#666666] hover:text-[#E5E5E5]'}`}>Home</button>
-                <button onClick={() => setActiveTab('settings')} className={`px-3 py-2 rounded-t text-sm font-mono ${activeTab === 'settings' ? 'bg-[#0a0a0a] text-[#E5E5E5] border border-[#1A1A1A] border-b-transparent -mb-px' : 'text-[#666666] hover:text-[#E5E5E5]'}`}>Settings</button>
-                <button onClick={() => setActiveTab('mods')} className={`px-3 py-2 rounded-t text-sm font-mono ${activeTab === 'mods' ? 'bg-[#0a0a0a] text-[#E5E5E5] border border-[#1A1A1A] border-b-transparent -mb-px' : 'text-[#666666] hover:text-[#E5E5E5]'}`}>Mods</button>
-              </div>
-            </div>
+            {/* Single top bar: macOS window controls + tabs + new tab button (right-click for pane menu) */}
+            <ContextMenu>
+              <ContextMenuTrigger asChild>
+                <div className="flex items-center gap-2 border-b border-[#1A1A1A] bg-[#0A0A0A] px-2 py-1.5 shrink-0 min-h-[36px]">
+                  <div className="flex items-center gap-1.5 shrink-0 pointer-events-none">
+                    <div className="w-3 h-3 rounded-full bg-[#FF5F57]" />
+                    <div className="w-3 h-3 rounded-full bg-[#FEBC2E]" />
+                    <div className="w-3 h-3 rounded-full bg-[#28C840]" />
+                  </div>
+                  <div className="flex items-center gap-0.5 flex-1 min-w-0">
+                    {tabs.map((tab) => (
+                      <button
+                        key={tab.id}
+                        onClick={() => setActiveTabId(tab.id)}
+                        className={`px-3 py-2 rounded-t text-sm font-mono flex items-center gap-1.5 shrink-0 ${activeTabId === tab.id ? 'bg-[#0a0a0a] text-[#E5E5E5] border border-[#1A1A1A] border-b-transparent -mb-px' : 'text-[#666666] hover:text-[#E5E5E5]'}`}
+                      >
+                        {TAB_LABELS[tab.kind]}
+                        {tabs.length > 1 && (
+                          <span
+                            className="opacity-70 hover:opacity-100 rounded p-0.5 hover:bg-[#333]"
+                            onClick={(e) => { e.stopPropagation(); closeTab(tab.id); }}
+                            aria-label="Close tab"
+                          >
+                            <X className="w-3 h-3" />
+                          </span>
+                        )}
+                      </button>
+                    ))}
+                    <button
+                      onClick={() => addTab('home')}
+                      className="p-2 rounded-t text-sm font-mono text-[#666666] hover:text-[#E5E5E5] hover:bg-[#1A1A1A] shrink-0"
+                      title="New tab"
+                      aria-label="New tab"
+                    >
+                      <Plus className="w-4 h-4" />
+                    </button>
+                  </div>
+                </div>
+              </ContextMenuTrigger>
+              <ContextMenuContent className="min-w-[10rem] bg-[#161b22] border-[#30363d] text-[#e6edf3]">
+                <ContextMenuItem className="focus:bg-[#30363d] focus:text-[#e6edf3]" onClick={() => addTab('editor')}>
+                  <FileCode className="w-4 h-4 mr-2" /> Editor
+                </ContextMenuItem>
+                <ContextMenuItem className="focus:bg-[#30363d] focus:text-[#e6edf3]" onClick={() => addTab('terminal')}>
+                  <Terminal className="w-4 h-4 mr-2" /> Terminal
+                </ContextMenuItem>
+                <ContextMenuItem className="focus:bg-[#30363d] focus:text-[#e6edf3]" onClick={() => addTab('agent')}>
+                  <Bot className="w-4 h-4 mr-2" /> Agent
+                </ContextMenuItem>
+                <ContextMenuItem className="focus:bg-[#30363d] focus:text-[#e6edf3]" onClick={() => addTab('planner')}>
+                  <LayoutList className="w-4 h-4 mr-2" /> Planner
+                </ContextMenuItem>
+                <ContextMenuItem className="focus:bg-[#30363d] focus:text-[#e6edf3]" onClick={() => addTab('chat')}>
+                  <MessageCircle className="w-4 h-4 mr-2" /> Chat
+                </ContextMenuItem>
+                <ContextMenuItem className="focus:bg-[#30363d] focus:text-[#e6edf3]" onClick={() => addTab('assistant')}>
+                  <Zap className="w-4 h-4 mr-2" /> Assistant
+                </ContextMenuItem>
+              </ContextMenuContent>
+            </ContextMenu>
             <div className="flex-1 min-h-0 overflow-hidden">
-              {activeTab === 'home' && (
+              {activeTab.kind === 'home' && (
                 <MainChatView
                   sidebarOpen={sidebarOpen}
                   setSidebarOpen={setSidebarOpen}
-                  onOpenSettings={() => setActiveTab('settings')}
+                  onOpenSettings={() => addTab('settings')}
                 />
               )}
-              {activeTab === 'settings' && <SettingsView onBack={() => setActiveTab('home')} />}
-              {activeTab === 'mods' && <ModsView />}
+              {activeTab.kind === 'settings' && <SettingsView onBack={() => setActiveTabId(tabs[0]?.id ?? activeTabId)} />}
+              {activeTab.kind === 'mods' && <ModsView />}
+              {activeTab.kind === 'editor' && <EditorPaneMock />}
+              {activeTab.kind === 'terminal' && <TerminalPaneMock />}
+              {activeTab.kind === 'agent' && <AgentPaneMock />}
+              {activeTab.kind === 'planner' && <PlannerPaneMock />}
+              {activeTab.kind === 'chat' && <ChatPaneMock />}
+              {activeTab.kind === 'assistant' && <AssistantPaneMock />}
             </div>
           </motion.div>
         </div>
@@ -182,6 +283,129 @@ const MOCK_THREAD_GRAPHS: Record<string, { nodes: ThreadNode[]; links: ThreadLin
     ],
   },
 };
+
+type GraphFilterRole = 'all' | 'user' | 'assistant' | 'system';
+
+function GraphView({
+  selectedThreadId,
+  threadGraphData,
+}: {
+  selectedThreadId: string;
+  threadGraphData: { nodes: ThreadNode[]; links: ThreadLink[] };
+  threadIds: string[];
+}) {
+  const graphRef = useRef<{ zoom: (level: number, ms: number) => void; zoomToFit: (ms: number, padding: number) => void } | null>(null);
+  const [graphBg, setGraphBg] = useState<'white' | 'black'>('black');
+  const [graphFilterRole, setGraphFilterRole] = useState<GraphFilterRole>('all');
+  const [filterMenuOpen, setFilterMenuOpen] = useState(false);
+
+  const { nodes, links } = useMemo(() => {
+    if (graphFilterRole === 'all') return threadGraphData;
+    const visibleIds = new Set(
+      threadGraphData.nodes.filter((n) => n.role === graphFilterRole).map((n) => n.id)
+    );
+    const filteredNodes = threadGraphData.nodes.filter((n) => visibleIds.has(n.id));
+    const filteredLinks = threadGraphData.links.filter(
+      (l) => visibleIds.has(String(l.source)) && visibleIds.has(String(l.target))
+    );
+    return { nodes: filteredNodes, links: filteredLinks };
+  }, [threadGraphData, graphFilterRole]);
+
+  const backgroundColor = graphBg === 'white' ? '#f6f8fa' : '#0d1117';
+
+  return (
+    <div className="flex flex-col h-full min-h-0 p-4 gap-3">
+      <div className="flex items-center gap-2 flex-wrap shrink-0">
+        <span className="text-[10px] font-mono text-[#8b949e] mr-2">Thread: #{selectedThreadId}</span>
+        <div className="flex items-center gap-1 border border-[#30363d] rounded overflow-hidden bg-[#161b22]">
+          <button
+            type="button"
+            onClick={() => graphRef.current?.zoom(1.5, 200)}
+            className="p-1.5 text-[#e6edf3] hover:bg-[#30363d] transition-colors"
+            title="Zoom in"
+          >
+            <ZoomIn className="w-3.5 h-3.5" />
+          </button>
+          <button
+            type="button"
+            onClick={() => graphRef.current?.zoom(0.66, 200)}
+            className="p-1.5 text-[#e6edf3] hover:bg-[#30363d] transition-colors"
+            title="Zoom out"
+          >
+            <ZoomOut className="w-3.5 h-3.5" />
+          </button>
+          <button
+            type="button"
+            onClick={() => graphRef.current?.zoomToFit(400, 50)}
+            className="p-1.5 text-[#e6edf3] hover:bg-[#30363d] transition-colors"
+            title="Reset view / fit"
+          >
+            <RotateCcw className="w-3.5 h-3.5" />
+          </button>
+        </div>
+        <div className="flex items-center gap-1 border border-[#30363d] rounded overflow-hidden bg-[#161b22]">
+          <button
+            type="button"
+            onClick={() => setGraphBg('white')}
+            className={`px-2 py-1.5 text-xs font-mono transition-colors ${graphBg === 'white' ? 'bg-[#e6edf3] text-[#0d1117]' : 'text-[#8b949e] hover:bg-[#30363d]'}`}
+            title="White background"
+          >
+            White
+          </button>
+          <button
+            type="button"
+            onClick={() => setGraphBg('black')}
+            className={`px-2 py-1.5 text-xs font-mono transition-colors ${graphBg === 'black' ? 'bg-[#30363d] text-[#e6edf3]' : 'text-[#8b949e] hover:bg-[#30363d]'}`}
+            title="Black background"
+          >
+            Black
+          </button>
+        </div>
+        <div className="relative">
+          <button
+            type="button"
+            onClick={() => setFilterMenuOpen((o) => !o)}
+            className="flex items-center gap-1.5 px-2 py-1.5 border border-[#30363d] rounded bg-[#161b22] text-[#e6edf3] hover:bg-[#30363d] transition-colors text-xs font-mono"
+            title="Filter by role"
+          >
+            <Filter className="w-3.5 h-3.5" />
+            Filter: {graphFilterRole === 'all' ? 'All' : graphFilterRole}
+          </button>
+          {filterMenuOpen && (
+            <>
+              <div className="fixed inset-0 z-10" aria-hidden onClick={() => setFilterMenuOpen(false)} />
+              <div className="absolute left-0 top-full mt-1 py-1 min-w-[120px] border border-[#30363d] rounded bg-[#161b22] shadow-lg z-20">
+                {(['all', 'user', 'assistant', 'system'] as const).map((role) => (
+                  <button
+                    key={role}
+                    type="button"
+                    onClick={() => {
+                      setGraphFilterRole(role);
+                      setFilterMenuOpen(false);
+                    }}
+                    className={`w-full text-left px-3 py-1.5 text-xs font-mono capitalize ${graphFilterRole === role ? 'bg-[#30363d] text-[#e6edf3]' : 'text-[#8b949e] hover:bg-[#30363d] hover:text-[#e6edf3]'}`}
+                  >
+                    {role}
+                  </button>
+                ))}
+              </div>
+            </>
+          )}
+        </div>
+      </div>
+      <div className="flex-1 min-h-[280px] flex items-center justify-center rounded border border-[#30363d] overflow-hidden">
+        <ThreadGraph3D
+          ref={graphRef}
+          nodes={nodes}
+          links={links}
+          width={620}
+          height={360}
+          backgroundColor={backgroundColor}
+        />
+      </div>
+    </div>
+  );
+}
 
 function MainChatView(
   { sidebarOpen, setSidebarOpen, onOpenSettings }: { sidebarOpen: boolean; setSidebarOpen: (open: boolean) => void; onOpenSettings: () => void }
@@ -343,28 +567,41 @@ function MainChatView(
                 <button onClick={() => setMainViewMode('calendar')} className={`px-2 py-1 rounded text-xs font-mono ${mainViewMode === 'calendar' ? 'bg-[#E5E5E5]/15 text-[#E5E5E5]' : 'text-[#666666] hover:text-[#E5E5E5]'}`}>Calendar</button>
                 <button onClick={() => setMainViewMode('graph')} className={`px-2 py-1 rounded text-xs font-mono flex items-center gap-1 ${mainViewMode === 'graph' ? 'bg-[#E5E5E5]/15 text-[#E5E5E5]' : 'text-[#666666] hover:text-[#E5E5E5]'}`} title="3D thread graph"><Network className="w-3.5 h-3.5" /> Graph</button>
               </div>
-              <div className="flex-1 overflow-auto p-3 min-h-0 bg-[#0a0a0a]">
+              <div className="flex-1 overflow-auto min-h-0 bg-[#0a0a0a] flex flex-col">
                 {mainViewMode === 'list' && (
-                  <ul className="space-y-1 font-mono text-sm">
-                    {MOCK_TASKS.map(t => (
-                      <li key={t.id} className="flex items-center gap-3 px-2 py-2 rounded bg-[#0A0A0A] border border-[#1A1A1A]">
-                        <span className="text-[#666666] w-6">{t.id}</span>
-                        <span className="text-[#E5E5E5] flex-1">{t.title}</span>
-                        <span className="text-[#10B981] text-xs">{t.status}</span>
-                        <span className="text-[#666666] text-xs">{t.assignee}</span>
-                        <span className="text-[#666666] text-xs">{t.due}</span>
-                      </li>
-                    ))}
-                  </ul>
+                  <div className="p-4">
+                    <ul className="space-y-2 font-mono text-sm">
+                      {MOCK_TASKS.map(t => (
+                        <li key={t.id} className="flex items-center gap-3 px-4 py-3 rounded bg-[#0A0A0A] border border-[#1A1A1A]">
+                          <span className="text-[#666666] w-6">{t.id}</span>
+                          <span className="text-[#E5E5E5] flex-1">{t.title}</span>
+                          <span className="text-[#10B981] text-xs">{t.status}</span>
+                          <span className="text-[#666666] text-xs">{t.assignee}</span>
+                          <span className="text-[#666666] text-xs">{t.due}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                 )}
                 {mainViewMode === 'kanban' && (
-                  <div className="flex gap-3 h-full min-h-[200px]">
+                  <div className="flex gap-4 h-full min-h-[200px] p-4">
                     {(['todo', 'in_progress', 'done'] as const).map(col => (
-                      <div key={col} className="flex-1 min-w-[140px] rounded bg-[#0A0A0A] border border-[#1A1A1A] p-2">
-                        <div className="text-xs font-mono text-[#666666] uppercase mb-2">{col.replace('_', ' ')}</div>
-                        <div className="space-y-2">
+                      <div key={col} className="flex-1 min-w-[140px] rounded-lg bg-[#0A0A0A] border border-[#1A1A1A] p-4">
+                        <div className="text-xs font-mono text-[#666666] uppercase mb-3">{col.replace('_', ' ')}</div>
+                        <div className="space-y-3">
                           {MOCK_TASKS.filter(t => t.status === col).map(t => (
-                            <div key={t.id} className="p-2 rounded bg-[#161b22] border border-[#30363d] text-sm text-[#E5E5E5]">{t.title}</div>
+                            <div
+                              key={t.id}
+                              className={`p-3 rounded-lg border text-sm text-[#0a0a0a] font-medium ${
+                                col === 'todo'
+                                  ? 'bg-[#bfdbfe] border-[#93c5fd]'
+                                  : col === 'in_progress'
+                                    ? 'bg-[#fde68a] border-[#fcd34d]'
+                                    : 'bg-[#bbf7d0] border-[#86efac]'
+                              }`}
+                            >
+                              {t.title}
+                            </div>
                           ))}
                         </div>
                       </div>
@@ -372,58 +609,63 @@ function MainChatView(
                   </div>
                 )}
                 {mainViewMode === 'calendar' && (
-                  <div className="grid grid-cols-7 gap-1 font-mono text-sm">
-                    {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map(d => (
-                      <div key={d} className="text-[#666666] text-xs p-1">{d}</div>
-                    ))}
-                    {Array.from({ length: 31 }, (_, i) => {
-                      const day = i + 1;
-                      const events = MOCK_CALENDAR_EVENTS.filter(e => e.date === `Mar ${day}`);
-                      return (
-                        <div key={i} className="min-h-[48px] p-1 rounded bg-[#0A0A0A] border border-[#1A1A1A]">
-                          <span className="text-[#666666]">{day}</span>
-                          {events.slice(0, 2).map(ev => (
-                            <div key={ev.id} className="text-[10px] text-[#0EA5E9] truncate mt-0.5">{ev.title}</div>
-                          ))}
-                        </div>
-                      );
-                    })}
+                  <div className="flex-1 min-h-0 flex flex-col p-4">
+                    <div className="grid grid-cols-7 grid-rows-[auto_1fr_1fr_1fr_1fr_1fr] gap-1.5 flex-1 min-h-0 font-mono text-sm">
+                      {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map(d => (
+                        <div key={d} className="text-[#666666] text-xs py-2 px-1 text-center flex items-center justify-center">{d}</div>
+                      ))}
+                      {Array.from({ length: 31 }, (_, i) => {
+                        const day = i + 1;
+                        const events = MOCK_CALENDAR_EVENTS.filter(e => e.date === `Mar ${day}`);
+                        return (
+                          <div key={i} className="min-h-0 p-2 rounded bg-[#0A0A0A] border border-[#1A1A1A] flex flex-col overflow-hidden">
+                            <span className="text-[#666666] text-xs shrink-0">{day}</span>
+                            <div className="flex-1 min-h-0 overflow-hidden space-y-0.5">
+                              {events.slice(0, 3).map(ev => (
+                                <div key={ev.id} className="text-[10px] text-[#0EA5E9] truncate">{ev.title}</div>
+                              ))}
+                            </div>
+                          </div>
+                        );
+                      })}
+                      {Array.from({ length: 4 }, (_, i) => (
+                        <div key={`empty-${i}`} className="min-h-0 p-2 rounded bg-[#0A0A0A]/50 border border-[#1A1A1A]/50" aria-hidden />
+                      ))}
+                    </div>
                   </div>
                 )}
                 {mainViewMode === 'graph' && (
-                  <div className="flex flex-col h-full min-h-0 p-3 gap-2">
-                    <div className="text-[10px] font-mono text-[#8b949e] shrink-0">Thread: #{selectedThreadId} — drag to rotate, scroll to zoom</div>
-                    <div className="flex-1 min-h-[320px] flex items-center justify-center">
-                      <ThreadGraph3D
-                        nodes={threadGraphData.nodes}
-                        links={threadGraphData.links}
-                        width={620}
-                        height={360}
-                        backgroundColor="#0d1117"
-                      />
-                    </div>
-                  </div>
+                  <GraphView
+                    selectedThreadId={selectedThreadId}
+                    threadGraphData={threadGraphData}
+                    threadIds={['general', 'MVP PRD', 'docs']}
+                  />
                 )}
               </div>
             </div>
 
             {/* Right column: 1/2 width — two quarters stacked (AI chat top, btop bottom) */}
             <div className="w-1/2 min-w-0 flex flex-col shrink-0 border-l border-[#1A1A1A] bg-[#0a0a0a]">
+              {/* Chat: messages area + input at bottom with icons */}
               <div className="flex-1 min-h-0 flex flex-col border-b border-[#1A1A1A] bg-[#0a0a0a] overflow-hidden">
-                <div className="p-2 shrink-0 bg-[#0a0a0a]">
+                <div className="flex-1 min-h-0 overflow-auto p-2 text-[#666666] text-xs font-mono">
+                  <div className="text-[#8b949e]">Chat messages (mock)</div>
+                </div>
+                <div className="shrink-0 border-t border-[#1A1A1A] p-2 bg-[#0a0a0a]">
+                  <div className="flex items-center gap-1.5 mb-1.5">
+                    <button type="button" className="p-1.5 rounded text-[#666666] hover:bg-[#1A1A1A] hover:text-[#E5E5E5]" title="Image upload"><ImageIcon className="w-3.5 h-3.5" /></button>
+                    <button type="button" className="p-1.5 rounded text-[#666666] hover:bg-[#1A1A1A] hover:text-[#E5E5E5]" title="Voice input"><Mic className="w-3.5 h-3.5" /></button>
+                    <button type="button" className="p-1.5 rounded text-[#666666] hover:bg-[#1A1A1A] hover:text-[#E5E5E5] flex items-center gap-1" title="Mode"><SlidersHorizontal className="w-3.5 h-3.5" /><span className="text-[10px]">mode</span></button>
+                    <button type="button" className="p-1.5 rounded text-[#666666] hover:bg-[#1A1A1A] hover:text-[#E5E5E5] flex items-center gap-1" title="Model"><Bot className="w-3.5 h-3.5" /><span className="text-[10px]">model</span></button>
+                    <span className="flex items-center gap-0.5 text-[10px] text-[#666666] ml-auto" title="Context rotation"><Percent className="w-3 h-3" /> rot 0%</span>
+                    <span className="flex items-center gap-0.5 text-[10px] text-[#666666]" title="Cost"><DollarSign className="w-3 h-3" /> $0.00</span>
+                  </div>
                   <input type="text" placeholder="Ask dotAi..." className="w-full bg-[#0A0A0A] border border-[#1A1A1A] rounded px-2 py-2 text-xs text-[#E5E5E5] placeholder:text-[#666666] outline-none focus:border-[#333333]" />
                 </div>
               </div>
-              <div className="flex-1 min-h-0 overflow-hidden flex flex-col bg-[#0d1117]">
-                <div className="px-2 py-1 border-b border-[#30363d] text-[10px] font-mono text-[#8b949e] shrink-0">btop — system</div>
-                <div className="flex-1 overflow-auto p-2 font-mono text-[10px] text-[#7ee787] space-y-0.5 min-h-0">
-                  <div className="flex justify-between text-[#8b949e]"><span>CPU</span><span>12%</span></div>
-                  <div className="h-1.5 bg-[#21262d] rounded overflow-hidden"><div className="h-full bg-[#10B981] rounded" style={{ width: '12%' }} /></div>
-                  <div className="flex justify-between text-[#8b949e]"><span>Mem</span><span>4.2G / 16G</span></div>
-                  <div className="h-1.5 bg-[#21262d] rounded overflow-hidden"><div className="h-full bg-[#0EA5E9] rounded" style={{ width: '26%' }} /></div>
-                  <div className="flex justify-between text-[#8b949e]"><span>Tasks</span><span>142</span></div>
-                  <div className="text-[#e6edf3] mt-1">node (8) · vite (2) · zsh (1)</div>
-                </div>
+              {/* Mini btop — system monitor style */}
+              <div className="flex-1 min-h-0 overflow-hidden flex flex-col">
+                <MiniBtop />
               </div>
             </div>
           </div>
@@ -499,13 +741,70 @@ function MainChatView(
   );
 }
 
+function EditorPaneMock() {
+  return (
+    <div className="h-full flex flex-col bg-[#0d1117] border border-[#30363d] font-mono text-sm overflow-hidden">
+      <div className="px-3 py-1.5 border-b border-[#30363d] text-[#8b949e] shrink-0">file.md — NORMAL</div>
+      <pre className="p-3 text-[#e6edf3] whitespace-pre flex-1 min-h-0 overflow-auto">1  │</pre>
+    </div>
+  );
+}
+
+function TerminalPaneMock() {
+  return (
+    <div className="h-full flex flex-col bg-[#0d1117] border border-[#30363d] font-mono text-sm overflow-hidden">
+      <div className="px-3 py-1.5 border-b border-[#30363d] text-[#8b949e] shrink-0">xonsh — Terminal</div>
+      <pre className="p-3 text-[#7ee787] flex-1 min-h-0 overflow-auto">$ <span className="text-[#e6edf3]">_</span></pre>
+    </div>
+  );
+}
+
+function AgentPaneMock() {
+  return (
+    <div className="h-full flex flex-col bg-[#0d1117] border border-[#30363d] overflow-hidden p-4">
+      <div className="flex items-center gap-2 text-[#8b949e] font-mono text-sm mb-4">
+        <Bot className="w-5 h-5 text-[#10B981]" /> Agent
+      </div>
+      <div className="flex-1 rounded border border-[#30363d] bg-[#161b22] p-4 text-[#e6edf3] text-sm">
+        Agent pane (mock) — run tasks, tools, commits.
+      </div>
+    </div>
+  );
+}
+
+function PlannerPaneMock() {
+  return (
+    <div className="h-full flex flex-col bg-[#0d1117] border border-[#30363d] overflow-hidden p-4">
+      <div className="flex items-center gap-2 text-[#8b949e] font-mono text-sm mb-4">
+        <LayoutList className="w-5 h-5 text-[#0EA5E9]" /> Planner
+      </div>
+      <div className="flex-1 rounded border border-[#30363d] bg-[#161b22] p-4 text-[#e6edf3] text-sm">
+        Planner pane (mock) — task planning, roadmap view.
+      </div>
+    </div>
+  );
+}
+
 function ChatPaneMock() {
   return (
-    <div className="space-y-3">
-      <div className="bg-[#0d1117] rounded border border-[#30363d] p-3 font-mono text-sm text-[#e6edf3]">
+    <div className="h-full flex flex-col bg-[#0d1117] border border-[#30363d] overflow-hidden p-4">
+      <div className="flex-1 rounded border border-[#30363d] bg-[#161b22] p-3 font-mono text-sm text-[#e6edf3]">
         Ask dotAi anything...
       </div>
-      <div className="text-xs text-[#8b949e] font-mono">New chat thread (mock)</div>
+      <div className="text-xs text-[#8b949e] font-mono mt-2 shrink-0">New chat thread (mock)</div>
+    </div>
+  );
+}
+
+function AssistantPaneMock() {
+  return (
+    <div className="h-full flex flex-col bg-[#0d1117] border border-[#30363d] overflow-hidden p-4">
+      <div className="flex items-center gap-2 text-[#8b949e] font-mono text-sm mb-4">
+        <Zap className="w-5 h-5 text-[#F59E0B]" /> Assistant
+      </div>
+      <div className="flex-1 rounded border border-[#30363d] bg-[#161b22] p-4 text-[#e6edf3] text-sm">
+        Assistant pane (mock) — Q&A, lightweight help.
+      </div>
     </div>
   );
 }
