@@ -37,8 +37,8 @@ So: add this base repo to your project, point your AI agent at `Project/START_HE
 ### Branch and release flow
 
 - **Feature work** — Branch from `main` using `feature/*` (or `docs/*`, `chore/*`) and open PRs into `main`.
-- **Release promotion** — Promote through PRs from `main` to `Production`.
-- **Hotfixes** — Branch from `Production` using `hotfix/*`, merge into `Production`, then back-merge into `main`.
+- **Release promotion** — Promote through PRs from `main` to `production`.
+- **Hotfixes** — Branch from `production` using `hotfix/*`, merge into `production`, then back-merge into `main`.
 - **Development branch** — `development` is transitional and retained temporarily for in-flight work only; avoid creating new work on it.
 
 ## How to contribute (AI agents)
@@ -46,7 +46,7 @@ So: add this base repo to your project, point your AI agent at `Project/START_HE
 - Read `Project/START_HERE.md` first.
 - Follow `Orchestration/Constraints/RULES.md` and respect `Orchestration/Memories/SETTINGS.json` (including GitHub integration settings).
 - For bugs or suggestions, create GitHub issues when allowed by config; use the repository’s issue templates when available.
-- Prefer feature branches that target `main`; use `main -> Production` PRs for release promotions.
+- Prefer feature branches that target `main`; use `main -> production` PRs for release promotions.
 
 ## License
 
