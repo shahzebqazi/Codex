@@ -241,9 +241,9 @@ export default function App() {
             }}
           />
         )}
-        <div className="relative z-10 flex flex-col flex-1 min-h-0 bg-[#0a0a0a]/95 rounded-t-xl overflow-hidden shadow-2xl">
+        <div className="relative z-10 flex flex-col flex-1 min-h-0 min-w-0 bg-[#0a0a0a]/95 rounded-t-xl overflow-hidden shadow-2xl">
           {tabBar}
-          <div className="flex-1 min-h-0 overflow-hidden">{paneContent}</div>
+          <div className="flex-1 min-h-0 min-w-0 overflow-hidden flex flex-col">{paneContent}</div>
         </div>
       </div>
     );
@@ -628,29 +628,194 @@ function MainChatView(
     </div>
   );
 
+  // Mobile/narrow: single scrollable column so all sections + status bar are reachable
+  if (narrow) {
+    const modeTabs = (
+      <div className="flex items-center gap-1 px-2 py-2 border-b border-[#1A1A1A] shrink-0 bg-[#0a0a0a] flex-wrap">
+        <button onClick={() => setMainViewMode('list')} className={`px-3 py-2 rounded text-xs font-mono touch-manipulation ${mainViewMode === 'list' ? 'bg-[#E5E5E5]/15 text-[#E5E5E5]' : 'text-[#666666] hover:text-[#E5E5E5]'}`}>List</button>
+        <button onClick={() => setMainViewMode('kanban')} className={`px-3 py-2 rounded text-xs font-mono touch-manipulation ${mainViewMode === 'kanban' ? 'bg-[#E5E5E5]/15 text-[#E5E5E5]' : 'text-[#666666] hover:text-[#E5E5E5]'}`}>Kanban</button>
+        <button onClick={() => setMainViewMode('calendar')} className={`px-3 py-2 rounded text-xs font-mono touch-manipulation ${mainViewMode === 'calendar' ? 'bg-[#E5E5E5]/15 text-[#E5E5E5]' : 'text-[#666666] hover:text-[#E5E5E5]'}`}>Calendar</button>
+        <button onClick={() => setMainViewMode('graph')} className={`px-3 py-2 rounded text-xs font-mono flex items-center gap-1 touch-manipulation ${mainViewMode === 'graph' ? 'bg-[#E5E5E5]/15 text-[#E5E5E5]' : 'text-[#666666] hover:text-[#E5E5E5]'}`} title="3D thread graph"><Network className="w-3.5 h-3.5" /> Graph</button>
+      </div>
+    );
+    return (
+      <div className="bg-[#0a0a0a] flex flex-col h-full min-h-0 overflow-hidden">
+        {/* Overlay drawers for sidebars */}
+        <AnimatePresence>
+          {leftSidebarOpen && (
+            <>
+              <div className="fixed inset-0 bg-black/60 z-40" aria-hidden onClick={() => setLeftSidebarOpen(false)} />
+              <motion.div
+                initial={{ x: '-100%' }}
+                animate={{ x: 0 }}
+                exit={{ x: '-100%' }}
+                transition={{ type: 'tween', duration: 0.2 }}
+                className="fixed left-0 top-0 bottom-0 w-[min(280px,85vw)] bg-[#000000] border-r border-[#1A1A1A] z-50 flex flex-col shadow-xl"
+              >
+                {leftSidebarContent}
+              </motion.div>
+            </>
+          )}
+        </AnimatePresence>
+        <AnimatePresence>
+          {rightSidebarOpen && (
+            <>
+              <div className="fixed inset-0 bg-black/60 z-40" aria-hidden onClick={() => setRightSidebarOpen(false)} />
+              <motion.div
+                initial={{ x: '100%' }}
+                animate={{ x: 0 }}
+                exit={{ x: '100%' }}
+                transition={{ type: 'tween', duration: 0.2 }}
+                className="fixed right-0 top-0 bottom-0 w-[min(260px,85vw)] bg-[#000000] border-l border-[#1A1A1A] z-50 flex flex-col shadow-xl"
+              >
+                <div className="w-full h-full flex flex-col min-w-0">
+                  <div className="flex items-center justify-between gap-2 p-2 border-b border-[#1A1A1A] bg-[#0A0A0A] shrink-0">
+                    <span className="flex items-center gap-1.5 text-xs font-mono text-[#666666] uppercase tracking-wide">
+                      <HandMetal className="w-3.5 h-3.5 text-[#8b949e]" aria-hidden />
+                      Threads
+                    </span>
+                    <button onClick={() => setRightSidebarOpen(false)} className="p-2 rounded text-[#666666] hover:bg-[#1A1A1A] hover:text-[#E5E5E5] touch-manipulation" title="Close"><PanelRight className="w-4 h-4 rotate-180" /></button>
+                  </div>
+                  <div className="flex-1 overflow-y-auto p-2">
+                    {(['general', 'MVP PRD', 'docs'] as const).map((tid) => (
+                      <button
+                        key={tid}
+                        onClick={() => setSelectedThreadId(tid)}
+                        className={`w-full text-left px-3 py-2.5 rounded text-sm cursor-pointer transition-colors touch-manipulation ${selectedThreadId === tid ? 'text-[#E5E5E5] bg-[#E5E5E5]/10' : 'text-[#666666] hover:bg-[#1A1A1A] hover:text-[#E5E5E5]'}`}
+                      >
+                        #{tid}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </motion.div>
+            </>
+          )}
+        </AnimatePresence>
+
+        {/* Single scrollable column: tasks, chat, btop */}
+        <div className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden overscroll-contain" style={{ WebkitOverflowScrolling: 'touch' }}>
+          {/* Section: Tasks / List / Kanban / Calendar / Graph */}
+          <section className="border-b border-[#1A1A1A] bg-[#0a0a0a]">
+            {modeTabs}
+            <div className="min-h-[180px] p-3">
+              {mainViewMode === 'list' && (
+                <ul className="space-y-2 font-mono text-sm">
+                  {MOCK_TASKS.map(t => (
+                    <li key={t.id} className="flex flex-col gap-1 sm:flex-row sm:items-center sm:gap-3 px-3 py-3 rounded-lg bg-[#0A0A0A] border border-[#1A1A1A]">
+                      <span className="text-[#666666]">{t.id}</span>
+                      <span className="text-[#E5E5E5] flex-1">{t.title}</span>
+                      <span className="text-[#10B981] text-xs">{t.status}</span>
+                      <span className="text-[#666666] text-xs">{t.assignee}</span>
+                      <span className="text-[#666666] text-xs">{t.due}</span>
+                    </li>
+                  ))}
+                </ul>
+              )}
+              {mainViewMode === 'kanban' && (
+                <div className="flex flex-col gap-4 sm:flex-row sm:gap-4">
+                  {(['todo', 'in_progress', 'done'] as const).map(col => (
+                    <div key={col} className="flex-1 min-w-0 rounded-lg bg-[#0A0A0A] border border-[#1A1A1A] p-3">
+                      <div className="text-xs font-mono text-[#666666] uppercase mb-2">{col.replace('_', ' ')}</div>
+                      <div className="space-y-2">
+                        {MOCK_TASKS.filter(t => t.status === col).map(t => (
+                          <div key={t.id} className={`p-3 rounded-lg border text-sm text-[#0a0a0a] font-medium ${col === 'todo' ? 'bg-[#bfdbfe] border-[#93c5fd]' : col === 'in_progress' ? 'bg-[#fde68a] border-[#fcd34d]' : 'bg-[#bbf7d0] border-[#86efac]'}`}>{t.title}</div>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+              {mainViewMode === 'calendar' && (
+                <div className="grid grid-cols-7 gap-1 font-mono text-xs">
+                  {['M', 'T', 'W', 'T', 'F', 'S', 'S'].map((d, i) => <div key={i} className="text-[#666666] text-center py-1">{d}</div>)}
+                  {Array.from({ length: 14 }, (_, i) => {
+                    const day = i + 1;
+                    const events = MOCK_CALENDAR_EVENTS.filter(e => e.date === `Mar ${day}`);
+                    return (
+                      <div key={i} className="p-1.5 rounded bg-[#0A0A0A] border border-[#1A1A1A]">
+                        <span className="text-[#666666]">{day}</span>
+                        {events.slice(0, 2).map(ev => <div key={ev.id} className="text-[10px] text-[#0EA5E9] truncate">{ev.title}</div>)}
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+              {mainViewMode === 'graph' && (
+                <div className="min-h-[240px] rounded border border-[#30363d] overflow-hidden">
+                  <GraphView selectedThreadId={selectedThreadId} threadGraphData={threadGraphData} threadIds={['general', 'MVP PRD', 'docs']} />
+                </div>
+              )}
+            </div>
+          </section>
+
+          {/* Section: Chat */}
+          <section className="border-b border-[#1A1A1A] bg-[#0a0a0a]">
+            <div className="px-3 py-2 border-b border-[#1A1A1A] text-xs font-mono text-[#666666]">Chat</div>
+            <div className="p-3 space-y-3 font-mono text-xs max-h-[320px] overflow-y-auto">
+              <div className="flex flex-col gap-1">
+                <span className="text-[#8b949e]">User</span>
+                <div className="rounded bg-[#161b22] border border-[#30363d] px-2.5 py-2 text-[#e6edf3]">How do I install Arch Linux with ZFS as the root filesystem?</div>
+              </div>
+              <div className="flex flex-col gap-1">
+                <span className="text-[#8b949e]">dotAi</span>
+                <div className="rounded bg-[#0d1117] border border-[#30363d] px-2.5 py-2 text-[#e6edf3]">High-level steps: boot Arch ISO, load ZFS, create pool, datasets, install base, chroot, mkinitcpio, bootloader.</div>
+              </div>
+            </div>
+            <div className="p-2 border-t border-[#1A1A1A] bg-[#0a0a0a]">
+              <div className="w-full bg-[#0A0A0A] border border-[#1A1A1A] rounded-xl px-3 py-2.5 flex items-center gap-2 font-mono text-xs text-white touch-manipulation">
+                <span>Ask dotAi...</span>
+                <span className="w-2 h-3.5 bg-[#7ee787] animate-cursor-blink flex-shrink-0" aria-hidden />
+              </div>
+            </div>
+          </section>
+
+          {/* Section: Diagnostics (btop) */}
+          <section className="border-b border-[#1A1A1A] bg-[#0a0a0a]">
+            <div className="px-3 py-2 border-b border-[#1A1A1A] text-xs font-mono text-[#666666]">Diagnostics</div>
+            <div className="min-h-[200px] p-2">
+              <MiniBtop />
+            </div>
+          </section>
+        </div>
+
+        {/* Status bar — always visible at bottom */}
+        <div className="shrink-0 flex items-center gap-1 px-2 py-2 border-t border-[#1A1A1A] bg-[#0A0A0A] text-[#666666] pb-[max(0.5rem,env(safe-area-inset-bottom))]">
+          <button onClick={() => setLeftSidebarOpen(!leftSidebarOpen)} className={`p-2.5 rounded touch-manipulation ${leftSidebarOpen ? 'bg-[#E5E5E5]/10 text-[#E5E5E5]' : 'hover:bg-[#1A1A1A] hover:text-[#E5E5E5]'}`} title="Explorer"><PanelLeft className="w-4 h-4" /></button>
+          <button onClick={() => setTerminalOpen(!terminalOpen)} className={`p-2.5 rounded touch-manipulation ${terminalOpen ? 'bg-[#E5E5E5]/10 text-[#E5E5E5]' : 'hover:bg-[#1A1A1A] hover:text-[#E5E5E5]'}`} title="Terminal"><PanelBottom className="w-4 h-4" /></button>
+          <button onClick={() => setRightSidebarOpen(!rightSidebarOpen)} className={`p-2.5 rounded touch-manipulation ${rightSidebarOpen ? 'bg-[#E5E5E5]/10 text-[#E5E5E5]' : 'hover:bg-[#1A1A1A] hover:text-[#E5E5E5]'}`} title="Threads"><PanelRight className="w-3.5 h-3.5" /></button>
+        </div>
+
+        <AnimatePresence>
+          {terminalOpen && (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: '40%', opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ type: 'tween', duration: 0.2 }}
+              className="absolute bottom-0 left-0 right-0 border-t border-[#1A1A1A] bg-[#0d1117] flex flex-col overflow-hidden z-50"
+              style={{ minHeight: 0 }}
+            >
+              <div className="flex items-center justify-between px-2 py-2 border-b border-[#30363d] shrink-0 bg-[#161b22]">
+                <span className="text-xs font-mono text-[#8b949e]">xonsh — Terminal</span>
+                <button onClick={() => setTerminalOpen(false)} className="p-2 text-[#8b949e] hover:text-[#e6edf3] rounded touch-manipulation"><X className="w-4 h-4" /></button>
+              </div>
+              <div className="flex-1 overflow-auto p-3 font-mono text-sm min-h-0">
+                <pre className="text-[#7ee787]">$ <span className="text-[#e6edf3]">_</span></pre>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+    );
+  }
+
+  // Desktop layout
   return (
     <div className="bg-[#0a0a0a] overflow-hidden flex flex-col h-full min-h-0">
       <div className="flex flex-col flex-1 min-h-0">
-        <div className={`flex flex-1 min-h-0 ${narrow ? 'flex-col' : ''}`}>
-          {/* Left Sidebar — inline on desktop, overlay drawer on narrow */}
-          {narrow ? (
-            <AnimatePresence>
-              {leftSidebarOpen && (
-                <>
-                  <div className="fixed inset-0 bg-black/60 z-40" aria-hidden onClick={() => setLeftSidebarOpen(false)} />
-                  <motion.div
-                    initial={{ x: '-100%' }}
-                    animate={{ x: 0 }}
-                    exit={{ x: '-100%' }}
-                    transition={{ type: 'tween', duration: 0.2 }}
-                    className="fixed left-0 top-0 bottom-0 w-[min(280px,85vw)] bg-[#000000] border-r border-[#1A1A1A] z-50 flex flex-col shadow-xl"
-                  >
-                    {leftSidebarContent}
-                  </motion.div>
-                </>
-              )}
-            </AnimatePresence>
-          ) : (
+        <div className="flex flex-1 min-h-0">
+          {/* Left Sidebar */}
           <motion.div
             initial={false}
             animate={{ width: leftSidebarOpen ? 260 : 0 }}
@@ -658,12 +823,10 @@ function MainChatView(
           >
             {leftSidebarContent}
           </motion.div>
-          )}
 
-          {/* Center: half (main) + right column (chat + btop); on narrow they stack vertically */}
-          <div className={`flex-1 flex min-w-0 bg-[#0a0a0a] relative ${narrow ? 'flex-col' : ''}`}>
-            {/* Major section — list / kanban / calendar / graph */}
-            <div className={`min-w-0 flex flex-col border-[#1A1A1A] bg-[#0a0a0a] shrink-0 ${narrow ? 'w-full border-b min-h-[200px]' : 'w-1/2 border-r'}`}>
+          {/* Center + right column */}
+          <div className="flex-1 flex min-w-0 bg-[#0a0a0a] relative">
+            <div className="w-1/2 min-w-0 flex flex-col border-r border-[#1A1A1A] bg-[#0a0a0a] shrink-0">
               <div className="flex items-center gap-1 px-2 py-1.5 border-b border-[#1A1A1A] shrink-0 bg-[#0a0a0a]">
                 <button onClick={() => setMainViewMode('list')} className={`px-2 py-1 rounded text-xs font-mono ${mainViewMode === 'list' ? 'bg-[#E5E5E5]/15 text-[#E5E5E5]' : 'text-[#666666] hover:text-[#E5E5E5]'}`}>List</button>
                 <button onClick={() => setMainViewMode('kanban')} className={`px-2 py-1 rounded text-xs font-mono ${mainViewMode === 'kanban' ? 'bg-[#E5E5E5]/15 text-[#E5E5E5]' : 'text-[#666666] hover:text-[#E5E5E5]'}`}>Kanban</button>
@@ -747,8 +910,8 @@ function MainChatView(
               </div>
             </div>
 
-            {/* Right column — AI chat + btop; full width when narrow */}
-            <div className={`min-w-0 flex flex-col shrink-0 border-[#1A1A1A] bg-[#0a0a0a] ${narrow ? 'w-full flex-1 min-h-0 border-t' : 'w-1/2 border-l'}`}>
+            {/* Right column — AI chat + btop */}
+            <div className="w-1/2 min-w-0 flex flex-col shrink-0 border-l border-[#1A1A1A] bg-[#0a0a0a]">
               {/* Chat: messages area + input at bottom with icons */}
               <div className="flex-1 min-h-0 flex flex-col border-b border-[#1A1A1A] bg-[#0a0a0a] overflow-hidden">
                 <div className="flex-1 min-h-0 overflow-auto p-2 space-y-3 font-mono text-xs">
@@ -819,48 +982,7 @@ zfs mount rpool/root/arch`}</pre>
             </div>
           </div>
 
-          {/* Right Sidebar - Threads: inline on desktop, overlay drawer on narrow */}
-          {narrow ? (
-            <AnimatePresence>
-              {rightSidebarOpen && (
-                <>
-                  <div className="fixed inset-0 bg-black/60 z-40" aria-hidden onClick={() => setRightSidebarOpen(false)} />
-                  <motion.div
-                    initial={{ x: '100%' }}
-                    animate={{ x: 0 }}
-                    exit={{ x: '100%' }}
-                    transition={{ type: 'tween', duration: 0.2 }}
-                    className="fixed right-0 top-0 bottom-0 w-[min(260px,85vw)] bg-[#000000] border-l border-[#1A1A1A] z-50 flex flex-col shadow-xl"
-                  >
-                    <div className="w-full h-full flex flex-col min-w-0">
-                      <div className="flex items-center justify-between gap-2 p-2 border-b border-[#1A1A1A] bg-[#0A0A0A] shrink-0">
-                        <span className="flex items-center gap-1.5 text-xs font-mono text-[#666666] uppercase tracking-wide">
-                          <HandMetal className="w-3.5 h-3.5 text-[#8b949e]" aria-hidden />
-                          Threads
-                        </span>
-                        <button onClick={() => setRightSidebarOpen(false)} className="p-1.5 rounded text-[#666666] hover:bg-[#1A1A1A] hover:text-[#E5E5E5]" title="Hide sidebar">
-                          <PanelRight className="w-4 h-4 rotate-180" />
-                        </button>
-                      </div>
-                      <div className="flex-1 overflow-y-auto p-2">
-                        <div className="space-y-0.5">
-                          {(['general', 'MVP PRD', 'docs'] as const).map((tid) => (
-                            <button
-                              key={tid}
-                              onClick={() => setSelectedThreadId(tid)}
-                              className={`w-full text-left px-2 py-1.5 rounded text-sm cursor-pointer transition-colors ${selectedThreadId === tid ? 'text-[#E5E5E5] bg-[#E5E5E5]/10' : 'text-[#666666] hover:bg-[#1A1A1A] hover:text-[#E5E5E5]'}`}
-                            >
-                              #{tid}
-                            </button>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-                  </motion.div>
-                </>
-              )}
-            </AnimatePresence>
-          ) : (
+          {/* Right Sidebar - Threads */}
           <motion.div
             initial={false}
             animate={{ width: rightSidebarOpen ? 220 : 0 }}
@@ -891,10 +1013,9 @@ zfs mount rpool/root/arch`}</pre>
               </div>
             </div>
           </motion.div>
-          )}
         </div>
 
-        {/* Status bar: only show/hide left, bottom, and right sidebar */}
+        {/* Status bar */}
         <div className="flex items-center gap-0.5 px-2 py-1 border-t border-[#1A1A1A] bg-[#0A0A0A] shrink-0 min-h-[28px] text-[#666666]">
           <button onClick={() => setLeftSidebarOpen(!leftSidebarOpen)} className={`p-1.5 rounded ${leftSidebarOpen ? 'bg-[#E5E5E5]/10 text-[#E5E5E5]' : 'hover:bg-[#1A1A1A] hover:text-[#E5E5E5]'}`} title="Toggle left sidebar"><PanelLeft className="w-3.5 h-3.5" /></button>
           <button onClick={() => setTerminalOpen(!terminalOpen)} className={`p-1.5 rounded ${terminalOpen ? 'bg-[#E5E5E5]/10 text-[#E5E5E5]' : 'hover:bg-[#1A1A1A] hover:text-[#E5E5E5]'}`} title="Toggle bottom panel"><PanelBottom className="w-3.5 h-3.5" /></button>
