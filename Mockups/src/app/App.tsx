@@ -1,9 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { ChevronLeft, ChevronRight, Menu, Settings, User, Paperclip, Mic, Target, ChevronDown, Circle, PanelLeft, PanelRight, PanelBottom, X, Terminal, FileCode, Wrench, Cpu, Zap, Shield, Database, Code2, Layers, Activity, Bug, GitCommit, FolderOpen, File, Files, Puzzle, GitBranch, Search, ChevronRight as ChevronRightIcon, Folder, MessageCircle, Network, Globe, Image as ImageIcon, LayoutList, Bot } from 'lucide-react';
-
-// Koi pond / water background (Unsplash, verified 200)
-const KOI_POND_BG = 'https://images.unsplash.com/photo-1582794543139-8ac9cb0f7b11?w=1920&q=80';
+import { ChevronLeft, ChevronRight, Menu, Settings, User, Paperclip, Mic, Target, ChevronDown, Circle, PanelLeft, PanelRight, PanelBottom, X, Terminal, FileCode, Wrench, Cpu, Zap, Shield, Database, Code2, Layers, Activity, Bug, GitCommit, FolderOpen, File, Files, Puzzle, GitBranch, Search, ChevronRight as ChevronRightIcon, Folder, MessageCircle, Network, Globe, Image as ImageIcon, LayoutList, Bot, MoreVertical } from 'lucide-react';
+import { PsychedelicLiquidBackground } from './components/PsychedelicLiquidBackground';
 
 export default function App() {
   const [showSettings, setShowSettings] = useState(false);
@@ -11,23 +9,9 @@ export default function App() {
 
   return (
     <div className="min-h-screen overflow-hidden relative">
-      {/* Koi pond background with vaporwave + blur */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div
-          className="absolute inset-0 bg-cover bg-center"
-          style={{
-            backgroundImage: `url(${KOI_POND_BG})`,
-            transform: 'scale(1.15)',
-            filter: 'blur(14px) saturate(1.5) hue-rotate(-20deg) contrast(0.9) brightness(0.65)',
-          }}
-        />
-        <div
-          className="absolute inset-0 opacity-80"
-          style={{
-            background: 'linear-gradient(135deg, rgba(255,0,128,0.2) 0%, transparent 45%, transparent 55%, rgba(0,255,255,0.15) 100%)',
-            mixBlendMode: 'overlay',
-          }}
-        />
+      {/* Background only on home page chat; black fallback */}
+      <div className="absolute inset-0 overflow-hidden bg-black">
+        {!showSettings && <PsychedelicLiquidBackground />}
       </div>
 
       {/* Floating mockup window */}
@@ -74,6 +58,8 @@ const GRAPH_EDGES = [
 function MainChatView(
   { sidebarOpen, setSidebarOpen, onOpenSettings }: { sidebarOpen: boolean; setSidebarOpen: (open: boolean) => void; onOpenSettings: () => void }
 ) {
+  const [leftSidebarOpen, setLeftSidebarOpen] = useState(true);
+  const [rightSidebarOpen, setRightSidebarOpen] = useState(true);
   const [activeSidebarTab, setActiveSidebarTab] = useState<'files' | 'search' | 'git' | 'extensions'>('files');
   const [mainCenterTab, setMainCenterTab] = useState<MainCenterTab>('chat');
   const [newPane, setNewPane] = useState<NewPaneType>(null);
@@ -142,83 +128,41 @@ function MainChatView(
         <div className="w-12" />
       </div>
 
-      {/* Main Content Area */}
-      <div className="flex h-[580px]">
-        {/* Collapse tab when sidebar is hidden (Threads) */}
-        {!sidebarOpen && (
-          <button
-            onClick={() => setSidebarOpen(true)}
-            className="flex flex-col items-center justify-center w-9 bg-[#0A0A0A] border-r border-[#1A1A1A] hover:bg-[#1A1A1A] text-[#666666] hover:text-[#E5E5E5] transition-colors shrink-0 py-3"
-            title="Show sidebar (Threads)"
-          >
-            <PanelRight className="w-4 h-4 shrink-0" />
-            <span className="text-[10px] font-mono uppercase tracking-wider mt-2" style={{ writingMode: 'vertical-rl' }}>Threads</span>
-          </button>
-        )}
+      {/* Main Content Area: left sidebar | center | right sidebar */}
+      <div className="flex flex-col flex-1 min-h-0">
+        <div className="flex flex-1 min-h-0" style={{ height: '480px' }}>
+          {/* Left sidebar collapse tab */}
+          {!leftSidebarOpen && (
+            <button
+              onClick={() => setLeftSidebarOpen(true)}
+              className="flex flex-col items-center justify-center w-9 bg-[#0A0A0A] border-r border-[#1A1A1A] hover:bg-[#1A1A1A] text-[#666666] hover:text-[#E5E5E5] shrink-0 py-3"
+              title="Show Explorer"
+            >
+              <PanelRight className="w-4 h-4" />
+              <Folder className="w-4 h-4 mt-2" />
+            </button>
+          )}
 
-        {/* Left Sidebar - Threads, collapsible file explorer */}
-        <motion.div
-          initial={false}
-          animate={{ width: sidebarOpen ? 280 : 0 }}
-          className="bg-[#000000] border-r border-[#1A1A1A] overflow-hidden flex flex-col shrink-0"
-        >
-          <div className="w-[280px] h-full flex flex-col min-w-0">
-            {/* Sidebar Header: Threads label + collapse + Explorer icons */}
-            <div className="flex items-center justify-between gap-2 p-2 border-b border-[#1A1A1A] bg-[#0A0A0A] shrink-0">
-              <div className="flex items-center gap-1.5 min-w-0">
-                <span className="text-xs font-mono text-[#666666] uppercase tracking-wide truncate">Threads</span>
-                <button
-                  onClick={() => setSidebarOpen(false)}
-                  className="p-1.5 rounded text-[#666666] hover:bg-[#1A1A1A] hover:text-[#E5E5E5] transition-colors shrink-0"
-                  title="Hide sidebar"
-                >
+          {/* Left Sidebar - Explorer, Search, Git, Extensions only */}
+          <motion.div
+            initial={false}
+            animate={{ width: leftSidebarOpen ? 260 : 0 }}
+            className="bg-[#000000] border-r border-[#1A1A1A] overflow-hidden flex flex-col shrink-0"
+          >
+            <div className="w-[260px] h-full flex flex-col min-w-0">
+              <div className="flex items-center justify-between gap-2 p-2 border-b border-[#1A1A1A] bg-[#0A0A0A] shrink-0">
+                <span className="text-xs font-mono text-[#666666] uppercase tracking-wide">Explorer</span>
+                <button onClick={() => setLeftSidebarOpen(false)} className="p-1.5 rounded text-[#666666] hover:bg-[#1A1A1A] hover:text-[#E5E5E5]" title="Hide sidebar">
                   <PanelLeft className="w-4 h-4" />
                 </button>
               </div>
-              <div className="flex items-center gap-0.5 shrink-0">
-                <button
-                  onClick={() => setActiveSidebarTab('files')}
-                  className={`p-2 rounded transition-colors ${activeSidebarTab === 'files' ? 'bg-[#E5E5E5]/10 text-[#E5E5E5]' : 'text-[#666666] hover:text-[#E5E5E5]'}`}
-                  title="Explorer"
-                >
-                  <Folder className="w-4 h-4" />
-                </button>
-                <button
-                  onClick={() => setActiveSidebarTab('search')}
-                  className={`p-2 rounded transition-colors ${activeSidebarTab === 'search' ? 'bg-[#E5E5E5]/10 text-[#E5E5E5]' : 'text-[#666666] hover:text-[#E5E5E5]'}`}
-                  title="Search"
-                >
-                  <Search className="w-4 h-4" />
-                </button>
-                <button
-                  onClick={() => setActiveSidebarTab('git')}
-                  className={`p-2 rounded transition-colors ${activeSidebarTab === 'git' ? 'bg-[#E5E5E5]/10 text-[#E5E5E5]' : 'text-[#666666] hover:text-[#E5E5E5]'}`}
-                  title="Source Control"
-                >
-                  <GitBranch className="w-4 h-4" />
-                </button>
-                <button
-                  onClick={() => setActiveSidebarTab('extensions')}
-                  className={`p-2 rounded transition-colors ${activeSidebarTab === 'extensions' ? 'bg-[#E5E5E5]/10 text-[#E5E5E5]' : 'text-[#666666] hover:text-[#E5E5E5]'}`}
-                  title="Extensions"
-                >
-                  <Puzzle className="w-4 h-4" />
-                </button>
+              <div className="flex items-center gap-0.5 px-2 py-1 border-b border-[#1A1A1A] bg-[#0A0A0A]/50">
+                <button onClick={() => setActiveSidebarTab('files')} className={`p-2 rounded transition-colors ${activeSidebarTab === 'files' ? 'bg-[#E5E5E5]/10 text-[#E5E5E5]' : 'text-[#666666] hover:text-[#E5E5E5]'}`} title="Files"><Folder className="w-4 h-4" /></button>
+                <button onClick={() => setActiveSidebarTab('search')} className={`p-2 rounded transition-colors ${activeSidebarTab === 'search' ? 'bg-[#E5E5E5]/10 text-[#E5E5E5]' : 'text-[#666666] hover:text-[#E5E5E5]'}`} title="Search"><Search className="w-4 h-4" /></button>
+                <button onClick={() => setActiveSidebarTab('git')} className={`p-2 rounded transition-colors ${activeSidebarTab === 'git' ? 'bg-[#E5E5E5]/10 text-[#E5E5E5]' : 'text-[#666666] hover:text-[#E5E5E5]'}`} title="Source Control"><GitBranch className="w-4 h-4" /></button>
+                <button onClick={() => setActiveSidebarTab('extensions')} className={`p-2 rounded transition-colors ${activeSidebarTab === 'extensions' ? 'bg-[#E5E5E5]/10 text-[#E5E5E5]' : 'text-[#666666] hover:text-[#E5E5E5]'}`} title="Extensions"><Puzzle className="w-4 h-4" /></button>
               </div>
-            </div>
-
-            {/* Sidebar Content */}
-            <div className="flex-1 overflow-y-auto p-2 flex flex-col gap-4">
-              {/* Threads section - always visible at top */}
-              <div>
-                <div className="text-xs text-[#666666] font-mono uppercase tracking-wide mb-1.5 px-2">Threads</div>
-                <div className="space-y-0.5">
-                  <div className="px-2 py-1.5 rounded text-sm text-[#E5E5E5] bg-[#E5E5E5]/5 cursor-pointer"># general</div>
-                  <div className="px-2 py-1.5 rounded text-sm text-[#666666] hover:bg-[#1A1A1A] cursor-pointer"># MVP PRD</div>
-                  <div className="px-2 py-1.5 rounded text-sm text-[#666666] hover:bg-[#1A1A1A] cursor-pointer"># docs</div>
-                </div>
-              </div>
-
+              <div className="flex-1 overflow-y-auto p-2">
               {activeSidebarTab === 'files' && (
                 <div className="space-y-0.5">
                   <div>
@@ -321,12 +265,12 @@ function MainChatView(
                   </div>
                 </div>
               )}
+              </div>
             </div>
-          </div>
-        </motion.div>
+          </motion.div>
 
-        {/* Center Area - Icon tabs + Content */}
-        <div className="flex-1 flex flex-col min-w-0 bg-[#000000] relative">
+          {/* Center Area - Icon tabs + Content */}
+          <div className="flex-1 flex flex-col min-w-0 bg-[#000000] relative">
           {/* Icon tab bar + New pane buttons */}
           <div className="flex items-center border-b border-[#1A1A1A] px-2 py-1.5 gap-1">
             <button
@@ -498,30 +442,74 @@ function MainChatView(
             </div>
           </div>
           )}
-          {/* + New pane overlay (shared for Chat and Graph) */}
+          {/* In-layout pane (split/panel instead of floating) */}
           {newPane && (
-            <div className="absolute inset-0 flex items-center justify-center bg-black/60 z-10 p-8">
-              <div className="bg-[#161b22] border border-[#30363d] rounded-lg shadow-xl max-w-2xl w-full max-h-[80%] overflow-hidden flex flex-col">
-                <div className="flex items-center justify-between px-4 py-2 border-b border-[#30363d]">
-                  <span className="text-sm font-mono text-[#e6edf3]">
-                    {newPane === 'chat' && 'Chat'}
-                    {newPane === 'xonsh' && 'xonsh'}
-                    {newPane === 'file' && 'file'}
-                    {newPane === 'browser' && 'Browser'}
-                    {newPane === 'image' && 'Image'}
-                  </span>
-                  <button onClick={() => setNewPane(null)} className="p-1 text-[#8b949e] hover:text-[#e6edf3] rounded"><X className="w-4 h-4" /></button>
-                </div>
-                <div className="flex-1 overflow-auto p-4 min-h-[200px]">
-                  {newPane === 'chat' && <ChatPaneMock />}
-                  {newPane === 'xonsh' && <XonshPaneMock />}
-                  {newPane === 'file' && <FilePaneMock />}
-                  {newPane === 'browser' && <BrowserPaneMock />}
-                  {newPane === 'image' && <ImagePaneMock />}
-                </div>
+            <div className="border-t border-[#1A1A1A] bg-[#161b22] flex flex-col min-h-0 flex-shrink-0" style={{ maxHeight: '40%' }}>
+              <div className="flex items-center justify-between px-2 py-1.5 border-b border-[#30363d] shrink-0">
+                <span className="text-xs font-mono text-[#e6edf3]">
+                  {newPane === 'chat' && 'Chat'}
+                  {newPane === 'xonsh' && 'xonsh'}
+                  {newPane === 'file' && 'file'}
+                  {newPane === 'browser' && 'Browser'}
+                  {newPane === 'image' && 'Image'}
+                </span>
+                <button onClick={() => setNewPane(null)} className="p-1 text-[#8b949e] hover:text-[#e6edf3] rounded"><X className="w-4 h-4" /></button>
+              </div>
+              <div className="flex-1 overflow-auto p-3 min-h-[120px]">
+                {newPane === 'chat' && <ChatPaneMock />}
+                {newPane === 'xonsh' && <XonshPaneMock />}
+                {newPane === 'file' && <FilePaneMock />}
+                {newPane === 'browser' && <BrowserPaneMock />}
+                {newPane === 'image' && <ImagePaneMock />}
               </div>
             </div>
           )}
+          </div>
+
+          {/* Right Sidebar - Threads only */}
+          {!rightSidebarOpen && (
+            <button
+              onClick={() => setRightSidebarOpen(true)}
+              className="flex flex-col items-center justify-center w-9 bg-[#0A0A0A] border-l border-[#1A1A1A] hover:bg-[#1A1A1A] text-[#666666] hover:text-[#E5E5E5] shrink-0 py-3"
+              title="Show Threads"
+            >
+              <PanelLeft className="w-4 h-4 rotate-180" />
+              <span className="text-[10px] font-mono uppercase mt-2" style={{ writingMode: 'vertical-rl' }}>Threads</span>
+            </button>
+          )}
+          <motion.div
+            initial={false}
+            animate={{ width: rightSidebarOpen ? 220 : 0 }}
+            className="bg-[#000000] border-l border-[#1A1A1A] overflow-hidden flex flex-col shrink-0"
+          >
+            <div className="w-[220px] h-full flex flex-col min-w-0">
+              <div className="flex items-center justify-between gap-2 p-2 border-b border-[#1A1A1A] bg-[#0A0A0A] shrink-0">
+                <span className="text-xs font-mono text-[#666666] uppercase tracking-wide">Threads</span>
+                <button onClick={() => setRightSidebarOpen(false)} className="p-1.5 rounded text-[#666666] hover:bg-[#1A1A1A] hover:text-[#E5E5E5]" title="Hide sidebar">
+                  <PanelRight className="w-4 h-4 rotate-180" />
+                </button>
+              </div>
+              <div className="flex-1 overflow-y-auto p-2">
+                <div className="space-y-0.5">
+                  <div className="px-2 py-1.5 rounded text-sm text-[#E5E5E5] bg-[#E5E5E5]/5 cursor-pointer"># general</div>
+                  <div className="px-2 py-1.5 rounded text-sm text-[#666666] hover:bg-[#1A1A1A] cursor-pointer"># MVP PRD</div>
+                  <div className="px-2 py-1.5 rounded text-sm text-[#666666] hover:bg-[#1A1A1A] cursor-pointer"># docs</div>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+
+        {/* Bottom bar - Terminal, selector, options */}
+        <div className="flex items-center gap-2 px-2 py-1.5 border-t border-[#1A1A1A] bg-[#0A0A0A] shrink-0 min-h-[36px]">
+          <Terminal className="w-4 h-4 text-[#10B981] shrink-0" title="Terminal" />
+          <button className="flex items-center gap-1 px-2 py-1 rounded text-xs font-mono text-[#E5E5E5] hover:bg-[#1A1A1A]">
+            <span>xonsh</span>
+            <ChevronDown className="w-3.5 h-3.5 text-[#666666]" />
+          </button>
+          <div className="w-px h-5 bg-[#333333]" />
+          <button className="p-1.5 rounded text-[#666666] hover:bg-[#1A1A1A] hover:text-[#E5E5E5]" title="Terminal options"><MoreVertical className="w-4 h-4" /></button>
+          <button className="p-1.5 rounded text-[#666666] hover:bg-[#1A1A1A] hover:text-[#E5E5E5]" title="New terminal"><Terminal className="w-4 h-4" /></button>
         </div>
       </div>
     </div>
