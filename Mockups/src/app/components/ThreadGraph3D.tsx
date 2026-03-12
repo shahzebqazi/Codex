@@ -1,4 +1,4 @@
-import { useCallback, useRef, useMemo, lazy, Suspense } from 'react';
+import { useCallback, useMemo, lazy, Suspense } from 'react';
 
 const ForceGraph3D = lazy(() =>
   import('react-force-graph-3d').then((mod) => ({ default: mod.default }))

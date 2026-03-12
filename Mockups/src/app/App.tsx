@@ -372,7 +372,7 @@ function MainChatView(
                       <ThreadGraph3D
                         nodes={threadGraphData.nodes}
                         links={threadGraphData.links}
-                        width={Math.min(640, window.innerWidth - 400)}
+                        width={620}
                         height={360}
                         backgroundColor="#0d1117"
                       />
