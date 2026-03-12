@@ -1,147 +1,54 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { ChevronLeft, ChevronRight, Menu, Settings, User, Paperclip, Mic, Target, ChevronDown, Circle, PanelLeft, PanelRight, PanelBottom, X, Terminal, FileCode, Wrench, Cpu, Zap, Shield, Database, Code2, Layers, Activity, Bug, GitCommit, FolderOpen, File, Files, Puzzle, GitBranch, Search, ChevronRight as ChevronRightIcon, Folder, MessageCircle, Network, Plus, Globe, Image as ImageIcon } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Menu, Settings, User, Paperclip, Mic, Target, ChevronDown, Circle, PanelLeft, PanelRight, PanelBottom, X, Terminal, FileCode, Wrench, Cpu, Zap, Shield, Database, Code2, Layers, Activity, Bug, GitCommit, FolderOpen, File, Files, Puzzle, GitBranch, Search, ChevronRight as ChevronRightIcon, Folder, MessageCircle, Network, Globe, Image as ImageIcon, LayoutList, Bot } from 'lucide-react';
 
-type Screen = 'main' | 'settings' | 'mods';
+// Koi pond / water background (Unsplash, verified 200)
+const KOI_POND_BG = 'https://images.unsplash.com/photo-1582794543139-8ac9cb0f7b11?w=1920&q=80';
 
 export default function App() {
-  const [currentScreen, setCurrentScreen] = useState<Screen>('main');
+  const [showSettings, setShowSettings] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(true);
 
-  const screens: Array<{ id: Screen; label: string }> = [
-    { id: 'main', label: 'Main Chat View' },
-    { id: 'settings', label: 'Settings & Config' },
-    { id: 'mods', label: 'Mods & Personas' },
-  ];
-
-  const currentIndex = screens.findIndex(s => s.id === currentScreen);
-
-  const goNext = () => {
-    if (currentIndex < screens.length - 1) {
-      setCurrentScreen(screens[currentIndex + 1].id);
-    }
-  };
-
-  const goPrev = () => {
-    if (currentIndex > 0) {
-      setCurrentScreen(screens[currentIndex - 1].id);
-    }
-  };
-
   return (
-    <div className="min-h-screen bg-[#000000] text-white flex flex-col">
-      {/* Presentation Header */}
-      <div className="border-b border-[#1A1A1A] bg-[#0A0A0A] sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-8 py-6">
-          <div className="flex items-center justify-between mb-4">
-            <div>
-              <h1 className="text-2xl font-semibold mb-1">dotAi Desktop Chat Application</h1>
-              <p className="text-sm text-[#666666]">UX/UI Design Mockups & Wireframes</p>
-            </div>
-            <div className="flex items-center gap-3">
-              {screens.map((screen, idx) => (
-                <button
-                  key={screen.id}
-                  onClick={() => setCurrentScreen(screen.id)}
-                  className={`px-4 py-2 rounded-md text-sm transition-all ${
-                    currentScreen === screen.id
-                      ? 'bg-[#1A1A1A] text-white border border-[#333333]'
-                      : 'text-[#666666] hover:text-white border border-transparent'
-                  }`}
-                >
-                  {idx + 1}. {screen.label}
-                </button>
-              ))}
-            </div>
-          </div>
-          
-          {/* Progress Indicator */}
-          <div className="flex gap-2">
-            {screens.map((screen, idx) => (
-              <div
-                key={screen.id}
-                className="flex-1 h-0.5 rounded-full overflow-hidden bg-[#1A1A1A]"
-              >
-                <motion.div
-                  className="h-full bg-[#0EA5E9]"
-                  initial={{ width: '0%' }}
-                  animate={{ width: currentScreen === screen.id ? '100%' : '0%' }}
-                  transition={{ duration: 0.3 }}
-                />
-              </div>
-            ))}
-          </div>
-        </div>
+    <div className="min-h-screen overflow-hidden relative">
+      {/* Koi pond background with vaporwave + blur */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div
+          className="absolute inset-0 bg-cover bg-center"
+          style={{
+            backgroundImage: `url(${KOI_POND_BG})`,
+            transform: 'scale(1.15)',
+            filter: 'blur(14px) saturate(1.5) hue-rotate(-20deg) contrast(0.9) brightness(0.65)',
+          }}
+        />
+        <div
+          className="absolute inset-0 opacity-80"
+          style={{
+            background: 'linear-gradient(135deg, rgba(255,0,128,0.2) 0%, transparent 45%, transparent 55%, rgba(0,255,255,0.15) 100%)',
+            mixBlendMode: 'overlay',
+          }}
+        />
       </div>
 
-      {/* Main Content */}
-      <div className="flex-1 flex items-center justify-center p-8">
-        <div className="w-full max-w-7xl">
-          <AnimatePresence mode="wait">
-            {currentScreen === 'main' && (
-              <motion.div
-                key="main"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.4 }}
-              >
-                <MainChatView sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
-              </motion.div>
-            )}
-            
-            {currentScreen === 'settings' && (
-              <motion.div
-                key="settings"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.4 }}
-              >
-                <SettingsView />
-              </motion.div>
-            )}
-            
-            {currentScreen === 'mods' && (
-              <motion.div
-                key="mods"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.4 }}
-              >
-                <ModsView />
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
-      </div>
-
-      {/* Navigation Controls */}
-      <div className="border-t border-[#1A1A1A] bg-[#0A0A0A] p-6">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <button
-            onClick={goPrev}
-            disabled={currentIndex === 0}
-            className="flex items-center gap-2 px-4 py-2 rounded-md bg-[#1A1A1A] hover:bg-[#222222] disabled:opacity-30 disabled:cursor-not-allowed transition-all border border-[#333333]"
-          >
-            <ChevronLeft className="w-4 h-4" />
-            <span className="text-sm">Previous</span>
-          </button>
-          
-          <div className="text-sm text-[#666666]">
-            {currentIndex + 1} of {screens.length}
-          </div>
-          
-          <button
-            onClick={goNext}
-            disabled={currentIndex === screens.length - 1}
-            className="flex items-center gap-2 px-4 py-2 rounded-md bg-[#1A1A1A] hover:bg-[#222222] disabled:opacity-30 disabled:cursor-not-allowed transition-all border border-[#333333]"
-          >
-            <span className="text-sm">Next</span>
-            <ChevronRight className="w-4 h-4" />
-          </button>
-        </div>
+      {/* Floating mockup window */}
+      <div className="relative min-h-screen flex items-center justify-center p-8">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="w-full max-w-6xl rounded-xl overflow-hidden shadow-2xl border border-[#333333]/80 bg-[#0a0a0a]/95 backdrop-blur-sm"
+        >
+          {showSettings ? (
+            <>
+              <SettingsView onBack={() => setShowSettings(false)} />
+            </>
+          ) : (
+            <MainChatView
+              sidebarOpen={sidebarOpen}
+              setSidebarOpen={setSidebarOpen}
+              onOpenSettings={() => setShowSettings(true)}
+            />
+          )}
+        </motion.div>
       </div>
     </div>
   );
@@ -164,11 +71,14 @@ const GRAPH_EDGES = [
   { from: '3', to: '4' }, { from: '3', to: '5' }, { from: '4', to: '6' }, { from: '5', to: '6' },
 ];
 
-function MainChatView({ sidebarOpen, setSidebarOpen }: { sidebarOpen: boolean; setSidebarOpen: (open: boolean) => void }) {
+function MainChatView(
+  { sidebarOpen, setSidebarOpen, onOpenSettings }: { sidebarOpen: boolean; setSidebarOpen: (open: boolean) => void; onOpenSettings: () => void }
+) {
   const [activeSidebarTab, setActiveSidebarTab] = useState<'files' | 'search' | 'git' | 'extensions'>('files');
   const [mainCenterTab, setMainCenterTab] = useState<MainCenterTab>('chat');
   const [newPane, setNewPane] = useState<NewPaneType>(null);
   const [expandedFolders, setExpandedFolders] = useState<string[]>(['Orchestration']);
+  const [menuOpen, setMenuOpen] = useState<string | null>(null);
 
   const toggleFolder = (folder: string) => {
     setExpandedFolders(prev =>
@@ -176,88 +86,139 @@ function MainChatView({ sidebarOpen, setSidebarOpen }: { sidebarOpen: boolean; s
     );
   };
 
+  const menuItems = [
+    { name: 'File', sub: [{ label: 'Settings', onClick: onOpenSettings }] },
+    { name: 'Edit', sub: [] },
+    { name: 'Selection', sub: [] },
+    { name: 'Window', sub: [] },
+    { name: 'Go', sub: [] },
+    { name: 'Run', sub: [] },
+    { name: 'Help', sub: [] },
+  ];
+
+  useEffect(() => {
+    if (!menuOpen) return;
+    const close = () => setMenuOpen(null);
+    const t = setTimeout(() => document.addEventListener('click', close), 0);
+    return () => {
+      clearTimeout(t);
+      document.removeEventListener('click', close);
+    };
+  }, [menuOpen]);
+
   return (
-    <div className="bg-[#000000] rounded-xl overflow-hidden shadow-2xl border border-[#1A1A1A]">
-      {/* Window Chrome */}
-      <div className="bg-[#0A0A0A] border-b border-[#1A1A1A] px-4 py-3 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <div className="flex gap-1.5">
-            <div className="w-3 h-3 rounded-full bg-[#FF5F57]" />
-            <div className="w-3 h-3 rounded-full bg-[#FEBC2E]" />
-            <div className="w-3 h-3 rounded-full bg-[#28C840]" />
+    <div className="bg-[#000000] overflow-hidden">
+      {/* Top menu bar */}
+      <div className="bg-[#0A0A0A] border-b border-[#1A1A1A] px-2 py-1 flex items-center gap-0.5 text-sm">
+        {menuItems.map((m) => (
+          <div key={m.name} className="relative">
+            <button
+              onClick={() => setMenuOpen(menuOpen === m.name ? null : m.name)}
+              className="px-3 py-1.5 rounded text-[#E5E5E5] hover:bg-[#1A1A1A]"
+            >
+              {m.name}
+            </button>
+            {menuOpen === m.name && m.sub.length > 0 && (
+              <div className="absolute left-0 top-full mt-0.5 bg-[#1A1A1A] border border-[#333333] rounded-md shadow-xl py-1 z-50 min-w-[160px]">
+                {m.sub.map((s) => (
+                  <button key={s.label} onClick={() => { s.onClick?.(); setMenuOpen(null); }} className="w-full text-left px-3 py-1.5 text-sm text-[#E5E5E5] hover:bg-[#333333]">
+                    {s.label}
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
+        ))}
+      </div>
+
+      {/* Window Chrome */}
+      <div className="bg-[#0A0A0A] border-b border-[#1A1A1A] px-4 py-2 flex items-center justify-between">
+        <div className="flex gap-1.5">
+          <div className="w-3 h-3 rounded-full bg-[#FF5F57]" />
+          <div className="w-3 h-3 rounded-full bg-[#FEBC2E]" />
+          <div className="w-3 h-3 rounded-full bg-[#28C840]" />
         </div>
         <div className="text-xs text-[#666666] font-mono">dotAi — Local Desktop Chat</div>
         <div className="w-12" />
       </div>
 
       {/* Main Content Area */}
-      <div className="flex h-[600px]">
-        {/* Left Icon Bar */}
-        <motion.div
-          initial={false}
-          animate={{ width: sidebarOpen ? 48 : 0 }}
-          className="bg-[#0A0A0A] border-r border-[#1A1A1A] overflow-hidden flex flex-col items-center py-4"
-        >
-          <div className="w-12 space-y-2">
-            <button
-              onClick={() => setActiveSidebarTab('files')}
-              className={`w-full aspect-square flex items-center justify-center rounded transition-colors ${
-                activeSidebarTab === 'files' ? 'bg-[#E5E5E5]/10 text-[#E5E5E5]' : 'text-[#666666] hover:text-[#E5E5E5]'
-              }`}
-              title="Explorer"
-            >
-              <Files className="w-5 h-5" />
-            </button>
-            <button
-              onClick={() => setActiveSidebarTab('search')}
-              className={`w-full aspect-square flex items-center justify-center rounded transition-colors ${
-                activeSidebarTab === 'search' ? 'bg-[#E5E5E5]/10 text-[#E5E5E5]' : 'text-[#666666] hover:text-[#E5E5E5]'
-              }`}
-              title="Search"
-            >
-              <Search className="w-5 h-5" />
-            </button>
-            <button
-              onClick={() => setActiveSidebarTab('git')}
-              className={`w-full aspect-square flex items-center justify-center rounded transition-colors ${
-                activeSidebarTab === 'git' ? 'bg-[#E5E5E5]/10 text-[#E5E5E5]' : 'text-[#666666] hover:text-[#E5E5E5]'
-              }`}
-              title="Source Control"
-            >
-              <GitBranch className="w-5 h-5" />
-            </button>
-            <button
-              onClick={() => setActiveSidebarTab('extensions')}
-              className={`w-full aspect-square flex items-center justify-center rounded transition-colors ${
-                activeSidebarTab === 'extensions' ? 'bg-[#E5E5E5]/10 text-[#E5E5E5]' : 'text-[#666666] hover:text-[#E5E5E5]'
-              }`}
-              title="Extensions"
-            >
-              <Puzzle className="w-5 h-5" />
-            </button>
-          </div>
-        </motion.div>
+      <div className="flex h-[580px]">
+        {/* Collapse tab when sidebar is hidden (Threads) */}
+        {!sidebarOpen && (
+          <button
+            onClick={() => setSidebarOpen(true)}
+            className="flex flex-col items-center justify-center w-9 bg-[#0A0A0A] border-r border-[#1A1A1A] hover:bg-[#1A1A1A] text-[#666666] hover:text-[#E5E5E5] transition-colors shrink-0 py-3"
+            title="Show sidebar (Threads)"
+          >
+            <PanelRight className="w-4 h-4 shrink-0" />
+            <span className="text-[10px] font-mono uppercase tracking-wider mt-2" style={{ writingMode: 'vertical-rl' }}>Threads</span>
+          </button>
+        )}
 
-        {/* Left Sidebar Content */}
+        {/* Left Sidebar - Threads, collapsible file explorer */}
         <motion.div
           initial={false}
           animate={{ width: sidebarOpen ? 280 : 0 }}
-          className="bg-[#000000] border-r border-[#1A1A1A] overflow-hidden"
+          className="bg-[#000000] border-r border-[#1A1A1A] overflow-hidden flex flex-col shrink-0"
         >
-          <div className="w-[280px] h-full flex flex-col">
-            {/* Sidebar Header */}
-            <div className="px-4 py-3 border-b border-[#1A1A1A]">
-              <div className="text-xs uppercase tracking-wide text-[#666666] font-mono">
-                {activeSidebarTab === 'files' && 'Explorer'}
-                {activeSidebarTab === 'search' && 'Search'}
-                {activeSidebarTab === 'git' && 'Source Control'}
-                {activeSidebarTab === 'extensions' && 'Extensions'}
+          <div className="w-[280px] h-full flex flex-col min-w-0">
+            {/* Sidebar Header: Threads label + collapse + Explorer icons */}
+            <div className="flex items-center justify-between gap-2 p-2 border-b border-[#1A1A1A] bg-[#0A0A0A] shrink-0">
+              <div className="flex items-center gap-1.5 min-w-0">
+                <span className="text-xs font-mono text-[#666666] uppercase tracking-wide truncate">Threads</span>
+                <button
+                  onClick={() => setSidebarOpen(false)}
+                  className="p-1.5 rounded text-[#666666] hover:bg-[#1A1A1A] hover:text-[#E5E5E5] transition-colors shrink-0"
+                  title="Hide sidebar"
+                >
+                  <PanelLeft className="w-4 h-4" />
+                </button>
+              </div>
+              <div className="flex items-center gap-0.5 shrink-0">
+                <button
+                  onClick={() => setActiveSidebarTab('files')}
+                  className={`p-2 rounded transition-colors ${activeSidebarTab === 'files' ? 'bg-[#E5E5E5]/10 text-[#E5E5E5]' : 'text-[#666666] hover:text-[#E5E5E5]'}`}
+                  title="Explorer"
+                >
+                  <Folder className="w-4 h-4" />
+                </button>
+                <button
+                  onClick={() => setActiveSidebarTab('search')}
+                  className={`p-2 rounded transition-colors ${activeSidebarTab === 'search' ? 'bg-[#E5E5E5]/10 text-[#E5E5E5]' : 'text-[#666666] hover:text-[#E5E5E5]'}`}
+                  title="Search"
+                >
+                  <Search className="w-4 h-4" />
+                </button>
+                <button
+                  onClick={() => setActiveSidebarTab('git')}
+                  className={`p-2 rounded transition-colors ${activeSidebarTab === 'git' ? 'bg-[#E5E5E5]/10 text-[#E5E5E5]' : 'text-[#666666] hover:text-[#E5E5E5]'}`}
+                  title="Source Control"
+                >
+                  <GitBranch className="w-4 h-4" />
+                </button>
+                <button
+                  onClick={() => setActiveSidebarTab('extensions')}
+                  className={`p-2 rounded transition-colors ${activeSidebarTab === 'extensions' ? 'bg-[#E5E5E5]/10 text-[#E5E5E5]' : 'text-[#666666] hover:text-[#E5E5E5]'}`}
+                  title="Extensions"
+                >
+                  <Puzzle className="w-4 h-4" />
+                </button>
               </div>
             </div>
 
             {/* Sidebar Content */}
-            <div className="flex-1 overflow-y-auto p-2">
+            <div className="flex-1 overflow-y-auto p-2 flex flex-col gap-4">
+              {/* Threads section - always visible at top */}
+              <div>
+                <div className="text-xs text-[#666666] font-mono uppercase tracking-wide mb-1.5 px-2">Threads</div>
+                <div className="space-y-0.5">
+                  <div className="px-2 py-1.5 rounded text-sm text-[#E5E5E5] bg-[#E5E5E5]/5 cursor-pointer"># general</div>
+                  <div className="px-2 py-1.5 rounded text-sm text-[#666666] hover:bg-[#1A1A1A] cursor-pointer"># MVP PRD</div>
+                  <div className="px-2 py-1.5 rounded text-sm text-[#666666] hover:bg-[#1A1A1A] cursor-pointer"># docs</div>
+                </div>
+              </div>
+
               {activeSidebarTab === 'files' && (
                 <div className="space-y-0.5">
                   <div>
@@ -312,20 +273,51 @@ function MainChatView({ sidebarOpen, setSidebarOpen }: { sidebarOpen: boolean; s
               )}
 
               {activeSidebarTab === 'extensions' && (
-                <div className="space-y-2">
-                  <div className="px-2 py-2 bg-[#E5E5E5]/5 rounded border border-[#E5E5E5]/10">
-                    <div className="flex items-center gap-2 mb-1">
-                      <Zap className="w-4 h-4 text-[#E5E5E5]" />
-                      <span className="text-sm font-medium text-[#E5E5E5]">SWE Developer</span>
+                <div className="space-y-4 p-2">
+                  <div>
+                    <div className="flex items-center gap-1.5 px-2 py-1 text-xs font-mono text-[#0EA5E9] uppercase tracking-wide">
+                      <LayoutList className="w-3.5 h-3.5" /> Planner
                     </div>
-                    <div className="text-xs text-[#666666]">Full development access</div>
+                    <div className="mt-1 space-y-1">
+                      <div className="px-2 py-1.5 rounded text-sm text-[#E5E5E5] bg-[#1A1A1A]/50">Task planning</div>
+                      <div className="px-2 py-1.5 rounded text-sm text-[#666666]">Roadmap view</div>
+                    </div>
                   </div>
-                  <div className="px-2 py-2 hover:bg-[#1A1A1A] rounded cursor-pointer transition-colors">
-                    <div className="flex items-center gap-2 mb-1">
-                      <Terminal className="w-4 h-4 text-[#666666]" />
-                      <span className="text-sm text-[#E5E5E5]">Standard Chat</span>
+                  <div>
+                    <div className="flex items-center gap-1.5 px-2 py-1 text-xs font-mono text-[#10B981] uppercase tracking-wide">
+                      <Bot className="w-3.5 h-3.5" /> AI Agents
                     </div>
-                    <div className="text-xs text-[#666666]">Basic assistance</div>
+                    <div className="mt-1 space-y-1">
+                      <div className="px-2 py-1.5 rounded text-sm flex items-center gap-2">
+                        <Zap className="w-4 h-4 text-[#10B981]" />
+                        <span className="text-[#E5E5E5]">SWE Developer</span>
+                      </div>
+                      <div className="px-2 py-1.5 rounded text-sm text-[#666666]">Orchestrator</div>
+                    </div>
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-1.5 px-2 py-1 text-xs font-mono text-[#8B5CF6] uppercase tracking-wide">
+                      <MessageCircle className="w-3.5 h-3.5" /> AI Chat bots
+                    </div>
+                    <div className="mt-1 space-y-1">
+                      <div className="px-2 py-1.5 rounded text-sm flex items-center gap-2 bg-[#E5E5E5]/5">
+                        <MessageCircle className="w-4 h-4 text-[#8B5CF6]" />
+                        <span className="text-[#E5E5E5]">Standard Chatbot</span>
+                      </div>
+                      <div className="px-2 py-1.5 rounded text-sm text-[#666666]">Q&A assistant</div>
+                    </div>
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-1.5 px-2 py-1 text-xs font-mono text-[#F59E0B] uppercase tracking-wide">
+                      <Bug className="w-3.5 h-3.5" /> AI Debuggers
+                    </div>
+                    <div className="mt-1 space-y-1">
+                      <div className="px-2 py-1.5 rounded text-sm flex items-center gap-2">
+                        <Bug className="w-4 h-4 text-[#F59E0B]" />
+                        <span className="text-[#E5E5E5]">Tech Lead / Reviewer</span>
+                      </div>
+                      <div className="px-2 py-1.5 rounded text-sm text-[#666666]">Trace analyzer</div>
+                    </div>
                   </div>
                 </div>
               )}
@@ -354,38 +346,38 @@ function MainChatView({ sidebarOpen, setSidebarOpen }: { sidebarOpen: boolean; s
             <div className="w-px h-5 bg-[#333333] mx-1" />
             <button
               onClick={() => setNewPane(newPane === 'chat' ? null : 'chat')}
-              className={`flex items-center gap-1.5 px-2 py-1.5 rounded text-xs font-mono transition-colors ${newPane === 'chat' ? 'bg-[#0EA5E9]/20 text-[#0EA5E9]' : 'text-[#666666] hover:bg-[#1A1A1A] hover:text-[#E5E5E5]'}`}
+              className={`p-2 rounded transition-colors ${newPane === 'chat' ? 'bg-[#0EA5E9]/20 text-[#0EA5E9]' : 'text-[#666666] hover:bg-[#1A1A1A] hover:text-[#E5E5E5]'}`}
               title="New chat"
             >
-              <Plus className="w-3.5 h-3.5" /> New chat
+              <MessageCircle className="w-4 h-4" />
             </button>
             <button
               onClick={() => setNewPane(newPane === 'xonsh' ? null : 'xonsh')}
-              className={`flex items-center gap-1.5 px-2 py-1.5 rounded text-xs font-mono transition-colors ${newPane === 'xonsh' ? 'bg-[#0EA5E9]/20 text-[#0EA5E9]' : 'text-[#666666] hover:bg-[#1A1A1A] hover:text-[#E5E5E5]'}`}
+              className={`p-2 rounded transition-colors ${newPane === 'xonsh' ? 'bg-[#0EA5E9]/20 text-[#0EA5E9]' : 'text-[#666666] hover:bg-[#1A1A1A] hover:text-[#E5E5E5]'}`}
               title="New xonsh"
             >
-              <Plus className="w-3.5 h-3.5" /> New xonsh
+              <Terminal className="w-4 h-4" />
             </button>
             <button
               onClick={() => setNewPane(newPane === 'file' ? null : 'file')}
-              className={`flex items-center gap-1.5 px-2 py-1.5 rounded text-xs font-mono transition-colors ${newPane === 'file' ? 'bg-[#0EA5E9]/20 text-[#0EA5E9]' : 'text-[#666666] hover:bg-[#1A1A1A] hover:text-[#E5E5E5]'}`}
+              className={`p-2 rounded transition-colors ${newPane === 'file' ? 'bg-[#0EA5E9]/20 text-[#0EA5E9]' : 'text-[#666666] hover:bg-[#1A1A1A] hover:text-[#E5E5E5]'}`}
               title="New file"
             >
-              <Plus className="w-3.5 h-3.5" /> New file
+              <FileCode className="w-4 h-4" />
             </button>
             <button
               onClick={() => setNewPane(newPane === 'browser' ? null : 'browser')}
-              className={`flex items-center gap-1.5 px-2 py-1.5 rounded text-xs font-mono transition-colors ${newPane === 'browser' ? 'bg-[#0EA5E9]/20 text-[#0EA5E9]' : 'text-[#666666] hover:bg-[#1A1A1A] hover:text-[#E5E5E5]'}`}
+              className={`p-2 rounded transition-colors ${newPane === 'browser' ? 'bg-[#0EA5E9]/20 text-[#0EA5E9]' : 'text-[#666666] hover:bg-[#1A1A1A] hover:text-[#E5E5E5]'}`}
               title="New browser"
             >
-              <Plus className="w-3.5 h-3.5" /> New browser
+              <Globe className="w-4 h-4" />
             </button>
             <button
               onClick={() => setNewPane(newPane === 'image' ? null : 'image')}
-              className={`flex items-center gap-1.5 px-2 py-1.5 rounded text-xs font-mono transition-colors ${newPane === 'image' ? 'bg-[#0EA5E9]/20 text-[#0EA5E9]' : 'text-[#666666] hover:bg-[#1A1A1A] hover:text-[#E5E5E5]'}`}
+              className={`p-2 rounded transition-colors ${newPane === 'image' ? 'bg-[#0EA5E9]/20 text-[#0EA5E9]' : 'text-[#666666] hover:bg-[#1A1A1A] hover:text-[#E5E5E5]'}`}
               title="New image"
             >
-              <Plus className="w-3.5 h-3.5" /> New image
+              <ImageIcon className="w-4 h-4" />
             </button>
           </div>
 
@@ -590,25 +582,12 @@ function ImagePaneMock() {
   );
 }
 
-function SettingsView() {
+function SettingsView({ onBack }: { onBack: () => void }) {
   return (
-    <div className="bg-[#000000] rounded-xl overflow-hidden shadow-2xl border border-[#1A1A1A]">
-      {/* Window Chrome */}
-      <div className="bg-[#0A0A0A] border-b border-[#1A1A1A] px-4 py-3 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <div className="flex gap-1.5">
-            <div className="w-3 h-3 rounded-full bg-[#FF5F57]" />
-            <div className="w-3 h-3 rounded-full bg-[#FEBC2E]" />
-            <div className="w-3 h-3 rounded-full bg-[#28C840]" />
-          </div>
-        </div>
-        <div className="text-xs text-[#666666] font-mono">dotAi — Settings</div>
-        <div className="w-12" />
-      </div>
-
+    <div className="bg-[#000000] overflow-hidden">
       {/* Header */}
       <div className="bg-[#0A0A0A] border-b border-[#1A1A1A] px-6 py-4 flex items-center justify-between">
-        <button className="flex items-center gap-2 text-sm text-[#666666] hover:text-white transition-colors">
+        <button onClick={onBack} className="flex items-center gap-2 text-sm text-[#666666] hover:text-white transition-colors">
           <ChevronLeft className="w-4 h-4" />
           <span>Back to Chat</span>
         </button>
