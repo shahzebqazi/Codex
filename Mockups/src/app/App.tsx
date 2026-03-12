@@ -1,26 +1,65 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { ChevronLeft, ChevronRight, Menu, Settings, User, Paperclip, Mic, Target, ChevronDown, Circle, PanelLeft, PanelRight, PanelBottom, X, Terminal, FileCode, Wrench, Cpu, Zap, Shield, Database, Code2, Layers, Activity, Bug, GitCommit, FolderOpen, File, Files, Puzzle, GitBranch, Search, ChevronRight as ChevronRightIcon, Folder, MessageCircle, Network, Globe, Image as ImageIcon, LayoutList, Bot, MoreVertical } from 'lucide-react';
-import { PsychedelicLiquidBackground } from './components/PsychedelicLiquidBackground';
+import { ThreadGraph3D, type ThreadNode, type ThreadLink } from './components/ThreadGraph3D';
+
+// Koi pond background (Unsplash, free to use) — animated with light blur for mockup
+const KOI_POND_BG = 'https://images.unsplash.com/photo-1582794543139-8ac9cb0f7b11?w=1920&q=80';
+
+// 1440p laptop: 2560×1440 logical pixels (mimics QHD high-DPI laptop screen)
+const MOCKUP_WIDTH = 2560;
+const MOCKUP_HEIGHT = 1440;
+const MOCKUP_PADDING = 128;
 
 export default function App() {
   const [showSettings, setShowSettings] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [scale, setScale] = useState(1);
+
+  useEffect(() => {
+    const updateScale = () => {
+      const s = Math.min(
+        (window.innerWidth - MOCKUP_PADDING) / MOCKUP_WIDTH,
+        (window.innerHeight - MOCKUP_PADDING) / MOCKUP_HEIGHT,
+        1
+      );
+      setScale(Math.max(0.2, s));
+    };
+    updateScale();
+    window.addEventListener('resize', updateScale);
+    return () => window.removeEventListener('resize', updateScale);
+  }, []);
 
   return (
     <div className="min-h-screen overflow-hidden relative">
-      {/* Background only on home page chat; black fallback */}
+      {/* Animated koi pond background (home page only); black fallback */}
       <div className="absolute inset-0 overflow-hidden bg-black">
-        {!showSettings && <PsychedelicLiquidBackground />}
+        {!showSettings && (
+          <div
+            className="absolute inset-0 bg-cover bg-center animate-koi-drift"
+            style={{
+              backgroundImage: `url(${KOI_POND_BG})`,
+              filter: 'blur(4px) saturate(1.2) contrast(0.95) brightness(0.7)',
+            }}
+          />
+        )}
       </div>
 
-      {/* Floating mockup window */}
+      {/* Floating mockup window — 1440p size, scaled to fit viewport */}
       <div className="relative min-h-screen flex items-center justify-center p-8">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="w-full max-w-6xl rounded-xl overflow-hidden shadow-2xl border border-[#333333]/80 bg-[#0a0a0a]/95 backdrop-blur-sm"
+        <div
+          className="origin-center shrink-0"
+          style={{
+            width: MOCKUP_WIDTH,
+            height: MOCKUP_HEIGHT,
+            transform: `scale(${scale})`,
+          }}
         >
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="w-full h-full rounded-xl overflow-hidden shadow-2xl border border-[#333333]/80 bg-[#0a0a0a]"
+          >
           {showSettings ? (
             <>
               <SettingsView onBack={() => setShowSettings(false)} />
@@ -32,7 +71,8 @@ export default function App() {
               onOpenSettings={() => setShowSettings(true)}
             />
           )}
-        </motion.div>
+          </motion.div>
+        </div>
       </div>
     </div>
   );
@@ -94,44 +134,44 @@ function MainChatView(
   }, [menuOpen]);
 
   return (
-    <div className="bg-[#000000] overflow-hidden">
-      {/* Top menu bar */}
-      <div className="bg-[#0A0A0A] border-b border-[#1A1A1A] px-2 py-1 flex items-center gap-0.5 text-sm">
-        {menuItems.map((m) => (
-          <div key={m.name} className="relative">
-            <button
-              onClick={() => setMenuOpen(menuOpen === m.name ? null : m.name)}
-              className="px-3 py-1.5 rounded text-[#E5E5E5] hover:bg-[#1A1A1A]"
-            >
-              {m.name}
-            </button>
-            {menuOpen === m.name && m.sub.length > 0 && (
-              <div className="absolute left-0 top-full mt-0.5 bg-[#1A1A1A] border border-[#333333] rounded-md shadow-xl py-1 z-50 min-w-[160px]">
-                {m.sub.map((s) => (
-                  <button key={s.label} onClick={() => { s.onClick?.(); setMenuOpen(null); }} className="w-full text-left px-3 py-1.5 text-sm text-[#E5E5E5] hover:bg-[#333333]">
-                    {s.label}
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
-        ))}
-      </div>
-
-      {/* Window Chrome */}
-      <div className="bg-[#0A0A0A] border-b border-[#1A1A1A] px-4 py-2 flex items-center justify-between">
-        <div className="flex gap-1.5">
+    <div className="bg-[#0a0a0a] overflow-hidden flex flex-col h-full min-h-0">
+      {/* Single top bar: window icons + menu + title */}
+      <div className="bg-[#0A0A0A] border-b border-[#1A1A1A] px-2 py-1.5 flex items-center gap-2 min-h-[36px]">
+        <div className="flex items-center gap-1.5 shrink-0">
           <div className="w-3 h-3 rounded-full bg-[#FF5F57]" />
           <div className="w-3 h-3 rounded-full bg-[#FEBC2E]" />
           <div className="w-3 h-3 rounded-full bg-[#28C840]" />
         </div>
-        <div className="text-xs text-[#666666] font-mono">dotAi — Local Desktop Chat</div>
-        <div className="w-12" />
+        <div className="flex items-center gap-0.5 shrink-0">
+          {menuItems.map((m) => (
+            <div key={m.name} className="relative">
+              <button
+                onClick={() => setMenuOpen(menuOpen === m.name ? null : m.name)}
+                className="px-3 py-1.5 rounded text-sm text-[#E5E5E5] hover:bg-[#1A1A1A]"
+              >
+                {m.name}
+              </button>
+              {menuOpen === m.name && m.sub.length > 0 && (
+                <div className="absolute left-0 top-full mt-0.5 bg-[#1A1A1A] border border-[#333333] rounded-md shadow-xl py-1 z-50 min-w-[160px]">
+                  {m.sub.map((s) => (
+                    <button key={s.label} onClick={() => { s.onClick?.(); setMenuOpen(null); }} className="w-full text-left px-3 py-1.5 text-sm text-[#E5E5E5] hover:bg-[#333333]">
+                      {s.label}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+        <div className="flex-1 flex justify-center min-w-0 px-2">
+          <span className="text-xs text-[#666666] font-mono truncate">dotAi — Local Desktop Chat</span>
+        </div>
+        <div className="w-8 shrink-0" aria-hidden />
       </div>
 
-      {/* Main Content Area: left sidebar | center | right sidebar */}
+      {/* Main Content Area: left sidebar | center | right sidebar — fills 1440p frame */}
       <div className="flex flex-col flex-1 min-h-0">
-        <div className="flex flex-1 min-h-0" style={{ height: '480px' }}>
+        <div className="flex flex-1 min-h-0">
           {/* Left Sidebar - Explorer, Search, Git, Extensions (toggle via status bar) */}
           <motion.div
             initial={false}
@@ -259,15 +299,15 @@ function MainChatView(
           </motion.div>
 
           {/* Center: main (list/kanban/calendar) + right column (AI chat pane, btop) */}
-          <div className="flex-1 flex min-w-0 bg-[#000000] relative">
+          <div className="flex-1 flex min-w-0 bg-[#0a0a0a] relative">
             {/* Major section: togglable list / kanban / calendar */}
-            <div className="flex-1 flex flex-col min-w-0 border-r border-[#1A1A1A]">
-              <div className="flex items-center gap-1 px-2 py-1.5 border-b border-[#1A1A1A] shrink-0">
+            <div className="flex-1 flex flex-col min-w-0 border-r border-[#1A1A1A] bg-[#0a0a0a]">
+              <div className="flex items-center gap-1 px-2 py-1.5 border-b border-[#1A1A1A] shrink-0 bg-[#0a0a0a]">
                 <button onClick={() => setMainViewMode('list')} className={`px-2 py-1 rounded text-xs font-mono ${mainViewMode === 'list' ? 'bg-[#E5E5E5]/15 text-[#E5E5E5]' : 'text-[#666666] hover:text-[#E5E5E5]'}`}>List</button>
                 <button onClick={() => setMainViewMode('kanban')} className={`px-2 py-1 rounded text-xs font-mono ${mainViewMode === 'kanban' ? 'bg-[#E5E5E5]/15 text-[#E5E5E5]' : 'text-[#666666] hover:text-[#E5E5E5]'}`}>Kanban</button>
                 <button onClick={() => setMainViewMode('calendar')} className={`px-2 py-1 rounded text-xs font-mono ${mainViewMode === 'calendar' ? 'bg-[#E5E5E5]/15 text-[#E5E5E5]' : 'text-[#666666] hover:text-[#E5E5E5]'}`}>Calendar</button>
               </div>
-              <div className="flex-1 overflow-auto p-3 min-h-0">
+              <div className="flex-1 overflow-auto p-3 min-h-0 bg-[#0a0a0a]">
                 {mainViewMode === 'list' && (
                   <ul className="space-y-1 font-mono text-sm">
                     {MOCK_TASKS.map(t => (
@@ -318,8 +358,8 @@ function MainChatView(
             </div>
 
             {/* Right column: AI chat pane (top) + btop diagnostics (bottom) */}
-            <div className="w-[280px] flex flex-col shrink-0 border-l border-[#1A1A1A]">
-              <div className="border-b border-[#1A1A1A] p-2 shrink-0">
+            <div className="w-[280px] flex flex-col shrink-0 border-l border-[#1A1A1A] bg-[#0a0a0a]">
+              <div className="border-b border-[#1A1A1A] p-2 shrink-0 bg-[#0a0a0a]">
                 <input type="text" placeholder="Ask dotAi..." className="w-full bg-[#0A0A0A] border border-[#1A1A1A] rounded px-2 py-2 text-xs text-[#E5E5E5] placeholder:text-[#666666] outline-none focus:border-[#333333]" />
               </div>
               <div className="flex-1 min-h-0 overflow-hidden flex flex-col bg-[#0d1117]">
@@ -360,7 +400,7 @@ function MainChatView(
           </motion.div>
         </div>
 
-        {/* Status bar: sidebar icons + terminal (terminal opens slide-up panel) */}
+        {/* Status bar: sidebar icons, SSH/JJ status, terminal */}
         <div className="flex items-center gap-0.5 px-2 py-1 border-t border-[#1A1A1A] bg-[#0A0A0A] shrink-0 min-h-[28px] text-[#666666]">
           <button onClick={() => { setLeftSidebarOpen(true); setActiveSidebarTab('files'); }} className={`p-1.5 rounded ${leftSidebarOpen && activeSidebarTab === 'files' ? 'bg-[#E5E5E5]/10 text-[#E5E5E5]' : 'hover:bg-[#1A1A1A] hover:text-[#E5E5E5]'}`} title="Explorer"><Folder className="w-3.5 h-3.5" /></button>
           <button onClick={() => { setLeftSidebarOpen(true); setActiveSidebarTab('search'); }} className={`p-1.5 rounded ${!leftSidebarOpen ? 'hover:bg-[#1A1A1A] hover:text-[#E5E5E5]' : activeSidebarTab === 'search' ? 'bg-[#E5E5E5]/10 text-[#E5E5E5]' : 'hover:text-[#E5E5E5]'}`} title="Search"><Search className="w-3.5 h-3.5" /></button>
@@ -368,6 +408,9 @@ function MainChatView(
           <button onClick={() => { setLeftSidebarOpen(true); setActiveSidebarTab('extensions'); }} className={`p-1.5 rounded ${!leftSidebarOpen ? 'hover:bg-[#1A1A1A] hover:text-[#E5E5E5]' : activeSidebarTab === 'extensions' ? 'bg-[#E5E5E5]/10 text-[#E5E5E5]' : 'hover:text-[#E5E5E5]'}`} title="Extensions"><Puzzle className="w-3.5 h-3.5" /></button>
           <div className="w-px h-4 bg-[#333333] mx-0.5" />
           <button onClick={() => setRightSidebarOpen(!rightSidebarOpen)} className={`p-1.5 rounded ${rightSidebarOpen ? 'bg-[#E5E5E5]/10 text-[#E5E5E5]' : 'hover:bg-[#1A1A1A] hover:text-[#E5E5E5]'}`} title="Threads"><MessageCircle className="w-3.5 h-3.5" /></button>
+          <div className="w-px h-4 bg-[#333333] mx-0.5" />
+          <span className="text-[10px] font-mono text-[#8b949e] px-1.5 py-0.5 rounded bg-[#1A1A1A]/80" title="SSH">SSH: dev@host</span>
+          <span className="text-[10px] font-mono text-[#8b949e] px-1.5 py-0.5 rounded bg-[#1A1A1A]/80" title="JJ">JJ: main 3↑</span>
           <div className="flex-1" />
           <button onClick={() => setTerminalOpen(true)} className="p-1.5 rounded hover:bg-[#1A1A1A] hover:text-[#10B981] text-[#10B981]" title="Terminal"><Terminal className="w-3.5 h-3.5" /></button>
         </div>

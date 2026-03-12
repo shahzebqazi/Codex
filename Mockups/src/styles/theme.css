@@ -179,3 +179,12 @@
     line-height: 1.5;
   }
 }
+
+/* Koi pond background: subtle drift for mockup home */
+@keyframes koi-drift {
+  0%, 100% { transform: scale(1.08) translate(0, 0); }
+  50% { transform: scale(1.1) translate(0.5%, 0.3%); }
+}
+.animate-koi-drift {
+  animation: koi-drift 20s ease-in-out infinite;
+}
