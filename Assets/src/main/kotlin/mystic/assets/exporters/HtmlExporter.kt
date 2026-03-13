@@ -80,7 +80,7 @@ class HtmlExporter(private val outputDir: File) {
             appendLine("""      <a href="#section-overview">Overview</a>""")
 
             appendLine("""      <a href="#" class="top-nav-active">Brand Guide</a>""")
-            appendLine("""      <a href="https://shahzebqazi.github.io/Codex/" target="_blank" rel="noopener" class="top-nav-ext">Mockups</a>""")
+            appendLine("""      <a href="../mockups/" class="top-nav-ext">Mockups</a>""")
             appendLine("""    </div>""")
             appendLine("""  </div>""")
             appendLine("""</nav>""")
