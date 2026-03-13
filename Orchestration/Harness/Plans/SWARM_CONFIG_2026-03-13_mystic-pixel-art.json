@@ -1,0 +1,86 @@
+{
+  "version": "1.0",
+  "mode": "single_prd",
+  "prd_ref": "MYSTIC_PIXEL_ART_SWARM_PRD",
+  "tasks": [
+    {
+      "id": "PIXEL-1",
+      "prd_ref": "MYSTIC_PIXEL_ART_SWARM_PRD",
+      "owner": "swarm-pixel",
+      "model_key": "default",
+      "task_type": "planning",
+      "depends_on": [],
+      "acceptance_criteria": "pixelArt section in brand.yaml; BrandConfig parses it"
+    },
+    {
+      "id": "PIXEL-2",
+      "prd_ref": "MYSTIC_PIXEL_ART_SWARM_PRD",
+      "owner": "swarm-pixel",
+      "model_key": "code",
+      "task_type": "code",
+      "depends_on": ["PIXEL-1"],
+      "acceptance_criteria": "PIXEL_ICON, PIXEL_LOGO in AssetType; Asset model extended"
+    },
+    {
+      "id": "PIXEL-3",
+      "prd_ref": "MYSTIC_PIXEL_ART_SWARM_PRD",
+      "owner": "swarm-pixel",
+      "model_key": "code",
+      "task_type": "code",
+      "depends_on": ["PIXEL-2"],
+      "acceptance_criteria": "PixelArtRenderer with nearest-neighbor downscale; palette from BrandConfig"
+    },
+    {
+      "id": "PIXEL-4",
+      "prd_ref": "MYSTIC_PIXEL_ART_SWARM_PRD",
+      "owner": "swarm-pixel",
+      "model_key": "code",
+      "task_type": "code",
+      "depends_on": ["PIXEL-3"],
+      "acceptance_criteria": "PixelIconGenerator produces pixel icons for all themes and sizes"
+    },
+    {
+      "id": "PIXEL-5",
+      "prd_ref": "MYSTIC_PIXEL_ART_SWARM_PRD",
+      "owner": "swarm-pixel",
+      "model_key": "code",
+      "task_type": "code",
+      "depends_on": ["PIXEL-4"],
+      "acceptance_criteria": "PixelLogoGenerator produces pixel wordmark and icon-only logos"
+    },
+    {
+      "id": "PIXEL-6",
+      "prd_ref": "MYSTIC_PIXEL_ART_SWARM_PRD",
+      "owner": "swarm-pixel",
+      "model_key": "code",
+      "task_type": "code",
+      "depends_on": ["PIXEL-5"],
+      "acceptance_criteria": "Main.kt wires pixel generators; exports to output/icons/pixel/, output/logos/pixel/"
+    },
+    {
+      "id": "PIXEL-7",
+      "prd_ref": "MYSTIC_PIXEL_ART_SWARM_PRD",
+      "owner": "swarm-pixel",
+      "model_key": "code",
+      "task_type": "code",
+      "depends_on": ["PIXEL-6"],
+      "acceptance_criteria": "HtmlExporter includes pixel-art preview section"
+    },
+    {
+      "id": "PIXEL-8",
+      "prd_ref": "MYSTIC_PIXEL_ART_SWARM_PRD",
+      "owner": "swarm-pixel",
+      "model_key": "review",
+      "task_type": "review",
+      "depends_on": ["PIXEL-7"],
+      "subagent_type": "code-reviewer",
+      "acceptance_criteria": "PixelIconGeneratorTest, PixelLogoGeneratorTest pass; code review complete"
+    }
+  ],
+  "subagent_policy": "independent_only",
+  "models": {
+    "default": { "provider": "ollama", "role": "planning" },
+    "code": { "provider": "ollama", "role": "kotlin" },
+    "review": { "provider": "ollama", "role": "code-review" }
+  }
+}

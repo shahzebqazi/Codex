@@ -1,0 +1,6 @@
+# Blocklist: destructive or catastrophic commands
+# One pattern per line; harness blocks or asks confirmation if user input contains any pattern.
+# Example (uncomment to enable):
+# rm -rf /
+# :!sudo
+# format c:

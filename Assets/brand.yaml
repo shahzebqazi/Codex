@@ -1,0 +1,113 @@
+brand:
+  name: "Mystic"
+  tagline: "Magical Notes, Designs and Products"
+
+colors:
+  primary: "#D4A843"
+  primaryDark: "#B08C30"
+  primaryLight: "#E8C76A"
+  background:
+    dark: "#0A0A0B"
+    surface: "#111113"
+    panel: "#18181B"
+    elevated: "#1E1E22"
+  foreground:
+    primary: "#FAFAFA"
+    secondary: "#E4E4E7"
+    muted: "#A1A1AA"
+    border: "#27272A"
+  light:
+    background: "#FFFFFF"
+    foreground: "#09090B"
+    muted: "#71717A"
+    surface: "#F4F4F5"
+    border: "rgba(9,9,11,0.1)"
+  accent:
+    gold: "#D4A843"
+    rose: "#E8728A"
+    seafoam: "#5EC4AB"
+    lavender: "#A78BDB"
+    ivory: "#F5EDDA"
+
+typography:
+  display: "Inter"
+  body: "Inter"
+  mono: "JetBrains Mono"
+  tracking: 0.03
+  weights:
+    normal: 400
+    medium: 500
+    bold: 700
+
+logo:
+  style: "lofi-moon"
+  moonCrescentRatio: 0.70
+  moonOffsetX: 0.30
+  moonOffsetY: -0.05
+  glowRadius: 0.20
+  glowOpacity: 0.35
+  moonRotation: -20.0
+  moonGold: "#FAD075"
+  moonGoldDark: "#C9A84C"
+  moonGoldLight: "#FDE8B0"
+
+stars:
+  densityPerMillion: 120
+  sparkleCount: 8
+  sparkleSize: 3.0
+  dotMinSize: 0.5
+  dotMaxSize: 2.0
+  dotMinOpacity: 0.15
+  dotMaxOpacity: 0.7
+  sparkleOpacity: 0.85
+  seed: 42
+
+icons:
+  favicon:
+    - 16
+    - 32
+    - 48
+  desktop:
+    - 16
+    - 32
+    - 64
+    - 128
+    - 256
+    - 512
+    - 1024
+  android:
+    foreground: 108
+    background: 108
+
+logos:
+  variants:
+    - "full"
+    - "icon-only"
+    - "wordmark"
+  themes:
+    - "dark"
+    - "light"
+    - "mono"
+  social:
+    og: { width: 1200, height: 630 }
+    twitter: { width: 1500, height: 500 }
+  watermark:
+    opacity: 0.15
+
+banners:
+  github: { width: 1280, height: 640 }
+  readme: { width: 800, height: 200 }
+  release: { width: 1200, height: 400 }
+
+heroes:
+  landing: { width: 1920, height: 1080 }
+  landingRetina: { width: 2560, height: 1440 }
+  rippleCount: 5
+  rippleSpacing: 60
+  rippleStrokeWidth: 1.0
+  rippleOpacity: 0.08
+
+pixelArt:
+  pixelSize: 8
+  sizes: [16, 32, 64, 128]
+  style: "nearest"

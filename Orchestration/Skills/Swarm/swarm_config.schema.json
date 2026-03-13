@@ -1,0 +1,77 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://dotai.dev/schemas/swarm_config.json",
+  "title": "SwarmConfig",
+  "description": "Configuration for an AI agent swarm (single PRD or all PRDs in parallel)",
+  "type": "object",
+  "required": ["version", "mode", "tasks"],
+  "properties": {
+    "version": {
+      "type": "string",
+      "description": "Schema version"
+    },
+    "mode": {
+      "type": "string",
+      "enum": ["single_prd", "all_prds_parallel"],
+      "description": "Execution mode: one PRD or all PRDs in parallel"
+    },
+    "prd_ref": {
+      "type": "string",
+      "description": "For single_prd: PRD id or path"
+    },
+    "prd_list": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "For all_prds_parallel: list of PRD ids or paths"
+    },
+    "tasks": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/Task" },
+      "description": "Task graph: id, prd_ref, dependencies, model and subagent assignment"
+    },
+    "models": {
+      "type": "object",
+      "additionalProperties": { "$ref": "#/definitions/ModelSpec" },
+      "description": "Optional map of model_key to endpoint/role"
+    },
+    "subagent_policy": {
+      "type": "string",
+      "enum": ["none", "independent_only", "per_prd", "full"],
+      "default": "independent_only",
+      "description": "When to use subagents"
+    }
+  },
+  "definitions": {
+    "Task": {
+      "type": "object",
+      "required": ["id", "prd_ref"],
+      "properties": {
+        "id": { "type": "string" },
+        "prd_ref": { "type": "string" },
+        "owner": { "type": "string" },
+        "model_key": { "type": "string" },
+        "depends_on": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "acceptance_criteria": { "type": "string" },
+        "subagent_type": {
+          "type": "string",
+          "enum": ["generalPurpose", "explore", "shell", "code-reviewer", "ci-watcher", "other"]
+        },
+        "task_type": {
+          "type": "string",
+          "enum": ["planning", "code", "review", "refactor", "docs", "research"]
+        }
+      }
+    },
+    "ModelSpec": {
+      "type": "object",
+      "properties": {
+        "endpoint": { "type": "string" },
+        "provider": { "type": "string" },
+        "role": { "type": "string" }
+      }
+    }
+  }
+}

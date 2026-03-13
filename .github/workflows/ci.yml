@@ -1,4 +1,5 @@
 # CI: lint and unit tests. DRY — single workflow for PR and push.
+# Runs on push to main/production and on any PR targeting main or production (any source branch).
 name: CI
 
 on:
@@ -15,20 +16,14 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "20"
+          cache: "npm"
+          cache-dependency-path: Orchestration/Tasks/SWE/api/package-lock.json
       - name: Install dependencies
-        run: |
-          if [ -f "Orchestration/Tasks/SWE/api/package-lock.json" ]; then
-            npm ci --prefix Orchestration/Tasks/SWE/api
-          else
-            echo "Skipping install: Orchestration/Tasks/SWE/api/package-lock.json not found."
-          fi
+        run: npm ci
+        working-directory: Orchestration/Tasks/SWE/api
       - name: Lint
-        run: |
-          if [ -f "Orchestration/Tasks/SWE/api/package-lock.json" ]; then
-            npm run lint --prefix Orchestration/Tasks/SWE/api
-          else
-            echo "Skipping lint: API package not present on this branch."
-          fi
+        run: npm run lint
+        working-directory: Orchestration/Tasks/SWE/api
 
   test:
     runs-on: ubuntu-latest
@@ -38,29 +33,18 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "20"
+          cache: "npm"
+          cache-dependency-path: Orchestration/Tasks/SWE/api/package-lock.json
       - name: Install dependencies
-        run: |
-          if [ -f "Orchestration/Tasks/SWE/api/package-lock.json" ]; then
-            npm ci --prefix Orchestration/Tasks/SWE/api
-          else
-            echo "Skipping install: Orchestration/Tasks/SWE/api/package-lock.json not found."
-          fi
+        run: npm ci
+        working-directory: Orchestration/Tasks/SWE/api
       - name: Unit tests
-        run: |
-          if [ -f "Orchestration/Tasks/SWE/api/package-lock.json" ]; then
-            npm test --prefix Orchestration/Tasks/SWE/api
-          else
-            echo "Skipping unit tests: API package not present on this branch."
-          fi
+        run: npm test
+        working-directory: Orchestration/Tasks/SWE/api
 
   validate-infra:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - name: Validate docker-compose
-        run: |
-          if [ -f "Orchestration/Tasks/INFRA/docker-compose.yml" ]; then
-            docker compose -f Orchestration/Tasks/INFRA/docker-compose.yml config --quiet
-          else
-            echo "Skipping infra validation: compose file not present on this branch."
-          fi
+        run: docker compose -f Orchestration/Tasks/INFRA/docker-compose.yml config --quiet

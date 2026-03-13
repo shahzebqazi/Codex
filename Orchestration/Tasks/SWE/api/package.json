@@ -1,0 +1,26 @@
+{
+  "name": "dotai-api",
+  "version": "1.0.0",
+  "description": "Web tier: health, feature flags, Stripe-gated routes, production-logs",
+  "main": "src/app.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "lint": "eslint src --ext .js",
+    "test": "NODE_ENV=test node --test test/app.test.js test/health.test.js test/premium-gate.test.js src/routes/health.test.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "express": "^4.21.0",
+    "prom-client": "^15.1.0",
+    "redis": "^4.6.0",
+    "pg": "^8.11.0",
+    "stripe": "^14.0.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.57.0",
+    "supertest": "^6.3.0"
+  }
+}
