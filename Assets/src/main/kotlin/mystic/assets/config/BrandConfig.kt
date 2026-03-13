@@ -89,6 +89,8 @@ data class BrandConfig(
             return TypographyConfig(
                 display = t["display"] as String,
                 body = t["body"] as String,
+                serif = t["serif"] as String,
+                handwriting = t["handwriting"] as String,
                 mono = t["mono"] as String,
                 tracking = (t["tracking"] as Number).toFloat(),
                 weightNormal = weights["normal"]!!,
@@ -220,6 +222,8 @@ data class ColorConfig(
 data class TypographyConfig(
     val display: String,
     val body: String,
+    val serif: String,
+    val handwriting: String,
     val mono: String,
     val tracking: Float,
     val weightNormal: Int,

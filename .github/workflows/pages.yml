@@ -31,6 +31,11 @@ jobs:
         working-directory: Assets
         run: ./gradlew run
 
+      - name: Fetch Mockups from docs branch
+        run: |
+          git fetch origin docs/documentation-reorg --depth=1
+          git checkout origin/docs/documentation-reorg -- Mockups/
+
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:

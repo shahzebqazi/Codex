@@ -47,6 +47,8 @@ class CssExporter(private val outputDir: File) {
             appendLine("  /* Typography */")
             appendLine("  --mystic-font-display: '${config.typography.display}', system-ui, sans-serif;")
             appendLine("  --mystic-font-body: '${config.typography.body}', system-ui, sans-serif;")
+            appendLine("  --mystic-font-serif: '${config.typography.serif}', Georgia, 'Times New Roman', serif;")
+            appendLine("  --mystic-font-handwriting: '${config.typography.handwriting}', 'Segoe Print', cursive;")
             appendLine("  --mystic-font-mono: '${config.typography.mono}', ui-monospace, monospace;")
             appendLine("  --mystic-tracking: ${config.typography.tracking}em;")
             appendLine("}")
