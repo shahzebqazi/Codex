@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mystic Brand Guide</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Lora:wght@400;500;700&family=Caveat:wght@400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+  <link rel="stylesheet" href="../css/brand.css">
+  <style>
+    @keyframes twinkle { 0%, 100% { opacity: 0.15; } 50% { opacity: 1; } }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    ::selection { background: var(--mystic-accent-gold); color: #000; }
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: var(--mystic-bg-dark); }
+    ::-webkit-scrollbar-thumb { background: var(--mystic-fg-border); border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--mystic-fg-muted); }
+    body {
+      background: var(--mystic-bg-dark);
+      color: var(--mystic-fg-primary);
+      font-family: var(--mystic-font-body);
+      padding: 1rem;
+      padding-top: 3.5rem;
+      line-height: 1.6;
+    }
+    .top-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 50; background: rgba(10,10,11,0.85); border-bottom: 1px solid var(--mystic-fg-border); backdrop-filter: blur(16px) saturate(1.6); -webkit-backdrop-filter: blur(16px) saturate(1.6); }
+    .top-nav-inner { max-width: 1200px; margin: 0 auto; padding: 0 1rem; display: flex; align-items: center; justify-content: center; height: 2.75rem; }
+    .top-nav-brand { display: flex; align-items: center; gap: 0.5rem; text-decoration: none; color: var(--mystic-fg-primary); font-family: var(--mystic-font-display); font-size: 0.9rem; font-weight: 500; letter-spacing: var(--mystic-tracking); transition: color 0.15s; }
+    .top-nav-brand:hover { color: var(--mystic-accent-gold); }
+    .top-nav-logo { width: 22px; height: 22px; object-fit: contain; }
+    .top-nav-links { display: flex; align-items: center; gap: 1.25rem; }
+    .top-nav-links a { text-decoration: none; color: var(--mystic-fg-muted); font-size: 0.8rem; font-family: var(--mystic-font-body); transition: color 0.2s; }
+    .top-nav-links a:hover { color: var(--mystic-accent-gold); }
+    .top-nav-links a.top-nav-active { color: var(--mystic-accent-gold); font-weight: 500; }
+    .top-nav-links a.top-nav-ext { padding: 0.25rem 0.7rem; border: 1px solid var(--mystic-fg-border); border-radius: 6px; font-size: 0.75rem; transition: all 0.2s; }
+    .top-nav-links a.top-nav-ext:hover { border-color: var(--mystic-accent-gold); color: var(--mystic-accent-gold); background: rgba(250,208,117,0.06); }
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 1rem; }
+    h1 { font-size: 2.5rem; margin-bottom: 0.25rem; letter-spacing: var(--mystic-tracking); font-family: var(--mystic-font-display); background: linear-gradient(135deg, var(--mystic-accent-gold), var(--mystic-primary-light)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    h2 { font-size: 1.25rem; color: var(--mystic-fg-primary); margin: 0; }
+    h3 { font-size: 1rem; color: var(--mystic-accent-gold); margin-bottom: 0.75rem; text-transform: capitalize; }
+    .subtitle { color: var(--mystic-fg-muted); margin: 0; font-size: 0.95rem; }
+    .brand-header { display: flex; align-items: center; gap: 1.5rem; margin-bottom: 2rem; padding: 2rem 0; animation: fadeIn 0.5s ease; }
+    .header-logo { width: 80px; height: 80px; object-fit: contain; flex-shrink: 0; }
+    .header-text { display: flex; flex-direction: column; }
+    .overview-content { line-height: 1.8; font-size: 0.95rem; color: var(--mystic-fg-secondary, var(--mystic-fg-primary)); }
+    .overview-content p { margin-bottom: 0.75rem; }
+    .overview-note { padding: 0.85rem 1.1rem; background: var(--mystic-bg-surface); border-left: 3px solid var(--mystic-accent-gold); border-radius: 0 6px 6px 0; font-size: 0.85rem; }
+    .overview-note code { font-family: var(--mystic-font-mono); color: var(--mystic-accent-seafoam); background: var(--mystic-bg-panel); padding: 0.15rem 0.4rem; border-radius: 3px; font-size: 0.8rem; }
+    .group-heading { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.18em; color: var(--mystic-accent-gold); margin: 2.5rem 0 0.35rem; padding-bottom: 0.35rem; border-bottom: 2px solid var(--mystic-fg-border); font-family: var(--mystic-font-mono); display: flex; align-items: center; gap: 0.4rem; }
+    .index-nav h3 { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--mystic-accent-lavender); margin: 0.75rem 0 0.35rem; font-family: var(--mystic-font-mono); }
+    .index-nav ul { list-style: none; padding: 0; margin: 0 0 0.5rem; display: flex; flex-wrap: wrap; gap: 0.3rem 1.25rem; }
+    .index-nav a { color: var(--mystic-accent-gold); text-decoration: none; font-size: 0.85rem; transition: color 0.15s; }
+    .index-nav a:hover { color: var(--mystic-accent-rose); text-decoration: underline; }
+    details.section { border-bottom: 1px solid var(--mystic-fg-border); margin-top: 0.5rem; }
+    details.section > summary { cursor: pointer; padding: 0.85rem 0; list-style: none; display: flex; align-items: center; gap: 0.5rem; transition: color 0.15s; }
+    details.section > summary:hover h2 { color: var(--mystic-accent-gold); }
+    details.section > summary::-webkit-details-marker { display: none; }
+    details.section > summary::before { content: '\25B6'; font-size: 0.65rem; color: var(--mystic-accent-gold); transition: transform 0.2s; }
+    details.section[open] > summary::before { transform: rotate(90deg); }
+    .section-content { padding: 0.75rem 0 1.75rem; animation: fadeIn 0.3s ease; }
+    .section-icon { width: 18px; height: 18px; vertical-align: -3px; flex-shrink: 0; color: var(--mystic-accent-gold); }
+    .group-heading .section-icon { width: 14px; height: 14px; vertical-align: -2px; }
+    .index-nav .section-icon { width: 14px; height: 14px; vertical-align: -2px; }
+    details.section > summary:hover .section-icon { color: var(--mystic-accent-rose); }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 1rem; }
+    .card {
+      background: var(--mystic-bg-surface);
+      border: 1px solid var(--mystic-fg-border);
+      border-radius: 10px;
+      padding: 0.75rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .card:hover { border-color: var(--mystic-accent-gold); box-shadow: 0 0 16px rgba(250,208,117,0.08), 0 4px 12px rgba(0,0,0,0.3); transform: translateY(-2px); }
+    .card img { max-width: 100%; height: auto; border-radius: 4px; }
+    .wide-grid { grid-template-columns: 1fr; }
+    .wide-grid .card img { max-height: 300px; object-fit: contain; }
+    .checkerboard { background: repeating-conic-gradient(#1a1a1a 0% 25%, #0a0a0a 0% 50%) 0 0 / 20px 20px; padding: 0.75rem; border-radius: 6px; }
+    .swatch-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 0.85rem; }
+    .swatch { height: 72px; border-radius: 10px; display: flex; align-items: flex-end; padding: 0.4rem 0.55rem; font-size: 0.6rem; font-family: var(--mystic-font-mono); transition: transform 0.2s, box-shadow 0.2s; box-shadow: inset 0 -24px 20px -12px rgba(0,0,0,0.25); }
+    .swatch:hover { transform: scale(1.06); box-shadow: 0 4px 16px rgba(0,0,0,0.4), inset 0 -24px 20px -12px rgba(0,0,0,0.25); }
+    .social-card { max-width: 400px; }
+    .social-card img { max-width: 100%; height: auto; }
+    .type-specimen {
+      background: var(--mystic-bg-surface);
+      border: 1px solid var(--mystic-fg-border);
+      border-radius: 10px;
+      padding: 1.25rem;
+      margin-bottom: 1rem;
+      transition: border-color 0.2s;
+    }
+    .type-specimen:hover { border-color: var(--mystic-accent-lavender); }
+    .type-specimen .specimen-label {
+      font-size: 0.7rem; color: var(--mystic-fg-muted); font-family: var(--mystic-font-mono);
+      margin-top: 0.75rem; border-top: 1px solid var(--mystic-fg-border); padding-top: 0.5rem;
+    }
+    .type-role { font-size: 0.78rem; color: var(--mystic-fg-muted); font-family: var(--mystic-font-mono); margin: -0.3rem 0 0.6rem; font-style: italic; }
+    .type-row { display: flex; gap: 1.5rem; flex-wrap: wrap; }
+    .type-row .type-specimen { flex: 1; min-width: 200px; }
+    .variant-group { margin-bottom: 1.5rem; }
+    .variant-row { display: flex; gap: 1rem; flex-wrap: wrap; align-items: flex-end; }
+    .theme-group { margin-bottom: 1.5rem; }
+    .theme-row { display: flex; gap: 0.75rem; flex-wrap: wrap; align-items: center; }
+    .token-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+    .token-table th { text-align: left; padding: 0.6rem 0.85rem; border-bottom: 2px solid var(--mystic-accent-gold); color: var(--mystic-accent-gold); font-weight: 500; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.06em; }
+    .token-table td { padding: 0.55rem 0.85rem; border-bottom: 1px solid var(--mystic-fg-border); transition: background 0.15s; }
+    .token-table tr:hover td { background: var(--mystic-bg-surface); }
+    .token-table td:first-child { font-family: var(--mystic-font-mono); font-size: 0.8rem; color: var(--mystic-accent-seafoam); }
+    .token-table td:nth-child(2) { font-family: var(--mystic-font-mono); font-size: 0.8rem; }
+    .token-swatch { display: inline-block; width: 16px; height: 16px; border-radius: 4px; vertical-align: middle; margin-right: 0.4rem; border: 1px solid var(--mystic-fg-border); box-shadow: 0 1px 3px rgba(0,0,0,0.3); }
+    #lightbox { position: fixed; inset: 0; background: rgba(0,0,0,0.92); display: none; z-index: 100; flex-direction: column; align-items: center; justify-content: center; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+    #lightbox.active { display: flex; }
+    #lightbox img { max-width: 90vw; max-height: 75vh; object-fit: contain; border-radius: 10px; image-rendering: auto; box-shadow: 0 8px 40px rgba(0,0,0,0.6); }
+    #lightbox .lb-info { margin-top: 1.25rem; text-align: center; font-family: var(--mystic-font-mono); font-size: 0.85rem; color: var(--mystic-fg-muted); }
+    #lightbox .lb-download { display: inline-block; margin-top: 0.5rem; padding: 0.45rem 1.5rem; background: linear-gradient(135deg, var(--mystic-accent-gold), var(--mystic-primary)); color: #000; border-radius: 8px; text-decoration: none; font-size: 0.8rem; font-weight: 600; transition: opacity 0.2s, transform 0.2s; }
+    #lightbox .lb-download:hover { opacity: 0.9; transform: translateY(-1px); }
+    #lightbox .lb-close { position: absolute; top: 1rem; right: 1.5rem; font-size: 2rem; color: var(--mystic-fg-muted); cursor: pointer; background: none; border: none; transition: color 0.15s; }
+    #lightbox .lb-close:hover { color: var(--mystic-accent-rose); }
+    .research-prose { line-height: 1.75; color: var(--mystic-fg-secondary); font-family: var(--mystic-font-serif); }
+    .research-prose h3 { color: var(--mystic-accent-gold); font-size: 0.95rem; font-family: var(--mystic-font-mono); text-transform: uppercase; letter-spacing: 0.08em; margin: 1.5rem 0 0.5rem; }
+    .research-prose p { margin: 0.6rem 0; font-size: 0.88rem; }
+    .research-prose strong { color: var(--mystic-fg-primary); }
+    .research-intro { font-size: 0.95rem !important; color: var(--mystic-fg-primary); border-left: 3px solid var(--mystic-accent-gold); padding-left: 1rem; margin-bottom: 1.25rem !important; }
+    .research-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; margin: 0.75rem 0 1rem; }
+    .research-table th { text-align: left; padding: 0.5rem 0.75rem; border-bottom: 2px solid var(--mystic-accent-gold); color: var(--mystic-accent-gold); font-weight: 500; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; font-family: var(--mystic-font-mono); }
+    .research-table td { padding: 0.45rem 0.75rem; border-bottom: 1px solid var(--mystic-fg-border); }
+    .research-table tr:hover td { background: var(--mystic-bg-surface); }
+    .research-table code { font-family: var(--mystic-font-mono); font-size: 0.78rem; color: var(--mystic-accent-seafoam); background: var(--mystic-bg-surface); padding: 0.1rem 0.35rem; border-radius: 4px; }
+    .research-list { padding-left: 1.5rem; margin: 0.5rem 0; }
+    .research-list li { margin: 0.35rem 0; font-size: 0.88rem; }
+    .research-list li strong { color: var(--mystic-fg-primary); }
+    .star-field { position: relative; overflow: hidden; }
+    .star { position: absolute; background: var(--mystic-accent-gold); animation-name: twinkle; animation-iteration-count: infinite; animation-timing-function: ease-in-out; border-radius: 50%; }
+    .star-bright { position: absolute; animation: twinkle 2s ease-in-out infinite; }
+    @media (max-width: 768px) {
+      h1 { font-size: 1.75rem; }
+      .top-nav-brand span { display: none; }
+      .top-nav-links { gap: 0.75rem; }
+      .top-nav-links a { font-size: 0.7rem; }
+      .brand-header { flex-direction: column; text-align: center; padding: 1.25rem 0; }
+      .header-logo { width: 64px; height: 64px; }
+      .grid { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 0.75rem; }
+      .swatch-grid { grid-template-columns: repeat(auto-fill, minmax(95px, 1fr)); }
+      .type-row .type-specimen { min-width: 100%; }
+      .token-table { font-size: 0.75rem; }
+      .token-table td, .token-table th { padding: 0.35rem 0.5rem; }
+    }
+  </style>
+</head>
+<body>
+<nav class="top-nav">
+  <div class="top-nav-inner">
+    <div class="top-nav-links">
+      <a href="#section-overview">Overview</a>
+      <a href="#" class="top-nav-active">Brand Guide</a>
+      <a href="https://shahzebqazi.github.io/Codex/" target="_blank" rel="noopener" class="top-nav-ext">Mockups</a>
+    </div>
+  </div>
+</nav>
+<div class="container">
+  <header class="brand-header">
+    <img src="../logos/logo-icon-only-dark.png" alt="Mystic logo" class="header-logo">
+    <div class="header-text">
+      <h1>Mystic</h1>
+      <p class="subtitle">Magical Notes, Designs and Products</p>
+    </div>
+  </header>
+  <details class="section" id="section-overview" open>
+    <summary><h2 style="display:inline"><svg class="section-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg> Overview</h2></summary>
+    <div class="section-content">
+  <div class="overview-content">
+    <p>Mystic is a creative workspace for capturing notes, designing interfaces, and managing products &mdash; all in one place. It ships as a desktop app with full GUI support, a CLI for automation and scripting, and a plugin architecture for extensibility. The lo-fi pixel-art brand identity, anchored by a gold crescent moon and twinkling star field, is an invitation to let your imagination run wild.</p>
+    <p>This implementation of an AI tool is built around <strong>fun</strong>, <strong>creativity</strong>, <strong>collaboration</strong>, <strong>privacy</strong>, <strong>safety</strong>, and <strong>local-first use</strong>. Please use AI responsibly.</p>
+    <p class="overview-note">All brand assets (icons, logos, banners, heroes, SVGs, CSS tokens, and this preview page) are generated programmatically by the Kotlin toolchain in <code>Assets/</code>. Run <code>./gradlew run</code> to regenerate the full set of 80 assets from <code>brand.yaml</code>.</p>
+  </div>
+    </div>
+  </details>
+  <details class="section" id="section-index" open>
+    <summary><h2 style="display:inline"><svg class="section-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg> Index</h2></summary>
+    <div class="section-content">
+  <nav class="index-nav">
+    <h3>Brand Guide</h3>
+    <ul>
+      <li><a href="#section-color-palette"><svg class="section-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12" r=".5" fill="currentColor"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2Z"/></svg> Color Palette</a></li>
+      <li><a href="#section-typography"><svg class="section-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></svg> Typography</a></li>
+      <li><a href="#section-logo-suite"><svg class="section-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12l4 6-10 13L2 9Z"/></svg> Logos</a></li>
+      <li><a href="#section-pixel-logos"><svg class="section-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg> Pixel Logos</a></li>
+      <li><a href="#section-icon-suite"><svg class="section-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 2 7l10 5 10-5-10-5Z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/></svg> Icons</a></li>
+      <li><a href="#section-pixel-icons"><svg class="section-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="2"/><path d="M7 2v20"/><path d="M17 2v20"/><path d="M2 12h20"/><path d="M2 7h5"/><path d="M2 17h5"/><path d="M17 7h5"/><path d="M17 17h5"/></svg> Pixel Icons</a></li>
+      <li><a href="#section-banners"><svg class="section-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg> Banners</a></li>
+      <li><a href="#section-heroes"><svg class="section-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> Heroes</a></li>
+      <li><a href="#section-svg-assets"><svg class="section-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/></svg> SVG Assets</a></li>
+      <li><a href="#section-design-tokens"><svg class="section-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1Z"/></svg> Design Tokens</a></li>
+    </ul>
+    <h3>Research</h3>
+    <ul>
+      <li><a href="#section-cursor-brand"><svg class="section-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 6.5 17.5 12 6.5 17.5z"/><rect x="2" y="2" width="20" height="20" rx="2"/></svg> Cursor Brand</a></li>
+      <li><a href="#section-moon-phases"><svg class="section-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg> Moon Phases</a></li>
+      <li><a href="#section-twinkling-stars"><svg class="section-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg> Twinkling Stars</a></li>
+    </ul>
+  </nav>
+    </div>
+  </details>
+  <div class="group-heading"><svg class="section-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg> Research</div>
+  <details class="section" id="section-cursor-brand">
+    <summary><h2 style="display:inline"><svg class="section-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 6.5 17.5 12 6.5 17.5z"/><rect x="2" y="2" width="20" height="20" rx="2"/></svg> Cursor Brand</h2></summary>
+    <div class="section-content">
+  <div class="research-prose">
+    <p class="research-intro">
+      Mystic's visual identity draws inspiration from <strong>Cursor</strong>&mdash;the AI-first code editor by Anysphere&mdash;while
+      adding its own personality and color. This section documents the reference design system we studied
+      and the deliberate departures we made to give Mystic a warmer, more expressive character.
+    </p>
+    <h3>Typography</h3>
+    <p>
+      Cursor's 2025 brand refresh introduced <strong>Cursor Gothic</strong>, a custom typeface designed by
+      Munich-based foundry <em>Kimera</em> in collaboration with Justin Jay Wang. Built on Kimera's
+      <em>Waldenburg</em>, it blends the rationalism of Akzidenz-Grotesk with the analog warmth of Univers.
+      Slightly more condensed and higher-contrast than its parent, it reads smoothly at both display and
+      text sizes. A distinctive feature is <strong>logo ligatures</strong> baked into the font itself&mdash;
+      embedding logo lockups that auto-center with surrounding text.
+    </p>
+    <p>
+      Cursor also pairs the typeface with <strong>Berkeley Mono</strong> for code surfaces and
+      <strong>JJannon</strong> (a serif) for editorial content, giving it three distinct typographic voices.
+    </p>
+    <h3>Color System</h3>
+    <table class="research-table">
+      <thead><tr><th>Role</th><th>Light</th><th>Dark</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td>Background</td><td><code>#F7F7F4</code></td><td><code>#14120B</code></td><td>Warm off-white / warm charcoal&mdash;never pure black or white</td></tr>
+        <tr><td>Foreground</td><td><code>#26251E</code></td><td><code>#EDECEC</code></td><td>55% opacity for body text, full opacity for headings</td></tr>
+        <tr><td>Border / Muted</td><td><code>rgba(38,37,30,0.08)</code></td><td><code>rgba(237,236,236,0.08)</code></td><td>Transparent borders keep depth subtle</td></tr>
+        <tr><td>Accent (CTA)</td><td colspan="2"><code>rgba(38,37,30,0.06)</code></td><td>Tinted backgrounds rather than saturated buttons</td></tr>
+      </tbody>
+    </table>
+    <h3>Logo System</h3>
+    <p>
+      The Cursor logo extends Ben Barry's original cube design into three rendering tiers:
+    </p>
+    <ul class="research-list">
+      <li><strong>2D flat</strong>&mdash;single-color, optimized for small sizes and favicons</li>
+      <li><strong>2.5D</strong>&mdash;flat color planes for medium applications (social cards, headers)</li>
+      <li><strong>3D</strong>&mdash;lighting and material effects for app icons and OS integrations</li>
+    </ul>
+    <p>
+      Subtle rounding on cube and cursor-arrow corners ensures screen clarity at every size.
+      Each tier ships in light and dark variants.
+    </p>
+    <h3>Design Philosophy</h3>
+    <p>
+      Cursor positions itself as a <em>"power tool for professional developers"</em>,
+      balancing high-end technical sophistication with human warmth. Every visual decision
+      prioritizes <strong>screen fidelity over geometric perfection</strong>&mdash;shapes are
+      optically tuned rather than mathematically exact. The overall palette is restrained,
+      almost monochromatic, relying on warm neutrals and transparency.
+    </p>
+    <h3>Mystic's Spin</h3>
+    <p>
+      Where Cursor keeps the palette austere, <strong>Mystic leans into personality and color</strong>.
+      We retain the readability-first hierarchy&mdash;dark backgrounds, generous whitespace,
+      clear type&mdash;but inject a hand-crafted, lo-fi warmth:
+    </p>
+    <ul class="research-list">
+      <li><strong>Gold accent</strong> replaces the neutral CTA tint, evoking moonlight and craft</li>
+      <li><strong>Pixel-art icons &amp; moon</strong> add tactile character versus vector minimalism</li>
+      <li><strong>Rose Pink &amp; Seafoam Green</strong> accents give the palette emotional range</li>
+      <li><strong>Twinkling star fields</strong> create a living, ambient background layer</li>
+      <li><strong>Hard-banded shading</strong> on the crescent moon nods to retro game art</li>
+    </ul>
+    <p>
+      The goal is to keep what makes Cursor's design work&mdash;the readability,
+      the restraint, the focus on the craft of code&mdash;while giving Mystic its own
+      expressive, imaginative voice.
+    </p>
+  </div>
+    </div>
+  </details>
+  <details class="section" id="section-moon-phases">
+    <summary><h2 style="display:inline"><svg class="section-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg> Moon Phases</h2></summary>
+    <div class="section-content">
+  <p class="subtitle" style="margin-bottom:1rem">All eight lunar phases rendered with the Mystic gold palette</p>
+  <div class="grid" style="grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));">
+    <div class="card" style="padding:0.5rem" title="New Moon">
+      <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Ccircle cx='40.0' cy='40.0' r='36.8' fill='%23FAD075' opacity='0.06'/%3E%3Ccircle cx='40.0' cy='40.0' r='32.0' fill='%23FAD075'/%3E%3Ccircle cx='40.0' cy='40.0' r='32.0' fill='%230A0A0B'/%3E%3C/svg%3E" alt="New Moon" style="width:80px;height:80px">
+    </div>
+    <div class="card" style="padding:0.5rem" title="Waxing Crescent">
+      <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Ccircle cx='40.0' cy='40.0' r='36.8' fill='%23FAD075' opacity='0.06'/%3E%3Ccircle cx='40.0' cy='40.0' r='32.0' fill='%23FAD075'/%3E%3Cellipse cx='40.0' cy='40.0' rx='16.0' ry='32.0' fill='%230A0A0B'/%3E%3Crect x='0' y='8.0' width='40.0' height='64.0' fill='%230A0A0B'/%3E%3C/svg%3E" alt="Waxing Crescent" style="width:80px;height:80px">
+    </div>
+    <div class="card" style="padding:0.5rem" title="First Quarter">
+      <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Ccircle cx='40.0' cy='40.0' r='36.8' fill='%23FAD075' opacity='0.06'/%3E%3Ccircle cx='40.0' cy='40.0' r='32.0' fill='%23FAD075'/%3E%3Crect x='0' y='8.0' width='40.0' height='64.0' fill='%230A0A0B'/%3E%3C/svg%3E" alt="First Quarter" style="width:80px;height:80px">
+    </div>
+    <div class="card" style="padding:0.5rem" title="Waxing Gibbous">
+      <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Ccircle cx='40.0' cy='40.0' r='36.8' fill='%23FAD075' opacity='0.06'/%3E%3Ccircle cx='40.0' cy='40.0' r='32.0' fill='%23FAD075'/%3E%3Crect x='0' y='8.0' width='40.0' height='64.0' fill='%230A0A0B'/%3E%3Cellipse cx='40.0' cy='40.0' rx='16.0' ry='32.0' fill='%23FAD075'/%3E%3C/svg%3E" alt="Waxing Gibbous" style="width:80px;height:80px">
+    </div>
+    <div class="card" style="padding:0.5rem" title="Full Moon">
+      <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Ccircle cx='40.0' cy='40.0' r='36.8' fill='%23FAD075' opacity='0.06'/%3E%3Ccircle cx='40.0' cy='40.0' r='32.0' fill='%23FAD075'/%3E%3C/svg%3E" alt="Full Moon" style="width:80px;height:80px">
+    </div>
+    <div class="card" style="padding:0.5rem" title="Waning Gibbous">
+      <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Ccircle cx='40.0' cy='40.0' r='36.8' fill='%23FAD075' opacity='0.06'/%3E%3Ccircle cx='40.0' cy='40.0' r='32.0' fill='%23FAD075'/%3E%3Cellipse cx='40.0' cy='40.0' rx='16.0' ry='32.0' fill='%230A0A0B'/%3E%3Crect x='40.0' y='8.0' width='40.0' height='64.0' fill='%230A0A0B'/%3E%3C/svg%3E" alt="Waning Gibbous" style="width:80px;height:80px">
+    </div>
+    <div class="card" style="padding:0.5rem" title="Last Quarter">
+      <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Ccircle cx='40.0' cy='40.0' r='36.8' fill='%23FAD075' opacity='0.06'/%3E%3Ccircle cx='40.0' cy='40.0' r='32.0' fill='%23FAD075'/%3E%3Crect x='40.0' y='8.0' width='40.0' height='64.0' fill='%230A0A0B'/%3E%3C/svg%3E" alt="Last Quarter" style="width:80px;height:80px">
+    </div>
+    <div class="card" style="padding:0.5rem" title="Waning Crescent">
+      <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Ccircle cx='40.0' cy='40.0' r='36.8' fill='%23FAD075' opacity='0.06'/%3E%3Ccircle cx='40.0' cy='40.0' r='32.0' fill='%23FAD075'/%3E%3Crect x='40.0' y='8.0' width='40.0' height='64.0' fill='%230A0A0B'/%3E%3Cellipse cx='40.0' cy='40.0' rx='16.0' ry='32.0' fill='%23FAD075'/%3E%3C/svg%3E" alt="Waning Crescent" style="width:80px;height:80px">
+    </div>
+  </div>
+    </div>
+  </details>
+  <details class="section" id="section-twinkling-stars">
+    <summary><h2 style="display:inline"><svg class="section-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg> Twinkling Stars Animation</h2></summary>
+    <div class="section-content">
+  <div class="star-field" style="width:100%;height:200px;position:relative;overflow:hidden;background:var(--mystic-bg-dark);border-radius:8px;border:1px solid var(--mystic-fg-border)">
+    <div class="star" style="left:22.6%;top:90.5%;width:3px;height:3px;animation-delay:0.6s;animation-duration:3.5s"></div>
+    <div class="star" style="left:6.4%;top:67.3%;width:2px;height:2px;animation-delay:0.6s;animation-duration:2.7s"></div>
+    <div class="star" style="left:8.5%;top:63.5%;width:2px;height:2px;animation-delay:1.1s;animation-duration:2.5s"></div>
+    <div class="star" style="left:69.9%;top:25.6%;width:3px;height:3px;animation-delay:3.8s;animation-duration:2.4s"></div>
+    <div class="star" style="left:22.1%;top:25.2%;width:2px;height:2px;animation-delay:3.1s;animation-duration:1.8s"></div>
+    <div class="star" style="left:97.7%;top:25.4%;width:2px;height:2px;animation-delay:3.7s;animation-duration:1.9s"></div>
+    <div class="star" style="left:87.0%;top:38.9%;width:3px;height:3px;animation-delay:3.9s;animation-duration:2.3s"></div>
+    <div class="star" style="left:13.4%;top:80.9%;width:2px;height:2px;animation-delay:3.2s;animation-duration:2.7s"></div>
+    <div class="star" style="left:83.1%;top:65.4%;width:3px;height:3px;animation-delay:0.2s;animation-duration:2.9s"></div>
+    <div class="star" style="left:83.8%;top:76.1%;width:2px;height:2px;animation-delay:1.8s;animation-duration:1.8s"></div>
+    <div class="star" style="left:87.5%;top:78.1%;width:2px;height:2px;animation-delay:2.4s;animation-duration:2.4s"></div>
+    <div class="star" style="left:51.8%;top:61.4%;width:3px;height:3px;animation-delay:0.8s;animation-duration:2.1s"></div>
+    <div class="star" style="left:49.6%;top:78.1%;width:3px;height:3px;animation-delay:1.2s;animation-duration:1.6s"></div>
+    <div class="star" style="left:81.7%;top:11.9%;width:2px;height:2px;animation-delay:3.0s;animation-duration:2.3s"></div>
+    <div class="star" style="left:24.8%;top:66.2%;width:2px;height:2px;animation-delay:1.9s;animation-duration:2.2s"></div>
+    <div class="star" style="left:36.7%;top:41.7%;width:3px;height:3px;animation-delay:2.6s;animation-duration:2.7s"></div>
+    <div class="star" style="left:23.7%;top:20.2%;width:2px;height:2px;animation-delay:2.7s;animation-duration:1.8s"></div>
+    <div class="star" style="left:11.2%;top:21.3%;width:3px;height:3px;animation-delay:1.6s;animation-duration:1.7s"></div>
+    <div class="star" style="left:71.2%;top:29.8%;width:2px;height:2px;animation-delay:3.2s;animation-duration:2.6s"></div>
+    <div class="star" style="left:24.9%;top:26.3%;width:3px;height:3px;animation-delay:1.5s;animation-duration:3.2s"></div>
+    <div class="star" style="left:14.4%;top:97.3%;width:3px;height:3px;animation-delay:2.7s;animation-duration:2.5s"></div>
+    <div class="star" style="left:14.6%;top:73.0%;width:3px;height:3px;animation-delay:0.3s;animation-duration:1.7s"></div>
+    <div class="star" style="left:88.6%;top:37.9%;width:2px;height:2px;animation-delay:2.9s;animation-duration:2.6s"></div>
+    <div class="star" style="left:17.0%;top:68.2%;width:3px;height:3px;animation-delay:2.6s;animation-duration:3.0s"></div>
+    <div class="star" style="left:3.5%;top:5.3%;width:2px;height:2px;animation-delay:1.4s;animation-duration:3.3s"></div>
+    <div class="star" style="left:47.5%;top:46.5%;width:3px;height:3px;animation-delay:1.8s;animation-duration:2.2s"></div>
+    <div class="star" style="left:47.3%;top:26.2%;width:2px;height:2px;animation-delay:1.1s;animation-duration:2.1s"></div>
+    <div class="star" style="left:91.9%;top:48.3%;width:3px;height:3px;animation-delay:2.9s;animation-duration:1.9s"></div>
+    <div class="star" style="left:15.0%;top:83.2%;width:2px;height:2px;animation-delay:2.7s;animation-duration:3.2s"></div>
+    <div class="star" style="left:34.7%;top:51.5%;width:3px;height:3px;animation-delay:2.3s;animation-duration:2.1s"></div>
+    <div class="star" style="left:95.3%;top:8.9%;width:2px;height:2px;animation-delay:0.1s;animation-duration:2.5s"></div>
+    <div class="star" style="left:13.0%;top:86.1%;width:3px;height:3px;animation-delay:2.2s;animation-duration:2.7s"></div>
+    <div class="star" style="left:88.9%;top:1.9%;width:3px;height:3px;animation-delay:2.0s;animation-duration:2.6s"></div>
+    <div class="star" style="left:41.0%;top:92.8%;width:3px;height:3px;animation-delay:1.1s;animation-duration:1.8s"></div>
+    <div class="star" style="left:52.1%;top:35.6%;width:2px;height:2px;animation-delay:3.2s;animation-duration:2.7s"></div>
+    <div class="star" style="left:37.8%;top:78.2%;width:2px;height:2px;animation-delay:3.6s;animation-duration:1.8s"></div>
+    <div class="star" style="left:52.7%;top:38.3%;width:2px;height:2px;animation-delay:1.8s;animation-duration:2.6s"></div>
+    <div class="star" style="left:90.1%;top:57.5%;width:3px;height:3px;animation-delay:1.5s;animation-duration:1.8s"></div>
+    <div class="star" style="left:6.3%;top:10.3%;width:2px;height:2px;animation-delay:3.3s;animation-duration:1.7s"></div>
+    <div class="star" style="left:85.0%;top:0.5%;width:2px;height:2px;animation-delay:1.1s;animation-duration:3.2s"></div>
+    <div class="star" style="left:6.2%;top:78.2%;width:3px;height:3px;animation-delay:0.6s;animation-duration:2.3s"></div>
+    <div class="star" style="left:40.0%;top:78.3%;width:3px;height:3px;animation-delay:2.6s;animation-duration:3.1s"></div>
+    <div class="star" style="left:93.5%;top:28.7%;width:2px;height:2px;animation-delay:1.9s;animation-duration:1.6s"></div>
+    <div class="star" style="left:54.9%;top:1.6%;width:2px;height:2px;animation-delay:0.4s;animation-duration:2.0s"></div>
+    <div class="star" style="left:74.5%;top:48.9%;width:3px;height:3px;animation-delay:0.3s;animation-duration:3.4s"></div>
+    <div class="star" style="left:19.6%;top:44.4%;width:3px;height:3px;animation-delay:2.4s;animation-duration:2.3s"></div>
+    <div class="star" style="left:74.6%;top:71.6%;width:3px;height:3px;animation-delay:1.6s;animation-duration:2.1s"></div>
+    <div class="star" style="left:65.5%;top:91.8%;width:3px;height:3px;animation-delay:3.6s;animation-duration:1.6s"></div>
+    <div class="star" style="left:86.6%;top:83.2%;width:2px;height:2px;animation-delay:4.0s;animation-duration:2.8s"></div>
+    <div class="star" style="left:83.5%;top:52.8%;width:3px;height:3px;animation-delay:2.5s;animation-duration:2.4s"></div>
+    <div class="star-bright" style="left:72.3%;top:72.2%">
+      <div style="position:absolute;left:0px;top:-3px;width:3px;height:3px;background:#FAD075"></div>
+      <div style="position:absolute;left:-3px;top:0px;width:3px;height:3px;background:#FAD075"></div>
+      <div style="position:absolute;left:0px;top:0px;width:3px;height:3px;background:#FAD075"></div>
+      <div style="position:absolute;left:3px;top:0px;width:3px;height:3px;background:#FAD075"></div>
+      <div style="position:absolute;left:0px;top:3px;width:3px;height:3px;background:#FAD075"></div>
+    </div>
+    <div class="star-bright" style="left:65.0%;top:62.8%">
+      <div style="position:absolute;left:0px;top:-3px;width:3px;height:3px;background:#FAD075"></div>
+      <div style="position:absolute;left:-3px;top:0px;width:3px;height:3px;background:#FAD075"></div>
+      <div style="position:absolute;left:0px;top:0px;width:3px;height:3px;background:#FAD075"></div>
+      <div style="position:absolute;left:3px;top:0px;width:3px;height:3px;background:#FAD075"></div>
+      <div style="position:absolute;left:0px;top:3px;width:3px;height:3px;background:#FAD075"></div>
+    </div>
+    <div class="star-bright" style="left:69.9%;top:69.3%">
+      <div style="position:absolute;left:0px;top:-3px;width:3px;height:3px;background:#FAD075"></div>
+      <div style="position:absolute;left:-3px;top:0px;width:3px;height:3px;background:#FAD075"></div>
+      <div style="position:absolute;left:0px;top:0px;width:3px;height:3px;background:#FAD075"></div>
+      <div style="position:absolute;left:3px;top:0px;width:3px;height:3px;background:#FAD075"></div>
+      <div style="position:absolute;left:0px;top:3px;width:3px;height:3px;background:#FAD075"></div>
+    </div>
+    <div class="star-bright" style="left:26.1%;top:78.4%">
+      <div style="position:absolute;left:0px;top:-3px;width:3px;height:3px;background:#FAD075"></div>
+      <div style="position:absolute;left:-3px;top:0px;width:3px;height:3px;background:#FAD075"></div>
+      <div style="position:absolute;left:0px;top:0px;width:3px;height:3px;background:#FAD075"></div>
+      <div style="position:absolute;left:3px;top:0px;width:3px;height:3px;background:#FAD075"></div>
+      <div style="position:absolute;left:0px;top:3px;width:3px;height:3px;background:#FAD075"></div>
+    </div>
+  </div>
+    </div>
+  </details>
+  <div class="group-heading"><svg class="section-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg> Brand Guide</div>
+  <details class="section" id="section-color-palette">
+    <summary><h2 style="display:inline"><svg class="section-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12" r=".5" fill="currentColor"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2Z"/></svg> Color Palette</h2></summary>
+    <div class="section-content">
+  <div class="swatch-grid">
+    <div class="swatch" style="background:#D4A843;color:#000">--mystic-primary<br>#D4A843</div>
+    <div class="swatch" style="background:#B08C30;color:#000">--mystic-primary-dark<br>#B08C30</div>
+    <div class="swatch" style="background:#E8C76A;color:#000">--mystic-primary-light<br>#E8C76A</div>
+    <div class="swatch" style="background:#0A0A0B;color:#fff">--mystic-bg-dark<br>#0A0A0B</div>
+    <div class="swatch" style="background:#111113;color:#fff">--mystic-bg-surface<br>#111113</div>
+    <div class="swatch" style="background:#18181B;color:#fff">--mystic-bg-panel<br>#18181B</div>
+    <div class="swatch" style="background:#FAFAFA;color:#000">--mystic-fg-primary<br>#FAFAFA</div>
+    <div class="swatch" style="background:#A1A1AA;color:#000">--mystic-fg-muted<br>#A1A1AA</div>
+    <div class="swatch" style="background:#27272A;color:#fff">--mystic-fg-border<br>#27272A</div>
+    <div class="swatch" style="background:#D4A843;color:#000">--mystic-accent-gold<br>#D4A843</div>
+    <div class="swatch" style="background:#E8728A;color:#000">--mystic-accent-rose<br>#E8728A</div>
+    <div class="swatch" style="background:#5EC4AB;color:#000">--mystic-accent-seafoam<br>#5EC4AB</div>
+    <div class="swatch" style="background:#A78BDB;color:#000">--mystic-accent-lavender<br>#A78BDB</div>
+    <div class="swatch" style="background:#F5EDDA;color:#000">--mystic-accent-ivory<br>#F5EDDA</div>
+  </div>
+    </div>
+  </details>
+  <details class="section" id="section-typography">
+    <summary><h2 style="display:inline"><svg class="section-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></svg> Typography Specimens</h2></summary>
+    <div class="section-content">
+  <h3>Display &mdash; Inter</h3>
+  <p class="type-role">Headings, titles, hero text</p>
+  <div class="type-row">
+    <div class="type-specimen">
+      <div style="font-family:var(--mystic-font-display);font-size:48px;letter-spacing:var(--mystic-tracking);line-height:1.2">Mystic</div>
+      <div class="specimen-label">Inter &middot; Display / 48px</div>
+    </div>
+    <div class="type-specimen">
+      <div style="font-family:var(--mystic-font-display);font-size:32px;letter-spacing:var(--mystic-tracking);line-height:1.2">Mystic</div>
+      <div class="specimen-label">Inter &middot; Display / 32px</div>
+    </div>
+    <div class="type-specimen">
+      <div style="font-family:var(--mystic-font-display);font-size:24px;letter-spacing:var(--mystic-tracking);line-height:1.2">Mystic</div>
+      <div class="specimen-label">Inter &middot; Display / 24px</div>
+    </div>
+  </div>
+  <h3>Body &mdash; Inter</h3>
+  <p class="type-role">UI text, menus, descriptions</p>
+  <div class="type-row">
+    <div class="type-specimen">
+      <div style="font-family:var(--mystic-font-body);font-size:16px;line-height:1.5">Magical Notes, Designs and Products</div>
+      <div class="specimen-label">Inter &middot; Body / 16px</div>
+    </div>
+    <div class="type-specimen">
+      <div style="font-family:var(--mystic-font-body);font-size:14px;line-height:1.5">Magical Notes, Designs and Products</div>
+      <div class="specimen-label">Inter &middot; Body / 14px</div>
+    </div>
+    <div class="type-specimen">
+      <div style="font-family:var(--mystic-font-body);font-size:12px;line-height:1.5">Magical Notes, Designs and Products</div>
+      <div class="specimen-label">Inter &middot; Body / 12px</div>
+    </div>
+  </div>
+  <h3>Serif &mdash; Lora</h3>
+  <p class="type-role">Long-form notes, prose, articles</p>
+  <div class="type-row">
+    <div class="type-specimen">
+      <div style="font-family:var(--mystic-font-serif);font-size:20px;line-height:1.7">The quick brown fox jumps over the lazy dog. Notes become ideas, ideas become projects.</div>
+      <div class="specimen-label">Lora &middot; Serif / 20px</div>
+    </div>
+    <div class="type-specimen">
+      <div style="font-family:var(--mystic-font-serif);font-size:16px;line-height:1.7">The quick brown fox jumps over the lazy dog. Notes become ideas, ideas become projects.</div>
+      <div class="specimen-label">Lora &middot; Serif / 16px</div>
+    </div>
+    <div class="type-specimen">
+      <div style="font-family:var(--mystic-font-serif);font-size:14px;line-height:1.7">The quick brown fox jumps over the lazy dog. Notes become ideas, ideas become projects.</div>
+      <div class="specimen-label">Lora &middot; Serif / 14px</div>
+    </div>
+  </div>
+  <h3>Handwriting &mdash; Caveat</h3>
+  <p class="type-role">Personal notes, annotations, sketches</p>
+  <div class="type-row">
+    <div class="type-specimen">
+      <div style="font-family:var(--mystic-font-handwriting);font-size:28px;line-height:1.5">Remember to sketch the wireframe before coding!</div>
+      <div class="specimen-label">Caveat &middot; Handwriting / 28px</div>
+    </div>
+    <div class="type-specimen">
+      <div style="font-family:var(--mystic-font-handwriting);font-size:22px;line-height:1.5">Remember to sketch the wireframe before coding!</div>
+      <div class="specimen-label">Caveat &middot; Handwriting / 22px</div>
+    </div>
+    <div class="type-specimen">
+      <div style="font-family:var(--mystic-font-handwriting);font-size:18px;line-height:1.5">Remember to sketch the wireframe before coding!</div>
+      <div class="specimen-label">Caveat &middot; Handwriting / 18px</div>
+    </div>
+  </div>
+  <h3>Mono &mdash; JetBrains Mono</h3>
+  <p class="type-role">Code, tokens, terminal, technical labels</p>
+  <div class="type-specimen" style="max-width:600px">
+    <div style="font-family:var(--mystic-font-mono);font-size:14px;line-height:1.6;color:var(--mystic-accent-seafoam)">val greeting = "Hello, Mystic"<br>fun fibonacci(n: Int): Int =<br>&nbsp;&nbsp;if (n &lt;= 1) n else fibonacci(n-1) + fibonacci(n-2)</div>
+    <div class="specimen-label">JetBrains Mono &middot; Mono / 14px &middot; tracking: 0.03em</div>
+  </div>
+  <h3>Weight Ramp</h3>
+  <div class="type-row" style="margin-top:0.5rem">
+    <div class="type-specimen">
+      <div style="font-family:var(--mystic-font-display);font-size:24px;font-weight:400;letter-spacing:var(--mystic-tracking)">Mystic</div>
+      <div class="specimen-label">Inter &middot; 400 (Regular)</div>
+    </div>
+    <div class="type-specimen">
+      <div style="font-family:var(--mystic-font-display);font-size:24px;font-weight:500;letter-spacing:var(--mystic-tracking)">Mystic</div>
+      <div class="specimen-label">Inter &middot; 500 (Medium)</div>
+    </div>
+    <div class="type-specimen">
+      <div style="font-family:var(--mystic-font-display);font-size:24px;font-weight:700;letter-spacing:var(--mystic-tracking)">Mystic</div>
+      <div class="specimen-label">Inter &middot; 700 (Bold)</div>
+    </div>
+  </div>
+    </div>
+  </details>
+  <details class="section" id="section-logo-suite">
+    <summary><h2 style="display:inline"><svg class="section-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12l4 6-10 13L2 9Z"/></svg> Logo Suite</h2></summary>
+    <div class="section-content">
+  <div class="variant-group">
+    <h3>full</h3>
+    <div class="variant-row">
+      <div class="card">
+        <img src="../logos/logo-full-dark.png" alt="logo-full-dark" title="logo-full-dark.png (600x200, dark)" data-path="../logos/logo-full-dark.png" onclick="showPreview(this)">
+      </div>
+      <div class="card">
+        <img src="../logos/logo-full-light.png" alt="logo-full-light" title="logo-full-light.png (600x200, light)" data-path="../logos/logo-full-light.png" onclick="showPreview(this)">
+      </div>
+      <div class="card">
+        <img src="../logos/logo-full-mono.png" alt="logo-full-mono" title="logo-full-mono.png (600x200, mono)" data-path="../logos/logo-full-mono.png" onclick="showPreview(this)">
+      </div>
+    </div>
+  </div>
+  <div class="variant-group">
+    <h3>icon</h3>
+    <div class="variant-row">
+      <div class="card">
+        <img src="../logos/logo-icon-only-dark.png" alt="logo-icon-only-dark" title="logo-icon-only-dark.png (200x200, dark)" data-path="../logos/logo-icon-only-dark.png" onclick="showPreview(this)">
+      </div>
+      <div class="card">
+        <img src="../logos/logo-icon-only-light.png" alt="logo-icon-only-light" title="logo-icon-only-light.png (200x200, light)" data-path="../logos/logo-icon-only-light.png" onclick="showPreview(this)">
+      </div>
+      <div class="card">
+        <img src="../logos/logo-icon-only-mono.png" alt="logo-icon-only-mono" title="logo-icon-only-mono.png (200x200, mono)" data-path="../logos/logo-icon-only-mono.png" onclick="showPreview(this)">
+      </div>
+    </div>
+  </div>
+  <div class="variant-group">
+    <h3>wordmark</h3>
+    <div class="variant-row">
+      <div class="card">
+        <img src="../logos/logo-wordmark-dark.png" alt="logo-wordmark-dark" title="logo-wordmark-dark.png (400x100, dark)" data-path="../logos/logo-wordmark-dark.png" onclick="showPreview(this)">
+      </div>
+      <div class="card">
+        <img src="../logos/logo-wordmark-light.png" alt="logo-wordmark-light" title="logo-wordmark-light.png (400x100, light)" data-path="../logos/logo-wordmark-light.png" onclick="showPreview(this)">
+      </div>
+      <div class="card">
+        <img src="../logos/logo-wordmark-mono.png" alt="logo-wordmark-mono" title="logo-wordmark-mono.png (400x100, mono)" data-path="../logos/logo-wordmark-mono.png" onclick="showPreview(this)">
+      </div>
+    </div>
+  </div>
+  <div class="variant-group">
+    <h3>social</h3>
+    <div class="variant-row">
+      <div class="card">
+        <img src="../logos/logo-social-og.png" alt="logo-social-og" title="logo-social-og.png (1200x630, dark)" data-path="../logos/logo-social-og.png" onclick="showPreview(this)">
+      </div>
+      <div class="card">
+        <img src="../logos/logo-social-twitter.png" alt="logo-social-twitter" title="logo-social-twitter.png (1500x500, dark)" data-path="../logos/logo-social-twitter.png" onclick="showPreview(this)">
+      </div>
+    </div>
+  </div>
+  <div class="variant-group">
+    <h3>watermark</h3>
+    <div class="variant-row">
+      <div class="card">
+        <div class="checkerboard"><img src="../logos/logo-watermark.png" alt="logo-watermark" title="logo-watermark.png (200x200, dark)" data-path="../logos/logo-watermark.png" onclick="showPreview(this)"></div>
+      </div>
+    </div>
+  </div>
+    </div>
+  </details>
+  <details class="section" id="section-pixel-logos">
+    <summary><h2 style="display:inline"><svg class="section-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg> Pixel Logos</h2></summary>
+    <div class="section-content">
+  <div class="grid">
+    <div class="card">
+      <img src="../logos/pixel/logo-icon-only-dark-16x16.png" alt="logo-icon-only-dark-16x16" title="logo-icon-only-dark-16x16.png (16x16)" style="image-rendering:pixelated" data-path="../logos/pixel/logo-icon-only-dark-16x16.png" onclick="showPreview(this)">
+    </div>
+    <div class="card">
+      <img src="../logos/pixel/logo-icon-only-light-16x16.png" alt="logo-icon-only-light-16x16" title="logo-icon-only-light-16x16.png (16x16)" style="image-rendering:pixelated" data-path="../logos/pixel/logo-icon-only-light-16x16.png" onclick="showPreview(this)">
+    </div>
+    <div class="card">
+      <img src="../logos/pixel/logo-icon-only-mono-16x16.png" alt="logo-icon-only-mono-16x16" title="logo-icon-only-mono-16x16.png (16x16)" style="image-rendering:pixelated" data-path="../logos/pixel/logo-icon-only-mono-16x16.png" onclick="showPreview(this)">
+    </div>
+    <div class="card">
+      <img src="../logos/pixel/logo-icon-only-dark-32x32.png" alt="logo-icon-only-dark-32x32" title="logo-icon-only-dark-32x32.png (32x32)" style="image-rendering:pixelated" data-path="../logos/pixel/logo-icon-only-dark-32x32.png" onclick="showPreview(this)">
+    </div>
+    <div class="card">
+      <img src="../logos/pixel/logo-icon-only-light-32x32.png" alt="logo-icon-only-light-32x32" title="logo-icon-only-light-32x32.png (32x32)" style="image-rendering:pixelated" data-path="../logos/pixel/logo-icon-only-light-32x32.png" onclick="showPreview(this)">
+    </div>
+    <div class="card">
+      <img src="../logos/pixel/logo-icon-only-mono-32x32.png" alt="logo-icon-only-mono-32x32" title="logo-icon-only-mono-32x32.png (32x32)" style="image-rendering:pixelated" data-path="../logos/pixel/logo-icon-only-mono-32x32.png" onclick="showPreview(this)">
+    </div>
+    <div class="card">
+      <img src="../logos/pixel/logo-icon-only-dark-64x64.png" alt="logo-icon-only-dark-64x64" title="logo-icon-only-dark-64x64.png (64x64)" style="image-rendering:pixelated" data-path="../logos/pixel/logo-icon-only-dark-64x64.png" onclick="showPreview(this)">
+    </div>
+    <div class="card">
+      <img src="../logos/pixel/logo-icon-only-light-64x64.png" alt="logo-icon-only-light-64x64" title="logo-icon-only-light-64x64.png (64x64)" style="image-rendering:pixelated" data-path="../logos/pixel/logo-icon-only-light-64x64.png" onclick="showPreview(this)">
+    </div>
+    <div class="card">
+      <img src="../logos/pixel/logo-icon-only-mono-64x64.png" alt="logo-icon-only-mono-64x64" title="logo-icon-only-mono-64x64.png (64x64)" style="image-rendering:pixelated" data-path="../logos/pixel/logo-icon-only-mono-64x64.png" onclick="showPreview(this)">
+    </div>
+    <div class="card">
+      <img src="../logos/pixel/logo-icon-only-dark-128x128.png" alt="logo-icon-only-dark-128x128" title="logo-icon-only-dark-128x128.png (128x128)" style="image-rendering:pixelated" data-path="../logos/pixel/logo-icon-only-dark-128x128.png" onclick="showPreview(this)">
+    </div>
+    <div class="card">
+      <img src="../logos/pixel/logo-icon-only-light-128x128.png" alt="logo-icon-only-light-128x128" title="logo-icon-only-light-128x128.png (128x128)" style="image-rendering:pixelated" data-path="../logos/pixel/logo-icon-only-light-128x128.png" onclick="showPreview(this)">
+    </div>
+    <div class="card">
+      <img src="../logos/pixel/logo-icon-only-mono-128x128.png" alt="logo-icon-only-mono-128x128" title="logo-icon-only-mono-128x128.png (128x128)" style="image-rendering:pixelated" data-path="../logos/pixel/logo-icon-only-mono-128x128.png" onclick="showPreview(this)">
+    </div>
+    <div class="card">
+      <img src="../logos/pixel/logo-wordmark-dark.png" alt="logo-wordmark-dark" title="logo-wordmark-dark.png (160x40)" style="image-rendering:pixelated" data-path="../logos/pixel/logo-wordmark-dark.png" onclick="showPreview(this)">
+    </div>
+    <div class="card">
+      <img src="../logos/pixel/logo-wordmark-light.png" alt="logo-wordmark-light" title="logo-wordmark-light.png (160x40)" style="image-rendering:pixelated" data-path="../logos/pixel/logo-wordmark-light.png" onclick="showPreview(this)">
+    </div>
+    <div class="card">
+      <img src="../logos/pixel/logo-wordmark-mono.png" alt="logo-wordmark-mono" title="logo-wordmark-mono.png (160x40)" style="image-rendering:pixelated" data-path="../logos/pixel/logo-wordmark-mono.png" onclick="showPreview(this)">
+    </div>
+  </div>
+    </div>
+  </details>
+  <details class="section" id="section-icon-suite">
+    <summary><h2 style="display:inline"><svg class="section-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 2 7l10 5 10-5-10-5Z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/></svg> Icon Suite</h2></summary>
+    <div class="section-content">
+  <div class="theme-group">
+    <h3>dark</h3>
+    <div class="theme-row">
+      <div class="card">
+        <img src="../icons/icon-dark-16x16.png" alt="icon-dark-16x16" title="icon-dark-16x16.png (16x16)" style="width:16px;height:auto" data-path="../icons/icon-dark-16x16.png" onclick="showPreview(this)">
+      </div>
+      <div class="card">
+        <img src="../icons/favicon-dark-16x16.png" alt="favicon-dark-16x16" title="favicon-dark-16x16.png (16x16)" style="width:16px;height:auto" data-path="../icons/favicon-dark-16x16.png" onclick="showPreview(this)">
+      </div>
+      <div class="card">
+        <img src="../icons/icon-dark-32x32.png" alt="icon-dark-32x32" title="icon-dark-32x32.png (32x32)" style="width:32px;height:auto" data-path="../icons/icon-dark-32x32.png" onclick="showPreview(this)">
+      </div>
+      <div class="card">
+        <img src="../icons/favicon-dark-32x32.png" alt="favicon-dark-32x32" title="favicon-dark-32x32.png (32x32)" style="width:32px;height:auto" data-path="../icons/favicon-dark-32x32.png" onclick="showPreview(this)">
+      </div>
+      <div class="card">
+        <img src="../icons/favicon-dark-48x48.png" alt="favicon-dark-48x48" title="favicon-dark-48x48.png (48x48)" style="width:48px;height:auto" data-path="../icons/favicon-dark-48x48.png" onclick="showPreview(this)">
+      </div>
+      <div class="card">
+        <img src="../icons/icon-dark-64x64.png" alt="icon-dark-64x64" title="icon-dark-64x64.png (64x64)" style="width:64px;height:auto" data-path="../icons/icon-dark-64x64.png" onclick="showPreview(this)">
+      </div>
+      <div class="card">
+        <img src="../icons/icon-dark-128x128.png" alt="icon-dark-128x128" title="icon-dark-128x128.png (128x128)" style="width:128px;height:auto" data-path="../icons/icon-dark-128x128.png" onclick="showPreview(this)">
+      </div>
+      <div class="card">
+        <img src="../icons/icon-dark-256x256.png" alt="icon-dark-256x256" title="icon-dark-256x256.png (256x256)" style="width:128px;height:auto" data-path="../icons/icon-dark-256x256.png" onclick="showPreview(this)">
+      </div>
+      <div class="card">
+        <img src="../icons/icon-dark-512x512.png" alt="icon-dark-512x512" title="icon-dark-512x512.png (512x512)" style="width:128px;height:auto" data-path="../icons/icon-dark-512x512.png" onclick="showPreview(this)">
+      </div>
+      <div class="card">
+        <img src="../icons/icon-dark-1024x1024.png" alt="icon-dark-1024x1024" title="icon-dark-1024x1024.png (1024x1024)" style="width:128px;height:auto" data-path="../icons/icon-dark-1024x1024.png" onclick="showPreview(this)">
+      </div>
+    </div>
+  </div>
+  <div class="theme-group">
+    <h3>light</h3>
+    <div class="theme-row">
+      <div class="card">
+        <img src="../icons/icon-light-16x16.png" alt="icon-light-16x16" title="icon-light-16x16.png (16x16)" style="width:16px;height:auto" data-path="../icons/icon-light-16x16.png" onclick="showPreview(this)">
+      </div>
+      <div class="card">
+        <img src="../icons/icon-light-32x32.png" alt="icon-light-32x32" title="icon-light-32x32.png (32x32)" style="width:32px;height:auto" data-path="../icons/icon-light-32x32.png" onclick="showPreview(this)">
+      </div>
+      <div class="card">
+        <img src="../icons/icon-light-64x64.png" alt="icon-light-64x64" title="icon-light-64x64.png (64x64)" style="width:64px;height:auto" data-path="../icons/icon-light-64x64.png" onclick="showPreview(this)">
+      </div>
+      <div class="card">
+        <img src="../icons/icon-light-128x128.png" alt="icon-light-128x128" title="icon-light-128x128.png (128x128)" style="width:128px;height:auto" data-path="../icons/icon-light-128x128.png" onclick="showPreview(this)">
+      </div>
+      <div class="card">
+        <img src="../icons/icon-light-256x256.png" alt="icon-light-256x256" title="icon-light-256x256.png (256x256)" style="width:128px;height:auto" data-path="../icons/icon-light-256x256.png" onclick="showPreview(this)">
+      </div>
+      <div class="card">
+        <img src="../icons/icon-light-512x512.png" alt="icon-light-512x512" title="icon-light-512x512.png (512x512)" style="width:128px;height:auto" data-path="../icons/icon-light-512x512.png" onclick="showPreview(this)">
+      </div>
+      <div class="card">
+        <img src="../icons/icon-light-1024x1024.png" alt="icon-light-1024x1024" title="icon-light-1024x1024.png (1024x1024)" style="width:128px;height:auto" data-path="../icons/icon-light-1024x1024.png" onclick="showPreview(this)">
+      </div>
+    </div>
+  </div>
+  <div class="theme-group">
+    <h3>mono</h3>
+    <div class="theme-row">
+      <div class="card">
+        <img src="../icons/icon-mono-16x16.png" alt="icon-mono-16x16" title="icon-mono-16x16.png (16x16)" style="width:16px;height:auto" data-path="../icons/icon-mono-16x16.png" onclick="showPreview(this)">
+      </div>
+      <div class="card">
+        <img src="../icons/icon-mono-32x32.png" alt="icon-mono-32x32" title="icon-mono-32x32.png (32x32)" style="width:32px;height:auto" data-path="../icons/icon-mono-32x32.png" onclick="showPreview(this)">
+      </div>
+      <div class="card">
+        <img src="../icons/icon-mono-64x64.png" alt="icon-mono-64x64" title="icon-mono-64x64.png (64x64)" style="width:64px;height:auto" data-path="../icons/icon-mono-64x64.png" onclick="showPreview(this)">
+      </div>
+      <div class="card">
+        <img src="../icons/icon-mono-128x128.png" alt="icon-mono-128x128" title="icon-mono-128x128.png (128x128)" style="width:128px;height:auto" data-path="../icons/icon-mono-128x128.png" onclick="showPreview(this)">
+      </div>
+      <div class="card">
+        <img src="../icons/icon-mono-256x256.png" alt="icon-mono-256x256" title="icon-mono-256x256.png (256x256)" style="width:128px;height:auto" data-path="../icons/icon-mono-256x256.png" onclick="showPreview(this)">
+      </div>
+      <div class="card">
+        <img src="../icons/icon-mono-512x512.png" alt="icon-mono-512x512" title="icon-mono-512x512.png (512x512)" style="width:128px;height:auto" data-path="../icons/icon-mono-512x512.png" onclick="showPreview(this)">
+      </div>
+      <div class="card">
+        <img src="../icons/icon-mono-1024x1024.png" alt="icon-mono-1024x1024" title="icon-mono-1024x1024.png (1024x1024)" style="width:128px;height:auto" data-path="../icons/icon-mono-1024x1024.png" onclick="showPreview(this)">
+      </div>
+    </div>
+  </div>
+    </div>
+  </details>
+  <details class="section" id="section-pixel-icons">
+    <summary><h2 style="display:inline"><svg class="section-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="2"/><path d="M7 2v20"/><path d="M17 2v20"/><path d="M2 12h20"/><path d="M2 7h5"/><path d="M2 17h5"/><path d="M17 7h5"/><path d="M17 17h5"/></svg> Pixel Icons</h2></summary>
+    <div class="section-content">
+  <div class="grid">
+    <div class="card">
+      <img src="../icons/pixel/icon-dark-16x16.png" alt="icon-dark-16x16" title="icon-dark-16x16.png (16x16)" style="image-rendering:pixelated" data-path="../icons/pixel/icon-dark-16x16.png" onclick="showPreview(this)">
+    </div>
+    <div class="card">
+      <img src="../icons/pixel/icon-light-16x16.png" alt="icon-light-16x16" title="icon-light-16x16.png (16x16)" style="image-rendering:pixelated" data-path="../icons/pixel/icon-light-16x16.png" onclick="showPreview(this)">
+    </div>
+    <div class="card">
+      <img src="../icons/pixel/icon-mono-16x16.png" alt="icon-mono-16x16" title="icon-mono-16x16.png (16x16)" style="image-rendering:pixelated" data-path="../icons/pixel/icon-mono-16x16.png" onclick="showPreview(this)">
+    </div>
+    <div class="card">
+      <img src="../icons/pixel/icon-dark-32x32.png" alt="icon-dark-32x32" title="icon-dark-32x32.png (32x32)" style="image-rendering:pixelated" data-path="../icons/pixel/icon-dark-32x32.png" onclick="showPreview(this)">
+    </div>
+    <div class="card">
+      <img src="../icons/pixel/icon-light-32x32.png" alt="icon-light-32x32" title="icon-light-32x32.png (32x32)" style="image-rendering:pixelated" data-path="../icons/pixel/icon-light-32x32.png" onclick="showPreview(this)">
+    </div>
+    <div class="card">
+      <img src="../icons/pixel/icon-mono-32x32.png" alt="icon-mono-32x32" title="icon-mono-32x32.png (32x32)" style="image-rendering:pixelated" data-path="../icons/pixel/icon-mono-32x32.png" onclick="showPreview(this)">
+    </div>
+    <div class="card">
+      <img src="../icons/pixel/icon-dark-64x64.png" alt="icon-dark-64x64" title="icon-dark-64x64.png (64x64)" style="image-rendering:pixelated" data-path="../icons/pixel/icon-dark-64x64.png" onclick="showPreview(this)">
+    </div>
+    <div class="card">
+      <img src="../icons/pixel/icon-light-64x64.png" alt="icon-light-64x64" title="icon-light-64x64.png (64x64)" style="image-rendering:pixelated" data-path="../icons/pixel/icon-light-64x64.png" onclick="showPreview(this)">
+    </div>
+    <div class="card">
+      <img src="../icons/pixel/icon-mono-64x64.png" alt="icon-mono-64x64" title="icon-mono-64x64.png (64x64)" style="image-rendering:pixelated" data-path="../icons/pixel/icon-mono-64x64.png" onclick="showPreview(this)">
+    </div>
+    <div class="card">
+      <img src="../icons/pixel/icon-dark-128x128.png" alt="icon-dark-128x128" title="icon-dark-128x128.png (128x128)" style="image-rendering:pixelated" data-path="../icons/pixel/icon-dark-128x128.png" onclick="showPreview(this)">
+    </div>
+    <div class="card">
+      <img src="../icons/pixel/icon-light-128x128.png" alt="icon-light-128x128" title="icon-light-128x128.png (128x128)" style="image-rendering:pixelated" data-path="../icons/pixel/icon-light-128x128.png" onclick="showPreview(this)">
+    </div>
+    <div class="card">
+      <img src="../icons/pixel/icon-mono-128x128.png" alt="icon-mono-128x128" title="icon-mono-128x128.png (128x128)" style="image-rendering:pixelated" data-path="../icons/pixel/icon-mono-128x128.png" onclick="showPreview(this)">
+    </div>
+  </div>
+    </div>
+  </details>
+  <details class="section" id="section-banners">
+    <summary><h2 style="display:inline"><svg class="section-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg> Banners</h2></summary>
+    <div class="section-content">
+  <div class="grid wide-grid">
+    <div class="card">
+      <img src="../banners/banner-github.png" alt="banner-github" title="banner-github.png (1280x640)" data-path="../banners/banner-github.png" onclick="showPreview(this)">
+    </div>
+    <div class="card">
+      <img src="../banners/banner-readme.png" alt="banner-readme" title="banner-readme.png (800x200)" data-path="../banners/banner-readme.png" onclick="showPreview(this)">
+    </div>
+    <div class="card">
+      <img src="../banners/banner-release.png" alt="banner-release" title="banner-release.png (1200x400)" data-path="../banners/banner-release.png" onclick="showPreview(this)">
+    </div>
+  </div>
+    </div>
+  </details>
+  <details class="section" id="section-heroes">
+    <summary><h2 style="display:inline"><svg class="section-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> Heroes</h2></summary>
+    <div class="section-content">
+  <div class="grid wide-grid">
+    <div class="card">
+      <img src="../heroes/hero-landing.png" alt="hero-landing" title="hero-landing.png (1920x1080)" data-path="../heroes/hero-landing.png" onclick="showPreview(this)">
+    </div>
+    <div class="card">
+      <img src="../heroes/hero-landing-retina.png" alt="hero-landing-retina" title="hero-landing-retina.png (2560x1440)" data-path="../heroes/hero-landing-retina.png" onclick="showPreview(this)">
+    </div>
+  </div>
+    </div>
+  </details>
+  <details class="section" id="section-svg-assets">
+    <summary><h2 style="display:inline"><svg class="section-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/></svg> SVG Assets</h2></summary>
+    <div class="section-content">
+  <div class="grid">
+    <div class="card">
+      <img src="../icons/icon-dark.svg" alt="icon-dark" title="icon-dark.svg (512x512)" data-path="../icons/icon-dark.svg" onclick="showPreview(this)">
+    </div>
+    <div class="card">
+      <img src="../icons/icon-light.svg" alt="icon-light" title="icon-light.svg (512x512)" data-path="../icons/icon-light.svg" onclick="showPreview(this)">
+    </div>
+    <div class="card">
+      <img src="../icons/icon-mono.svg" alt="icon-mono" title="icon-mono.svg (512x512)" data-path="../icons/icon-mono.svg" onclick="showPreview(this)">
+    </div>
+    <div class="card">
+      <img src="../logos/logo-full-dark.svg" alt="logo-full-dark" title="logo-full-dark.svg (600x200)" data-path="../logos/logo-full-dark.svg" onclick="showPreview(this)">
+    </div>
+    <div class="card">
+      <img src="../logos/logo-full-light.svg" alt="logo-full-light" title="logo-full-light.svg (600x200)" data-path="../logos/logo-full-light.svg" onclick="showPreview(this)">
+    </div>
+    <div class="card">
+      <img src="../logos/logo-full-mono.svg" alt="logo-full-mono" title="logo-full-mono.svg (600x200)" data-path="../logos/logo-full-mono.svg" onclick="showPreview(this)">
+    </div>
+    <div class="card">
+      <img src="../logos/logo-icon-only-dark.svg" alt="logo-icon-only-dark" title="logo-icon-only-dark.svg (200x200)" data-path="../logos/logo-icon-only-dark.svg" onclick="showPreview(this)">
+    </div>
+    <div class="card">
+      <img src="../logos/logo-icon-only-light.svg" alt="logo-icon-only-light" title="logo-icon-only-light.svg (200x200)" data-path="../logos/logo-icon-only-light.svg" onclick="showPreview(this)">
+    </div>
+    <div class="card">
+      <img src="../logos/logo-icon-only-mono.svg" alt="logo-icon-only-mono" title="logo-icon-only-mono.svg (200x200)" data-path="../logos/logo-icon-only-mono.svg" onclick="showPreview(this)">
+    </div>
+    <div class="card">
+      <img src="../logos/logo-wordmark-dark.svg" alt="logo-wordmark-dark" title="logo-wordmark-dark.svg (400x100)" data-path="../logos/logo-wordmark-dark.svg" onclick="showPreview(this)">
+    </div>
+    <div class="card">
+      <img src="../logos/logo-wordmark-light.svg" alt="logo-wordmark-light" title="logo-wordmark-light.svg (400x100)" data-path="../logos/logo-wordmark-light.svg" onclick="showPreview(this)">
+    </div>
+    <div class="card">
+      <img src="../logos/logo-wordmark-mono.svg" alt="logo-wordmark-mono" title="logo-wordmark-mono.svg (400x100)" data-path="../logos/logo-wordmark-mono.svg" onclick="showPreview(this)">
+    </div>
+  </div>
+    </div>
+  </details>
+  <details class="section" id="section-design-tokens">
+    <summary><h2 style="display:inline"><svg class="section-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1Z"/></svg> Design Tokens Reference</h2></summary>
+    <div class="section-content">
+  <table class="token-table">
+    <thead><tr><th>Token Name</th><th>Value</th><th>Usage</th></tr></thead>
+    <tbody>
+      <tr><td>--mystic-primary</td><td><span class="token-swatch" style="background:#D4A843"></span>#D4A843</td><td>Primary brand color</td></tr>
+      <tr><td>--mystic-primary-dark</td><td><span class="token-swatch" style="background:#B08C30"></span>#B08C30</td><td>Darker primary for hover/active states</td></tr>
+      <tr><td>--mystic-primary-light</td><td><span class="token-swatch" style="background:#E8C76A"></span>#E8C76A</td><td>Lighter primary for highlights</td></tr>
+      <tr><td>--mystic-bg-dark</td><td><span class="token-swatch" style="background:#0A0A0B"></span>#0A0A0B</td><td>Page background (dark theme)</td></tr>
+      <tr><td>--mystic-bg-surface</td><td><span class="token-swatch" style="background:#111113"></span>#111113</td><td>Card and surface background</td></tr>
+      <tr><td>--mystic-bg-panel</td><td><span class="token-swatch" style="background:#18181B"></span>#18181B</td><td>Side panels and navigation</td></tr>
+      <tr><td>--mystic-bg-elevated</td><td><span class="token-swatch" style="background:#1E1E22"></span>#1E1E22</td><td>Elevated surfaces (modals, dropdowns)</td></tr>
+      <tr><td>--mystic-fg-primary</td><td><span class="token-swatch" style="background:#FAFAFA"></span>#FAFAFA</td><td>Primary text color</td></tr>
+      <tr><td>--mystic-fg-secondary</td><td><span class="token-swatch" style="background:#E4E4E7"></span>#E4E4E7</td><td>Secondary text color</td></tr>
+      <tr><td>--mystic-fg-muted</td><td><span class="token-swatch" style="background:#A1A1AA"></span>#A1A1AA</td><td>Muted text, captions</td></tr>
+      <tr><td>--mystic-fg-border</td><td><span class="token-swatch" style="background:#27272A"></span>#27272A</td><td>Borders and dividers</td></tr>
+      <tr><td>--mystic-light-bg</td><td><span class="token-swatch" style="background:#FFFFFF"></span>#FFFFFF</td><td>Page background (light theme)</td></tr>
+      <tr><td>--mystic-light-fg</td><td><span class="token-swatch" style="background:#09090B"></span>#09090B</td><td>Primary text (light theme)</td></tr>
+      <tr><td>--mystic-light-muted</td><td><span class="token-swatch" style="background:#71717A"></span>#71717A</td><td>Muted text (light theme)</td></tr>
+      <tr><td>--mystic-light-surface</td><td><span class="token-swatch" style="background:#F4F4F5"></span>#F4F4F5</td><td>Surface background (light theme)</td></tr>
+      <tr><td>--mystic-accent-gold</td><td><span class="token-swatch" style="background:#D4A843"></span>#D4A843</td><td>Warm highlights, star accents</td></tr>
+      <tr><td>--mystic-accent-rose</td><td><span class="token-swatch" style="background:#E8728A"></span>#E8728A</td><td>Alerts, attention, emphasis</td></tr>
+      <tr><td>--mystic-accent-seafoam</td><td><span class="token-swatch" style="background:#5EC4AB"></span>#5EC4AB</td><td>Success states, positive actions</td></tr>
+      <tr><td>--mystic-accent-lavender</td><td><span class="token-swatch" style="background:#A78BDB"></span>#A78BDB</td><td>Interactive elements, links</td></tr>
+      <tr><td>--mystic-accent-ivory</td><td><span class="token-swatch" style="background:#F5EDDA"></span>#F5EDDA</td><td>Subtle highlights, cards</td></tr>
+      <tr><td>--mystic-font-display</td><td>'Inter'</td><td>Headings and display text</td></tr>
+      <tr><td>--mystic-font-body</td><td>'Inter'</td><td>Body text, UI, menus</td></tr>
+      <tr><td>--mystic-font-serif</td><td>'Lora'</td><td>Long-form notes, prose, articles</td></tr>
+      <tr><td>--mystic-font-handwriting</td><td>'Caveat'</td><td>Personal notes, annotations</td></tr>
+      <tr><td>--mystic-font-mono</td><td>'JetBrains Mono'</td><td>Code, tokens, technical labels</td></tr>
+      <tr><td>--mystic-tracking</td><td>0.03em</td><td>Default letter-spacing</td></tr>
+    </tbody>
+  </table>
+    </div>
+  </details>
+  <div id="lightbox" onclick="closeLightbox(event)">
+    <button class="lb-close" onclick="closeLightbox(event)">&times;</button>
+    <img id="lb-img" src="" alt="Preview">
+    <div class="lb-info">
+      <div id="lb-name"></div>
+      <a id="lb-link" class="lb-download" href="" download>Download</a>
+    </div>
+  </div>
+<script>
+const STORAGE_KEY = 'mystic-brand-guide-sections';
+function loadSections() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+    document.querySelectorAll('details.section').forEach(d => {
+      if (saved[d.id] === true) d.open = true;
+    });
+  } catch(e) {}
+}
+function saveSections() {
+  const state = {};
+  document.querySelectorAll('details.section').forEach(d => {
+    state[d.id] = d.open;
+  });
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch(e) {}
+}
+document.addEventListener('DOMContentLoaded', loadSections);
+document.addEventListener('toggle', e => { if (e.target.matches('details.section')) saveSections(); }, true);
+function showPreview(el) {
+  const src = el.getAttribute('data-path') || el.src;
+  const name = el.getAttribute('title') || el.alt || '';
+  document.getElementById('lb-img').src = src;
+  document.getElementById('lb-name').textContent = name;
+  const link = document.getElementById('lb-link');
+  link.href = src;
+  link.download = src.split('/').pop();
+  document.getElementById('lightbox').classList.add('active');
+}
+function closeLightbox(e) {
+  if (e.target.id === 'lightbox' || e.target.classList.contains('lb-close')) {
+    document.getElementById('lightbox').classList.remove('active');
+  }
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') document.getElementById('lightbox').classList.remove('active'); });
+</script>
+</div>
+</body>
+</html>

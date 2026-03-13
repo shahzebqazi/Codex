@@ -30,6 +30,7 @@ class HtmlExporter(private val outputDir: File) {
         val svgAsset    = svg("""<path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/>""")
         val tokens      = svg("""<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1Z"/>""")
         val research    = svg("""<circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>""")
+        val cursorBrand = svg("""<path d="M6.5 6.5 17.5 12 6.5 17.5z"/><rect x="2" y="2" width="20" height="20" rx="2"/>""")
         val brandGuide  = svg("""<path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>""")
     }
 
@@ -59,18 +60,27 @@ class HtmlExporter(private val outputDir: File) {
             appendLine("""  <meta charset="UTF-8">""")
             appendLine("""  <meta name="viewport" content="width=device-width, initial-scale=1.0">""")
             appendLine("  <title>${config.name} Brand Guide</title>")
+            val fontFamilies = listOf(
+                config.typography.display,
+                config.typography.body,
+                config.typography.serif,
+                config.typography.handwriting,
+                config.typography.mono
+            ).distinct().joinToString("&family=") { it.replace(" ", "+") + ":wght@400;500;700" }
+            appendLine("""  <link rel="preconnect" href="https://fonts.googleapis.com">""")
+            appendLine("""  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>""")
+            appendLine("""  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=$fontFamilies&display=swap">""")
             appendLine("""  <link rel="stylesheet" href="../css/brand.css">""")
             appendStyles()
             appendLine("</head>")
             appendLine("<body>")
             appendLine("""<nav class="top-nav">""")
             appendLine("""  <div class="top-nav-inner">""")
-            appendLine("""    <div class="top-nav-spacer"></div>""")
             appendLine("""    <div class="top-nav-links">""")
             appendLine("""      <a href="#section-overview">Overview</a>""")
 
             appendLine("""      <a href="#" class="top-nav-active">Brand Guide</a>""")
-            appendLine("""      <a href="../mockups/" class="top-nav-ext">Mockups</a>""")
+            appendLine("""      <a href="https://shahzebqazi.github.io/Codex/" target="_blank" rel="noopener" class="top-nav-ext">Mockups</a>""")
             appendLine("""    </div>""")
             appendLine("""  </div>""")
             appendLine("""</nav>""")
@@ -119,6 +129,7 @@ class HtmlExporter(private val outputDir: File) {
                 appendLine("""    </ul>""")
                 appendLine("""    <h3>Research</h3>""")
                 appendLine("""    <ul>""")
+                appendLine("""      <li><a href="#section-cursor-brand">${Icons.cursorBrand} Cursor Brand</a></li>""")
                 appendLine("""      <li><a href="#section-moon-phases">${Icons.moonPhases} Moon Phases</a></li>""")
                 appendLine("""      <li><a href="#section-twinkling-stars">${Icons.stars} Twinkling Stars</a></li>""")
                 appendLine("""    </ul>""")
@@ -127,6 +138,10 @@ class HtmlExporter(private val outputDir: File) {
 
             // ── Research ──
             appendLine("""  <div class="group-heading">${Icons.research} Research</div>""")
+
+            appendSection("cursor-brand", "${Icons.cursorBrand} Cursor Brand") {
+                appendCursorBrandResearch()
+            }
 
             appendSection("moon-phases", "${Icons.moonPhases} Moon Phases") {
                 appendMoonPhases()
@@ -321,7 +336,7 @@ class HtmlExporter(private val outputDir: File) {
 
         // ── Top Navigation ──
         appendLine("    .top-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 50; background: rgba(10,10,11,0.85); border-bottom: 1px solid var(--mystic-fg-border); backdrop-filter: blur(16px) saturate(1.6); -webkit-backdrop-filter: blur(16px) saturate(1.6); }")
-        appendLine("    .top-nav-inner { max-width: 1200px; margin: 0 auto; padding: 0 1rem; display: flex; align-items: center; justify-content: space-between; height: 2.75rem; }")
+        appendLine("    .top-nav-inner { max-width: 1200px; margin: 0 auto; padding: 0 1rem; display: flex; align-items: center; justify-content: center; height: 2.75rem; }")
         appendLine("    .top-nav-brand { display: flex; align-items: center; gap: 0.5rem; text-decoration: none; color: var(--mystic-fg-primary); font-family: var(--mystic-font-display); font-size: 0.9rem; font-weight: 500; letter-spacing: var(--mystic-tracking); transition: color 0.15s; }")
         appendLine("    .top-nav-brand:hover { color: var(--mystic-accent-gold); }")
         appendLine("    .top-nav-logo { width: 22px; height: 22px; object-fit: contain; }")
@@ -414,6 +429,7 @@ class HtmlExporter(private val outputDir: File) {
         appendLine("      font-size: 0.7rem; color: var(--mystic-fg-muted); font-family: var(--mystic-font-mono);")
         appendLine("      margin-top: 0.75rem; border-top: 1px solid var(--mystic-fg-border); padding-top: 0.5rem;")
         appendLine("    }")
+        appendLine("    .type-role { font-size: 0.78rem; color: var(--mystic-fg-muted); font-family: var(--mystic-font-mono); margin: -0.3rem 0 0.6rem; font-style: italic; }")
         appendLine("    .type-row { display: flex; gap: 1.5rem; flex-wrap: wrap; }")
         appendLine("    .type-row .type-specimen { flex: 1; min-width: 200px; }")
 
@@ -441,6 +457,21 @@ class HtmlExporter(private val outputDir: File) {
         appendLine("    #lightbox .lb-download:hover { opacity: 0.9; transform: translateY(-1px); }")
         appendLine("    #lightbox .lb-close { position: absolute; top: 1rem; right: 1.5rem; font-size: 2rem; color: var(--mystic-fg-muted); cursor: pointer; background: none; border: none; transition: color 0.15s; }")
         appendLine("    #lightbox .lb-close:hover { color: var(--mystic-accent-rose); }")
+
+        // ── Research Prose ──
+        appendLine("    .research-prose { line-height: 1.75; color: var(--mystic-fg-secondary); font-family: var(--mystic-font-serif); }")
+        appendLine("    .research-prose h3 { color: var(--mystic-accent-gold); font-size: 0.95rem; font-family: var(--mystic-font-mono); text-transform: uppercase; letter-spacing: 0.08em; margin: 1.5rem 0 0.5rem; }")
+        appendLine("    .research-prose p { margin: 0.6rem 0; font-size: 0.88rem; }")
+        appendLine("    .research-prose strong { color: var(--mystic-fg-primary); }")
+        appendLine("    .research-intro { font-size: 0.95rem !important; color: var(--mystic-fg-primary); border-left: 3px solid var(--mystic-accent-gold); padding-left: 1rem; margin-bottom: 1.25rem !important; }")
+        appendLine("    .research-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; margin: 0.75rem 0 1rem; }")
+        appendLine("    .research-table th { text-align: left; padding: 0.5rem 0.75rem; border-bottom: 2px solid var(--mystic-accent-gold); color: var(--mystic-accent-gold); font-weight: 500; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; font-family: var(--mystic-font-mono); }")
+        appendLine("    .research-table td { padding: 0.45rem 0.75rem; border-bottom: 1px solid var(--mystic-fg-border); }")
+        appendLine("    .research-table tr:hover td { background: var(--mystic-bg-surface); }")
+        appendLine("    .research-table code { font-family: var(--mystic-font-mono); font-size: 0.78rem; color: var(--mystic-accent-seafoam); background: var(--mystic-bg-surface); padding: 0.1rem 0.35rem; border-radius: 4px; }")
+        appendLine("    .research-list { padding-left: 1.5rem; margin: 0.5rem 0; }")
+        appendLine("    .research-list li { margin: 0.35rem 0; font-size: 0.88rem; }")
+        appendLine("    .research-list li strong { color: var(--mystic-fg-primary); }")
 
         // ── Star Animations ──
         appendLine("    .star-field { position: relative; overflow: hidden; }")
@@ -515,30 +546,59 @@ class HtmlExporter(private val outputDir: File) {
     }
 
     private fun StringBuilder.appendTypography(config: BrandConfig) {
+        appendLine("""  <h3>Display &mdash; ${config.typography.display}</h3>""")
+        appendLine("""  <p class="type-role">Headings, titles, hero text</p>""")
         appendLine("""  <div class="type-row">""")
-        for ((size, label) in listOf(48 to "Display / 48px", 32 to "Display / 32px", 24 to "Display / 24px")) {
+        for ((size, label) in listOf(48 to "48px", 32 to "32px", 24 to "24px")) {
             appendLine("""    <div class="type-specimen">""")
             appendLine("""      <div style="font-family:var(--mystic-font-display);font-size:${size}px;letter-spacing:var(--mystic-tracking);line-height:1.2">${config.name}</div>""")
-            appendLine("""      <div class="specimen-label">${config.typography.display} &middot; $label</div>""")
+            appendLine("""      <div class="specimen-label">${config.typography.display} &middot; Display / $label</div>""")
             appendLine("    </div>")
         }
         appendLine("  </div>")
 
+        appendLine("""  <h3>Body &mdash; ${config.typography.body}</h3>""")
+        appendLine("""  <p class="type-role">UI text, menus, descriptions</p>""")
         appendLine("""  <div class="type-row">""")
-        for ((size, label) in listOf(16 to "Body / 16px", 14 to "Body / 14px", 12 to "Body / 12px")) {
+        for ((size, label) in listOf(16 to "16px", 14 to "14px", 12 to "12px")) {
             appendLine("""    <div class="type-specimen">""")
             appendLine("""      <div style="font-family:var(--mystic-font-body);font-size:${size}px;line-height:1.5">${config.tagline}</div>""")
-            appendLine("""      <div class="specimen-label">${config.typography.body} &middot; $label</div>""")
+            appendLine("""      <div class="specimen-label">${config.typography.body} &middot; Body / $label</div>""")
             appendLine("    </div>")
         }
         appendLine("  </div>")
 
+        appendLine("""  <h3>Serif &mdash; ${config.typography.serif}</h3>""")
+        appendLine("""  <p class="type-role">Long-form notes, prose, articles</p>""")
+        appendLine("""  <div class="type-row">""")
+        for ((size, label) in listOf(20 to "20px", 16 to "16px", 14 to "14px")) {
+            appendLine("""    <div class="type-specimen">""")
+            appendLine("""      <div style="font-family:var(--mystic-font-serif);font-size:${size}px;line-height:1.7">The quick brown fox jumps over the lazy dog. Notes become ideas, ideas become projects.</div>""")
+            appendLine("""      <div class="specimen-label">${config.typography.serif} &middot; Serif / $label</div>""")
+            appendLine("    </div>")
+        }
+        appendLine("  </div>")
+
+        appendLine("""  <h3>Handwriting &mdash; ${config.typography.handwriting}</h3>""")
+        appendLine("""  <p class="type-role">Personal notes, annotations, sketches</p>""")
+        appendLine("""  <div class="type-row">""")
+        for ((size, label) in listOf(28 to "28px", 22 to "22px", 18 to "18px")) {
+            appendLine("""    <div class="type-specimen">""")
+            appendLine("""      <div style="font-family:var(--mystic-font-handwriting);font-size:${size}px;line-height:1.5">Remember to sketch the wireframe before coding!</div>""")
+            appendLine("""      <div class="specimen-label">${config.typography.handwriting} &middot; Handwriting / $label</div>""")
+            appendLine("    </div>")
+        }
+        appendLine("  </div>")
+
+        appendLine("""  <h3>Mono &mdash; ${config.typography.mono}</h3>""")
+        appendLine("""  <p class="type-role">Code, tokens, terminal, technical labels</p>""")
         appendLine("""  <div class="type-specimen" style="max-width:600px">""")
-        appendLine("""    <div style="font-family:var(--mystic-font-mono);font-size:14px;line-height:1.6;color:var(--mystic-accent-seafoam)">val greeting = "Hello, ${config.name}"</div>""")
+        appendLine("""    <div style="font-family:var(--mystic-font-mono);font-size:14px;line-height:1.6;color:var(--mystic-accent-seafoam)">val greeting = "Hello, ${config.name}"<br>fun fibonacci(n: Int): Int =<br>&nbsp;&nbsp;if (n &lt;= 1) n else fibonacci(n-1) + fibonacci(n-2)</div>""")
         appendLine("""    <div class="specimen-label">${config.typography.mono} &middot; Mono / 14px &middot; tracking: ${config.typography.tracking}em</div>""")
         appendLine("  </div>")
 
-        appendLine("""  <div class="type-row" style="margin-top:1rem">""")
+        appendLine("""  <h3>Weight Ramp</h3>""")
+        appendLine("""  <div class="type-row" style="margin-top:0.5rem">""")
         for ((weight, label) in listOf(400 to "Regular", 500 to "Medium", 700 to "Bold")) {
             appendLine("""    <div class="type-specimen">""")
             appendLine("""      <div style="font-family:var(--mystic-font-display);font-size:24px;font-weight:$weight;letter-spacing:var(--mystic-tracking)">${config.name}</div>""")
@@ -601,7 +661,9 @@ class HtmlExporter(private val outputDir: File) {
             Triple("--mystic-accent-lavender", hex(config.colors.accentLavender), "Interactive elements, links"),
             Triple("--mystic-accent-ivory", hex(config.colors.accentIvory), "Subtle highlights, cards"),
             Triple("--mystic-font-display", "'${config.typography.display}'", "Headings and display text"),
-            Triple("--mystic-font-body", "'${config.typography.body}'", "Body text and paragraphs"),
+            Triple("--mystic-font-body", "'${config.typography.body}'", "Body text, UI, menus"),
+            Triple("--mystic-font-serif", "'${config.typography.serif}'", "Long-form notes, prose, articles"),
+            Triple("--mystic-font-handwriting", "'${config.typography.handwriting}'", "Personal notes, annotations"),
             Triple("--mystic-font-mono", "'${config.typography.mono}'", "Code, tokens, technical labels"),
             Triple("--mystic-tracking", "${config.typography.tracking}em", "Default letter-spacing")
         )
@@ -611,6 +673,84 @@ class HtmlExporter(private val outputDir: File) {
         }
         appendLine("    </tbody>")
         appendLine("  </table>")
+    }
+
+    private fun StringBuilder.appendCursorBrandResearch() {
+        appendLine("""  <div class="research-prose">""")
+        appendLine("""    <p class="research-intro">""")
+        appendLine("""      Mystic's visual identity draws inspiration from <strong>Cursor</strong>&mdash;the AI-first code editor by Anysphere&mdash;while""")
+        appendLine("""      adding its own personality and color. This section documents the reference design system we studied""")
+        appendLine("""      and the deliberate departures we made to give Mystic a warmer, more expressive character.""")
+        appendLine("""    </p>""")
+
+        appendLine("""    <h3>Typography</h3>""")
+        appendLine("""    <p>""")
+        appendLine("""      Cursor's 2025 brand refresh introduced <strong>Cursor Gothic</strong>, a custom typeface designed by""")
+        appendLine("""      Munich-based foundry <em>Kimera</em> in collaboration with Justin Jay Wang. Built on Kimera's""")
+        appendLine("""      <em>Waldenburg</em>, it blends the rationalism of Akzidenz-Grotesk with the analog warmth of Univers.""")
+        appendLine("""      Slightly more condensed and higher-contrast than its parent, it reads smoothly at both display and""")
+        appendLine("""      text sizes. A distinctive feature is <strong>logo ligatures</strong> baked into the font itself&mdash;""")
+        appendLine("""      embedding logo lockups that auto-center with surrounding text.""")
+        appendLine("""    </p>""")
+        appendLine("""    <p>""")
+        appendLine("""      Cursor also pairs the typeface with <strong>Berkeley Mono</strong> for code surfaces and""")
+        appendLine("""      <strong>JJannon</strong> (a serif) for editorial content, giving it three distinct typographic voices.""")
+        appendLine("""    </p>""")
+
+        appendLine("""    <h3>Color System</h3>""")
+        appendLine("""    <table class="research-table">""")
+        appendLine("""      <thead><tr><th>Role</th><th>Light</th><th>Dark</th><th>Notes</th></tr></thead>""")
+        appendLine("""      <tbody>""")
+        appendLine("""        <tr><td>Background</td><td><code>#F7F7F4</code></td><td><code>#14120B</code></td><td>Warm off-white / warm charcoal&mdash;never pure black or white</td></tr>""")
+        appendLine("""        <tr><td>Foreground</td><td><code>#26251E</code></td><td><code>#EDECEC</code></td><td>55% opacity for body text, full opacity for headings</td></tr>""")
+        appendLine("""        <tr><td>Border / Muted</td><td><code>rgba(38,37,30,0.08)</code></td><td><code>rgba(237,236,236,0.08)</code></td><td>Transparent borders keep depth subtle</td></tr>""")
+        appendLine("""        <tr><td>Accent (CTA)</td><td colspan="2"><code>rgba(38,37,30,0.06)</code></td><td>Tinted backgrounds rather than saturated buttons</td></tr>""")
+        appendLine("""      </tbody>""")
+        appendLine("""    </table>""")
+
+        appendLine("""    <h3>Logo System</h3>""")
+        appendLine("""    <p>""")
+        appendLine("""      The Cursor logo extends Ben Barry's original cube design into three rendering tiers:""")
+        appendLine("""    </p>""")
+        appendLine("""    <ul class="research-list">""")
+        appendLine("""      <li><strong>2D flat</strong>&mdash;single-color, optimized for small sizes and favicons</li>""")
+        appendLine("""      <li><strong>2.5D</strong>&mdash;flat color planes for medium applications (social cards, headers)</li>""")
+        appendLine("""      <li><strong>3D</strong>&mdash;lighting and material effects for app icons and OS integrations</li>""")
+        appendLine("""    </ul>""")
+        appendLine("""    <p>""")
+        appendLine("""      Subtle rounding on cube and cursor-arrow corners ensures screen clarity at every size.""")
+        appendLine("""      Each tier ships in light and dark variants.""")
+        appendLine("""    </p>""")
+
+        appendLine("""    <h3>Design Philosophy</h3>""")
+        appendLine("""    <p>""")
+        appendLine("""      Cursor positions itself as a <em>"power tool for professional developers"</em>,""")
+        appendLine("""      balancing high-end technical sophistication with human warmth. Every visual decision""")
+        appendLine("""      prioritizes <strong>screen fidelity over geometric perfection</strong>&mdash;shapes are""")
+        appendLine("""      optically tuned rather than mathematically exact. The overall palette is restrained,""")
+        appendLine("""      almost monochromatic, relying on warm neutrals and transparency.""")
+        appendLine("""    </p>""")
+
+        appendLine("""    <h3>Mystic's Spin</h3>""")
+        appendLine("""    <p>""")
+        appendLine("""      Where Cursor keeps the palette austere, <strong>Mystic leans into personality and color</strong>.""")
+        appendLine("""      We retain the readability-first hierarchy&mdash;dark backgrounds, generous whitespace,""")
+        appendLine("""      clear type&mdash;but inject a hand-crafted, lo-fi warmth:""")
+        appendLine("""    </p>""")
+        appendLine("""    <ul class="research-list">""")
+        appendLine("""      <li><strong>Gold accent</strong> replaces the neutral CTA tint, evoking moonlight and craft</li>""")
+        appendLine("""      <li><strong>Pixel-art icons &amp; moon</strong> add tactile character versus vector minimalism</li>""")
+        appendLine("""      <li><strong>Rose Pink &amp; Seafoam Green</strong> accents give the palette emotional range</li>""")
+        appendLine("""      <li><strong>Twinkling star fields</strong> create a living, ambient background layer</li>""")
+        appendLine("""      <li><strong>Hard-banded shading</strong> on the crescent moon nods to retro game art</li>""")
+        appendLine("""    </ul>""")
+        appendLine("""    <p>""")
+        appendLine("""      The goal is to keep what makes Cursor's design work&mdash;the readability,""")
+        appendLine("""      the restraint, the focus on the craft of code&mdash;while giving Mystic its own""")
+        appendLine("""      expressive, imaginative voice.""")
+        appendLine("""    </p>""")
+
+        appendLine("""  </div>""")
     }
 
     private fun StringBuilder.appendMoonPhases() {

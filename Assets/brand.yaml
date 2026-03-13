@@ -32,6 +32,8 @@ colors:
 typography:
   display: "Inter"
   body: "Inter"
+  serif: "Lora"
+  handwriting: "Caveat"
   mono: "JetBrains Mono"
   tracking: 0.03
   weights:
