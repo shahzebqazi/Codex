@@ -78,6 +78,9 @@ export default function App() {
   ]);
   const [activeTabId, setActiveTabId] = useState<string>('tab-home');
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [leftSidebarOpen, setLeftSidebarOpen] = useState(!isNarrow);
+  const [rightSidebarOpen, setRightSidebarOpen] = useState(!isNarrow);
+  const [terminalOpen, setTerminalOpen] = useState(false);
   const [scale, setScale] = useState(1);
 
   const activeTab = tabs.find((t) => t.id === activeTabId) ?? tabs[0];
@@ -210,9 +213,9 @@ export default function App() {
         </DropdownMenu>
       </div>
       <div className="flex items-center gap-0.5 shrink-0 text-[#666666]">
-        <button onClick={() => setSidebarOpen(!sidebarOpen)} className={`p-1.5 rounded ${sidebarOpen ? 'bg-[#E5E5E5]/10 text-[#E5E5E5]' : 'hover:bg-[#1A1A1A] hover:text-[#E5E5E5]'}`} title="Toggle left sidebar"><PanelLeft className="w-3.5 h-3.5" /></button>
-        <button className="p-1.5 rounded hover:bg-[#1A1A1A] hover:text-[#E5E5E5]" title="Toggle bottom panel"><PanelBottom className="w-3.5 h-3.5" /></button>
-        <button className="p-1.5 rounded hover:bg-[#1A1A1A] hover:text-[#E5E5E5]" title="Toggle right sidebar"><PanelRight className="w-3.5 h-3.5" /></button>
+        <button onClick={() => setLeftSidebarOpen(!leftSidebarOpen)} className={`p-1.5 rounded ${leftSidebarOpen ? 'bg-[#E5E5E5]/10 text-[#E5E5E5]' : 'hover:bg-[#1A1A1A] hover:text-[#E5E5E5]'}`} title="Toggle left sidebar"><PanelLeft className="w-3.5 h-3.5" /></button>
+        <button onClick={() => setTerminalOpen(!terminalOpen)} className={`p-1.5 rounded ${terminalOpen ? 'bg-[#E5E5E5]/10 text-[#E5E5E5]' : 'hover:bg-[#1A1A1A] hover:text-[#E5E5E5]'}`} title="Toggle bottom panel"><PanelBottom className="w-3.5 h-3.5" /></button>
+        <button onClick={() => setRightSidebarOpen(!rightSidebarOpen)} className={`p-1.5 rounded ${rightSidebarOpen ? 'bg-[#E5E5E5]/10 text-[#E5E5E5]' : 'hover:bg-[#1A1A1A] hover:text-[#E5E5E5]'}`} title="Toggle right sidebar"><PanelRight className="w-3.5 h-3.5" /></button>
       </div>
     </div>
   );
@@ -224,8 +227,13 @@ export default function App() {
           narrow={isNarrow}
           sidebarOpen={sidebarOpen}
           setSidebarOpen={setSidebarOpen}
-          onOpenSettings={() => {}}
-        />
+          leftSidebarOpen={leftSidebarOpen}
+          setLeftSidebarOpen={setLeftSidebarOpen}
+          rightSidebarOpen={rightSidebarOpen}
+          setRightSidebarOpen={setRightSidebarOpen}
+          terminalOpen={terminalOpen}
+          setTerminalOpen={setTerminalOpen}
+            onOpenSettings={() => {}}        />
       )}
       {activeTab.kind === 'editor' && <EditorPaneMock />}
       {activeTab.kind === 'terminal' && <TerminalPaneMock />}
@@ -487,14 +495,11 @@ function GraphView({
 }
 
 function MainChatView(
-  { narrow = false, sidebarOpen, setSidebarOpen, onOpenSettings }: { narrow?: boolean; sidebarOpen: boolean; setSidebarOpen: (open: boolean) => void; onOpenSettings: () => void }
+  { narrow = false, sidebarOpen, setSidebarOpen, leftSidebarOpen, setLeftSidebarOpen, rightSidebarOpen, setRightSidebarOpen, terminalOpen, setTerminalOpen, onOpenSettings }: { narrow?: boolean; sidebarOpen: boolean; setSidebarOpen: (open: boolean) => void; leftSidebarOpen: boolean; setLeftSidebarOpen: (open: boolean) => void; rightSidebarOpen: boolean; setRightSidebarOpen: (open: boolean) => void; terminalOpen: boolean; setTerminalOpen: (open: boolean) => void; onOpenSettings: () => void }
 ) {
-  const [leftSidebarOpen, setLeftSidebarOpen] = useState(!narrow);
-  const [rightSidebarOpen, setRightSidebarOpen] = useState(!narrow);
   const [activeSidebarTab, setActiveSidebarTab] = useState<'files' | 'search' | 'git' | 'extensions'>('files');
   const [mainViewMode, setMainViewMode] = useState<MainViewMode>('list');
   const [selectedThreadId, setSelectedThreadId] = useState<string>('general');
-  const [terminalOpen, setTerminalOpen] = useState(false);
   const [expandedFolders, setExpandedFolders] = useState<string[]>(['Orchestration']);
 
   const threadGraphData = MOCK_THREAD_GRAPHS[selectedThreadId] ?? MOCK_THREAD_GRAPHS.general;
