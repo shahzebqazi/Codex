@@ -209,6 +209,11 @@ export default function App() {
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
+      <div className="flex items-center gap-0.5 shrink-0 text-[#666666]">
+        <button onClick={() => setSidebarOpen(!sidebarOpen)} className={`p-1.5 rounded ${sidebarOpen ? 'bg-[#E5E5E5]/10 text-[#E5E5E5]' : 'hover:bg-[#1A1A1A] hover:text-[#E5E5E5]'}`} title="Toggle left sidebar"><PanelLeft className="w-3.5 h-3.5" /></button>
+        <button className="p-1.5 rounded hover:bg-[#1A1A1A] hover:text-[#E5E5E5]" title="Toggle bottom panel"><PanelBottom className="w-3.5 h-3.5" /></button>
+        <button className="p-1.5 rounded hover:bg-[#1A1A1A] hover:text-[#E5E5E5]" title="Toggle right sidebar"><PanelRight className="w-3.5 h-3.5" /></button>
+      </div>
     </div>
   );
 
@@ -782,13 +787,6 @@ function MainChatView(
           </section>
         </div>
 
-        {/* Status bar — always visible at bottom */}
-        <div className="shrink-0 flex items-center gap-1 px-2 py-2 border-t border-[#1A1A1A] bg-[#0A0A0A] text-[#666666] pb-[max(0.5rem,env(safe-area-inset-bottom))]">
-          <button onClick={() => setLeftSidebarOpen(!leftSidebarOpen)} className={`p-2.5 rounded touch-manipulation ${leftSidebarOpen ? 'bg-[#E5E5E5]/10 text-[#E5E5E5]' : 'hover:bg-[#1A1A1A] hover:text-[#E5E5E5]'}`} title="Explorer"><PanelLeft className="w-4 h-4" /></button>
-          <button onClick={() => setTerminalOpen(!terminalOpen)} className={`p-2.5 rounded touch-manipulation ${terminalOpen ? 'bg-[#E5E5E5]/10 text-[#E5E5E5]' : 'hover:bg-[#1A1A1A] hover:text-[#E5E5E5]'}`} title="Terminal"><PanelBottom className="w-4 h-4" /></button>
-          <button onClick={() => setRightSidebarOpen(!rightSidebarOpen)} className={`p-2.5 rounded touch-manipulation ${rightSidebarOpen ? 'bg-[#E5E5E5]/10 text-[#E5E5E5]' : 'hover:bg-[#1A1A1A] hover:text-[#E5E5E5]'}`} title="Threads"><PanelRight className="w-3.5 h-3.5" /></button>
-        </div>
-
         <AnimatePresence>
           {terminalOpen && (
             <motion.div
@@ -1018,12 +1016,6 @@ zfs mount rpool/root/arch`}</pre>
           </motion.div>
         </div>
 
-        {/* Status bar */}
-        <div className="flex items-center gap-0.5 px-2 py-1 border-t border-[#1A1A1A] bg-[#0A0A0A] shrink-0 min-h-[28px] text-[#666666]">
-          <button onClick={() => setLeftSidebarOpen(!leftSidebarOpen)} className={`p-1.5 rounded ${leftSidebarOpen ? 'bg-[#E5E5E5]/10 text-[#E5E5E5]' : 'hover:bg-[#1A1A1A] hover:text-[#E5E5E5]'}`} title="Toggle left sidebar"><PanelLeft className="w-3.5 h-3.5" /></button>
-          <button onClick={() => setTerminalOpen(!terminalOpen)} className={`p-1.5 rounded ${terminalOpen ? 'bg-[#E5E5E5]/10 text-[#E5E5E5]' : 'hover:bg-[#1A1A1A] hover:text-[#E5E5E5]'}`} title="Toggle bottom panel"><PanelBottom className="w-3.5 h-3.5" /></button>
-          <button onClick={() => setRightSidebarOpen(!rightSidebarOpen)} className={`p-1.5 rounded ${rightSidebarOpen ? 'bg-[#E5E5E5]/10 text-[#E5E5E5]' : 'hover:bg-[#1A1A1A] hover:text-[#E5E5E5]'}`} title="Toggle right sidebar"><PanelRight className="w-3.5 h-3.5" /></button>
-        </div>
       </div>
 
       {/* Slide-up terminal (opens from bottom) */}
