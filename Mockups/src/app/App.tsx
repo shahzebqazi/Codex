@@ -73,6 +73,7 @@ function nextTabId() {
 
 export default function App() {
   const isNarrow = useIsNarrowViewport();
+  const basePath = import.meta.env?.BASE_URL ?? '/';
   const [tabs, setTabs] = useState<Tab[]>([
     { id: 'tab-home', kind: 'home' },
     { id: 'tab-settings', kind: 'settings' },
@@ -90,6 +91,7 @@ export default function App() {
   };
 
   const closeTab = (id: string) => {
+    if (id === 'tab-home') return;
     setTabs((prev) => {
       const next = prev.filter((t) => t.id !== id);
       if (activeTabId === id && next.length) {
@@ -144,14 +146,20 @@ export default function App() {
         </div>
       )}
       <div className="flex items-center gap-0.5 flex-1 min-w-0 overflow-x-auto">
-        {tabs.map((tab) => (
+        {tabs.map((tab) => {
+          const isHome = tab.kind === 'home';
+          return (
           <button
             key={tab.id}
             onClick={() => setActiveTabId(tab.id)}
             className={`px-3 py-2 rounded-t text-sm font-mono flex items-center gap-1.5 shrink-0 ${activeTabId === tab.id ? 'bg-[#0a0a0a] text-[#E5E5E5] border border-[#1A1A1A] border-b-transparent -mb-px' : 'text-[#666666] hover:text-[#E5E5E5]'}`}
           >
-            {TAB_LABELS[tab.kind]}
-            {tabs.length > 1 && (
+            {isHome ? (
+              <img src={`${basePath}brand/pixel-icon-64.png`} alt="Mystic" width={14} height={14} style={{ imageRendering: 'pixelated' }} />
+            ) : (
+              TAB_LABELS[tab.kind]
+            )}
+            {!isHome && tabs.length > 1 && (
               <span
                 className="opacity-70 hover:opacity-100 rounded p-0.5 hover:bg-[#333]"
                 onClick={(e) => { e.stopPropagation(); closeTab(tab.id); }}
@@ -161,7 +169,8 @@ export default function App() {
               </span>
             )}
           </button>
-        ))}
+          );
+        })}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <button
