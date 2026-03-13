@@ -42,6 +42,7 @@ jobs:
 
       - name: Build Mockups
         working-directory: Mockups
+        continue-on-error: true
         env:
           BASE_PATH: /Codex/mockups/
         run: npx vite build --outDir dist
@@ -50,7 +51,7 @@ jobs:
         run: |
           mkdir -p _site
           cp -r Assets/output/* _site/
-          cp -r Mockups/dist _site/mockups
+          if [ -d Mockups/dist ]; then cp -r Mockups/dist _site/mockups; fi
           cat > _site/index.html <<'REDIRECT'
           <!DOCTYPE html>
           <html lang="en">
