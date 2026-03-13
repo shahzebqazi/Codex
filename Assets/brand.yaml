@@ -1,0 +1,93 @@
+brand:
+  name: "dotAi"
+  tagline: "Local-first AI agent system"
+
+colors:
+  primary: "#0EA5E9"
+  primaryDark: "#0284C7"
+  primaryLight: "#38BDF8"
+  background:
+    dark: "#000000"
+    surface: "#0A0A0A"
+    panel: "#1A1A1A"
+    elevated: "#1E1E1E"
+  foreground:
+    primary: "#E5E5E5"
+    secondary: "#999999"
+    muted: "#666666"
+    border: "#333333"
+  light:
+    background: "#FFFFFF"
+    foreground: "#030213"
+    muted: "#717182"
+    surface: "#F3F3F5"
+    border: "rgba(0,0,0,0.1)"
+  accent:
+    emerald: "#10B981"
+    amber: "#F59E0B"
+    red: "#FF5F57"
+    yellow: "#FEBC2E"
+    green: "#28C840"
+
+typography:
+  display: "Inter"
+  body: "Inter"
+  mono: "JetBrains Mono"
+  tracking: 0.03
+  weights:
+    normal: 400
+    medium: 500
+    bold: 700
+
+logo:
+  style: "zen-moon"
+  moonCrescentRatio: 0.72
+  moonOffsetX: 0.28
+  moonOffsetY: 0.0
+  glowRadius: 0.15
+  glowOpacity: 0.4
+
+icons:
+  favicon:
+    - 16
+    - 32
+    - 48
+  desktop:
+    - 16
+    - 32
+    - 64
+    - 128
+    - 256
+    - 512
+    - 1024
+  android:
+    foreground: 108
+    background: 108
+
+logos:
+  variants:
+    - "full"
+    - "icon-only"
+    - "wordmark"
+  themes:
+    - "dark"
+    - "light"
+    - "mono"
+  social:
+    og: { width: 1200, height: 630 }
+    twitter: { width: 1500, height: 500 }
+  watermark:
+    opacity: 0.15
+
+banners:
+  github: { width: 1280, height: 640 }
+  readme: { width: 800, height: 200 }
+  release: { width: 1200, height: 400 }
+
+heroes:
+  landing: { width: 1920, height: 1080 }
+  landingRetina: { width: 2560, height: 1440 }
+  rippleCount: 5
+  rippleSpacing: 60
+  rippleStrokeWidth: 1.0
+  rippleOpacity: 0.08

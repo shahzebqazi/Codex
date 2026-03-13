@@ -55,7 +55,7 @@ If an agent has not committed in a configurable timeout, the orchestrator can:
 ## Standalone Mode
 
 Without other agents, the orchestrator acts as a general-purpose coding assistant:
-- Reads START_HERE.md for project context
+- Reads Orchestration/Harness/SYSTEM_PROMPT.md (convention) for project context
 - Uses the chatbot skill for interactive sessions
 - Can perform any single-agent coding task
 - Updates .ai/ files as it learns

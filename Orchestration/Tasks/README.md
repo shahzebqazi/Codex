@@ -44,4 +44,4 @@ This aligns the task system with other AI/skills systems where capabilities are 
 - **Skills** (`Orchestration/Skills/`) = User-typed **command keywords** with deterministic effects (e.g. `summarize`, `generate`). See `Orchestration/Skills/README.md`.
 - **Tasks** (`Orchestration/Tasks/`) = **Families of actions** the AI performs; eventually implemented as tool calls, scripts, or bundled programs.
 
-Entry point for the full system: `Project/START_HERE.md`.
+System prompt (convention) for the full system: `Project/SYSTEM_PROMPT.md`.

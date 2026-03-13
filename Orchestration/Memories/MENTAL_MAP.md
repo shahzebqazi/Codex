@@ -82,6 +82,29 @@ Tasks = families of actions (Orchestration/Tasks/): SWE, VCS, INFRA, DATA, TOOLS
 [Patterns, gotchas, conventions, integration points]
 ```
 
+## Prolog knowledge base (facts)
+
+Use a **Prolog knowledge base** to store and query relational facts (e.g. which files reference which, task dependencies, traceability). This keeps the mental map and task system consistent and queryable.
+
+### Location and format
+
+- **KB file:** `Orchestration/Memories/kb.pl` (or project-configured path under Memories). Create the file if missing.
+- **Facts:** One predicate per relation. Prefer meaningful names: `references(FromFile, ToFile)`, `depends_on(Task, Task)`, `implements(Artifact, Requirement)`.
+- **Rules:** Add rules in the same file (or an included file) for transitive closure and common queries, e.g. `refs_from_trans/2`, `refs_to_trans/2`, so agents can ask "what does X reference?" or "what references X?" (directly or transitively).
+
+### When to update the KB
+
+- After discovering or creating **file-to-file references** (imports, links, citations): add or update `references(From, To)` (or project convention).
+- When **task/PRD/artifact relationships** are established: add facts for dependencies, implementation, and traceability.
+- When **user or project preferences** are learned and should be queryable: add facts (e.g. `prefers(Scope, Key, Value)`) and keep MENTAL_MAP.md and DEFAULTS.md as the human-readable summary; the KB is the machine-queryable store.
+
+### Usage
+
+- **Query:** Use the KB to answer "what references X?", "what does X depend on?", "which artifacts implement requirement R?" without re-scanning the repo each time. Regenerate or incrementally update the KB when files or structure change.
+- **Workspace structure (optional):** To avoid agents missing dirs in subdirs, the KB can also store directory whereabouts: e.g. `directory(Path)`, `child_dir(Parent, Child)`. See [WORKSPACE_STRUCTURE_INDEX.md](WORKSPACE_STRUCTURE_INDEX.md) for the full technique (file-based index or KB). When present, query the index/KB for "does dir X exist?" or "where is X?" before relying only on glob.
+- **Tooling:** If Prolog is available (e.g. SWI-Prolog), agents can run queries via subprocess or a small script. Otherwise, keep the `.pl` file as the canonical fact store and document how downstream tools (or future harness features) will consume it.
+- **Convention:** Document the predicate names and intended semantics in a short comment at the top of `kb.pl` or in this section so all agents use the same schema.
+
 ## Optimization History
 
 ```

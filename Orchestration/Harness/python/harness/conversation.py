@@ -1,24 +1,24 @@
 # In-memory conversation state and system prompt.
 from typing import Optional
 
-from .config import start_here_path
+from .config import system_prompt_path
 from .guard_rails import trim_conversation, trim_messages_for_context
 
 
-def load_system_prompt_from_start_here() -> str:
-    """Load START_HERE.md as default system/behavior source if present."""
-    p = start_here_path()
+def load_system_prompt() -> str:
+    """Load SYSTEM_PROMPT.md (convention) as default system/behavior source if present."""
+    p = system_prompt_path()
     if p.exists():
         return p.read_text(encoding="utf-8")
     return ""
 
 
 class Conversation:
-    def __init__(self, system_prompt: Optional[str] = None, use_start_here: bool = True):
+    def __init__(self, system_prompt: Optional[str] = None, use_convention: bool = True):
         if system_prompt is not None:
             self._system = system_prompt
-        elif use_start_here:
-            self._system = load_system_prompt_from_start_here()
+        elif use_convention:
+            self._system = load_system_prompt()
         else:
             self._system = ""
         self._messages: list[dict] = []
