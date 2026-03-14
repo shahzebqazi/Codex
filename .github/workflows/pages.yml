@@ -1,0 +1,80 @@
+name: Deploy GitHub Pages
+
+on:
+  push:
+    branches: [main, assets]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Generate brand assets
+        working-directory: Assets
+        run: ./gradlew run
+
+      - name: Fetch Mockups from docs branch
+        run: |
+          git fetch origin docs/documentation-reorg --depth=1
+          git checkout origin/docs/documentation-reorg -- Mockups/
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Mockups dependencies
+        working-directory: Mockups
+        run: npm install --include=peer
+
+      - name: Build Mockups
+        working-directory: Mockups
+        continue-on-error: true
+        env:
+          BASE_PATH: /Codex/mockups/
+        run: npx vite build --outDir dist
+
+      - name: Assemble site
+        run: |
+          mkdir -p _site
+          cp -r Assets/output/* _site/
+          if [ -d Mockups/dist ]; then cp -r Mockups/dist _site/mockups; fi
+          cat > _site/index.html <<'REDIRECT'
+          <!DOCTYPE html>
+          <html lang="en">
+          <head><meta charset="UTF-8"><meta http-equiv="refresh" content="0;url=preview/"></head>
+          <body><p>Redirecting to <a href="preview/">Brand Guide</a>…</p></body>
+          </html>
+          REDIRECT
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

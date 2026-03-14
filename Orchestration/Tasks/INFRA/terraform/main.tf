@@ -16,6 +16,6 @@ terraform {
 # module "redis" { source = "./modules/redis"; ... }
 
 output "release_ready" {
-  value       = "Run docker-compose in Project/Orchestration/Tasks/INFRA/ for local production-like topology."
+  value       = "Run docker-compose in Orchestration/Tasks/INFRA/ for local production-like topology."
   description = "Placeholder until cloud modules are wired."
 }

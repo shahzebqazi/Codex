@@ -13,7 +13,7 @@ Lua front-end for the Python harness (Ollama backend). Talk to the harness API o
 1. Start the harness server (from repo root or Harness):
 
    ```bash
-   cd Project/Orchestration/Harness/python
+   cd Orchestration/Harness/python
    pip install -r requirements.txt
    python -m harness --port 15555
    ```

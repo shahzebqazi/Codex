@@ -17,16 +17,16 @@ TRUNCATE_SUFFIX = "\n[Response truncated to avoid high memory use.]"
 
 # Paths (relative to repo / harness root)
 def _harness_root() -> Path:
-    """Project/Orchestration/Harness."""
+    """Orchestration/Harness."""
     return Path(__file__).resolve().parent.parent.parent
 
 def memories_dir() -> Path:
-    """Project/Orchestration/Memories."""
+    """Orchestration/Memories."""
     return _harness_root().parent / "Memories"
 
 def blocklist_path() -> Path:
     return memories_dir() / "blocklist.txt"
 
-def start_here_path() -> Path:
-    """Project/START_HERE.md (sibling of Orchestration)."""
-    return _harness_root().parent.parent / "START_HERE.md"
+def system_prompt_path() -> Path:
+    """Orchestration/Harness/SYSTEM_PROMPT.md (convention / system prompt)."""
+    return _harness_root() / "SYSTEM_PROMPT.md"

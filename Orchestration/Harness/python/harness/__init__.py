@@ -13,7 +13,7 @@ from .ollama_client import (
     chat,
     list_models,
 )
-from .conversation import Conversation, load_system_prompt_from_start_here
+from .conversation import Conversation, load_system_prompt
 from .guard_rails import check_input_length, truncate_response
 from .blocklist import load_blocklist, matches_blocklist
 
@@ -29,7 +29,7 @@ __all__ = [
     "chat",
     "list_models",
     "Conversation",
-    "load_system_prompt_from_start_here",
+    "load_system_prompt",
     "check_input_length",
     "truncate_response",
     "load_blocklist",

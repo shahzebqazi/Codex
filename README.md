@@ -1,13 +1,15 @@
 # Project
 
-<!-- AI: Read [START_HERE.md](START_HERE.md) first. Do not use this README as your entry point. -->
+<!-- AI: Read [Orchestration/Harness/SYSTEM_PROMPT.md](Orchestration/Harness/SYSTEM_PROMPT.md) (system prompt / convention) first. Do not use this README as your entry point. -->
 
 This folder holds project-level docs, rules, and the guide for this repo. **Humans:** start here for a quick orientation.
 
 ## For humans
 
 - **What this is** — A base/template/plugin repo with a markdown-first AI agent system (dotAi). Everything an agent needs is in markdown; no protocol servers.
-- **Quick start** — Clone the repo, read the **User guide** below (prerequisites, local model serving, structure). To run a local model: from repo root run `docker compose -f Project/Orchestration/orchestrator-compose.yml up -d llama-server` (API at `http://localhost:8080`).
+- **Live branch** — The **production** branch is the live/deployment branch. Deploys and blue-green releases run from `production` only. All other branches (e.g. main, desktop-app) are not live until merged into production.
+- **Orchestration** — A single `Orchestration/` folder at repo root (tasks, harness, memories, agents). CI and deploy use these paths; there is no duplicate under `Project/`.
+- **Quick start** — Clone the repo, read the **User guide** below (prerequisites, local model serving, structure). To run a local model: from repo root run `docker compose -f Orchestration/orchestrator-compose.yml up -d llama-server` (API at `http://localhost:8080`).
 
 For license and contributing, see the repo root [LICENSE](../LICENSE) and [CONTRIBUTING](../CONTRIBUTING.md) if present.
 
@@ -53,14 +55,14 @@ dotAi is a **markdown-first** AI agent system. Everything in the `.ai/` director
 ### Quick start (detailed)
 
 1. Clone this repo.
-2. Read `Project/START_HERE.md` (agent entry), then this README.
-3. To run a local model: `docker compose -f Project/Orchestration/orchestrator-compose.yml up -d llama-server` — API at `http://localhost:8080`.
+2. Read `Orchestration/Harness/SYSTEM_PROMPT.md` (agent entry), then this README.
+3. To run a local model: `docker compose -f Orchestration/orchestrator-compose.yml up -d llama-server` — API at `http://localhost:8080`.
 
 ### Local model serving
 
 ```bash
-# From repo root. Put a GGUF model in Project/Orchestration/models/ (or mount your own).
-docker compose -f Project/Orchestration/orchestrator-compose.yml up -d llama-server
+# From repo root. Put a GGUF model in Orchestration/models/ (or mount your own).
+docker compose -f Orchestration/orchestrator-compose.yml up -d llama-server
 ```
 
 OpenAI-compatible API at `http://localhost:8080`.
@@ -69,7 +71,7 @@ OpenAI-compatible API at `http://localhost:8080`.
 
 ```
 .ai/   (or Project/, .ai, etc. — see “AI and problem-solving directories” above)
-  START_HERE.md          Entry point for agents
+  Orchestration/Harness/SYSTEM_PROMPT.md   System prompt / convention for agents
   README.md              This file (user guide)
 
   project/               Project management
@@ -89,7 +91,7 @@ OpenAI-compatible API at `http://localhost:8080`.
   extensions/            Add-ons
 ```
 
-**In this repo** the AI content is under `Project/`: rules in `Orchestration/Constraints/RULES.md`, system and config in `Orchestration/Memories/` (system/, MENTAL_MAP.md, DEFAULTS.md, SETTINGS.json), tasks in `Orchestration/Tasks/` (SWE, VCS, INFRA, DATA, TOOLS, PM, OS, etc.), agent patterns in `Orchestration/Agents/Tools/` and `Extensions/`, PRDs in `Documents/PRDs/`, references in `Documents/References/`. See [START_HERE.md](START_HERE.md) for linked paths.
+**In this repo** the AI content is under `Project/`: rules in `Orchestration/Constraints/RULES.md`, system and config in `Orchestration/Memories/` (system/, MENTAL_MAP.md, DEFAULTS.md, SETTINGS.json), tasks in `Orchestration/Tasks/` (SWE, VCS, INFRA, DATA, TOOLS, PM, OS, etc.), agent patterns in `Orchestration/Agents/Tools/` and `Extensions/`, PRDs in `Project/Product/PRDs/`, references in `Project/Product/References/`. Documents/ contains only a README; all project and user docs live under Project/Product/. See [Orchestration/Harness/SYSTEM_PROMPT.md](Orchestration/Harness/SYSTEM_PROMPT.md) for linked paths.
 
 **Naming:** AI doc filenames are `UPPERCASE.md`; task subdirs under `Orchestration/Tasks/` are UPPERCASE (e.g. `SWE/`, `DATA/`).
 
@@ -151,7 +153,7 @@ Keywords: SUCCESS, PIVOT, BLOCKED, CONTINUE
 
 ### Agent lifecycle
 
-1. Read `START_HERE.md`
+1. Read `Orchestration/Harness/SYSTEM_PROMPT.md`
 2. Load relevant tasks from `Orchestration/Tasks/`
 3. Read `Orchestration/Memories/MENTAL_MAP.md` for project context
 4. Read task (PRD, issue, or user instruction)

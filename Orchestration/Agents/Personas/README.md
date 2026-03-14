@@ -1,6 +1,6 @@
 # Personas — Modular agents and personalities
 
-**Location:** `Project/Orchestration/Agents/Personas/`
+**Location:** `Orchestration/Agents/Personas/`
 
 This directory defines **personas** and how they combine with **skillsets** into **personalities** used by the harness. Personas are interchangeable; the project uses modular agents with persona + skillset = Personality.
 

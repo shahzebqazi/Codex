@@ -1,0 +1,54 @@
+{
+  "version": "1.0.0",
+  "mode": "single_prd",
+  "prd_ref": "Orchestration/Harness/PRDs/MYSTIC_PIXEL_ART_SWARM_PRD.md",
+  "subagent_policy": "full",
+  "models": {
+    "default": {
+      "provider": "cursor",
+      "role": "Agent mode — full read/write tool access"
+    }
+  },
+  "tasks": [
+    {
+      "id": "PIX-1",
+      "prd_ref": "MYSTIC_PIXEL_ART_SWARM_PRD.md",
+      "owner": "Agent 1",
+      "task_type": "code",
+      "model_key": "default",
+      "subagent_type": "generalPurpose",
+      "depends_on": [],
+      "acceptance_criteria": "Moon is blocky pixel art with black 1px outline, gold shading (dark→light), pixel square/cross stars. Function signatures unchanged."
+    },
+    {
+      "id": "PAL-1",
+      "prd_ref": "MYSTIC_PIXEL_ART_SWARM_PRD.md",
+      "owner": "Agent 2",
+      "task_type": "code",
+      "model_key": "default",
+      "subagent_type": "generalPurpose",
+      "depends_on": [],
+      "acceptance_criteria": "brand.yaml colors section uses Cursor palette. Moon gold untouched. Hardcoded hex in generators/exporters/tests updated."
+    },
+    {
+      "id": "HTM-1",
+      "prd_ref": "MYSTIC_PIXEL_ART_SWARM_PRD.md",
+      "owner": "Agent 3",
+      "task_type": "code",
+      "model_key": "default",
+      "subagent_type": "generalPurpose",
+      "depends_on": [],
+      "acceptance_criteria": "index.html has 12 sections: header, palette, typography, logos, icons, social, banners, heroes, SVGs, moon phases, twinkling pixel stars, design tokens. CSS twinkle animation plays."
+    },
+    {
+      "id": "INT-1",
+      "prd_ref": "MYSTIC_PIXEL_ART_SWARM_PRD.md",
+      "owner": "Agent 4",
+      "task_type": "review",
+      "model_key": "default",
+      "subagent_type": "shell",
+      "depends_on": ["PIX-1", "PAL-1", "HTM-1"],
+      "acceptance_criteria": "gradlew clean build exits 0, 45 tests pass, gradlew run exits 0, 53+ assets in output/, preview opens correctly."
+    }
+  ]
+}

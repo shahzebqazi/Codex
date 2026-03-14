@@ -20,14 +20,14 @@ This directory holds specs and the **harness implementation**: **Python backend*
 
 2. **Python harness (API server):**
    ```bash
-   cd Project/Orchestration/Harness/python
+   cd Orchestration/Harness/python
    pip install -r requirements.txt
    python -m harness --port 15555
    ```
    Server listens at `http://127.0.0.1:15555`.
 
 3. **Lua client:**
-   - Terminal: `cd Project/Orchestration/Harness/lua_gui && lua client_terminal.lua` (requires `luarocks install luasocket`)
+   - Terminal: `cd Orchestration/Harness/lua_gui && lua client_terminal.lua` (requires `luarocks install luasocket`)
    - IUP GUI: `lua client_gui_iup.lua` (requires `luarocks install iup`)
 
 ---
@@ -37,7 +37,7 @@ This directory holds specs and the **harness implementation**: **Python backend*
 - **Ollama client** — `GET /api/tags` (list models), `POST /v1/chat/completions` (chat, streaming or not).
 - **Conversation** — In-memory history; last N messages sent to Ollama (cap 20); in-memory cap 50.
 - **Guard rails** — Input length cap (32k chars), response truncation (16k chars), optional blocklist.
-- **System prompt** — Loads `Project/START_HERE.md` by default (dotAi entry point); overridable via API.
+- **System prompt** — Loads `Orchestration/Harness/SYSTEM_PROMPT.md` by default (dotAi convention / system prompt); overridable via API.
 - **Blocklist** — `Orchestration/Memories/blocklist.txt` (one pattern per line); messages matching are rejected.
 
 **API (for Lua or any client):**
@@ -54,11 +54,11 @@ This directory holds specs and the **harness implementation**: **Python backend*
 
 The **scaffold** is the markdown protocol agents use; it lives alongside the harness:
 
-- Entry: `Project/START_HERE.md`
+- Entry: `Orchestration/Harness/SYSTEM_PROMPT.md`
 - Rules: `Orchestration/Constraints/RULES.md`
 - System / memory: `Orchestration/Memories/system/` (runtime, model_serving), `Memories/prompts/CONTEXT_REFRESH.md`, `MENTAL_MAP.md`
 - Tasks: `Orchestration/Tasks/`, `Orchestration/Agents/AGENT_PROMPT.md`
-- PRDs: `Project/Documents/PRDs/`
+- PRDs: `Project/Product/PRDs/`
 
 See project README and MVP_PRD for scaffold gaps (case sensitivity, task validation, etc.).
 
@@ -80,4 +80,4 @@ See project README and MVP_PRD for scaffold gaps (case sensitivity, task validat
 
 The original spec described an Electron desktop app. This repo implements **Python harness + Lua GUI** instead. Any frontend that can call the harness HTTP API (e.g. Electron, a web UI, or another Lua toolkit) can reuse the same server.
 
-See also: `Orchestration/Agents/AGENT_PROMPT.md`, `Documents/PRDs/FEATURES_PRD.md`, `Documents/PRDs/MVP_PRD.md`.
+See also: `Orchestration/Agents/AGENT_PROMPT.md`, `Project/Product/PRDs/FEATURES_PRD.md`, `Project/Product/PRDs/MVP_PRD.md`.

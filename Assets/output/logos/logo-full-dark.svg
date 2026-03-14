@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="200" viewBox="0 0 600 200">
+  <rect width="600" height="200" fill="#0A0A0B"/>
+  <defs>
+    <mask id="crescent-full">
+      <rect width="600" height="200" fill="black"/>
+      <circle cx="100.0" cy="100.0" r="64.0" fill="white"/>
+      <circle cx="119.20000076293945" cy="96.79999995231628" r="44.79999923706055" fill="black"/>
+    </mask>
+  </defs>
+  <rect width="600" height="200" fill="#FAD075" mask="url(#crescent-full)"/>
+  <text x="194.0" y="115.99999999999999" font-family="Inter, system-ui, sans-serif" font-size="70.0" font-weight="500" fill="#FAFAFA" letter-spacing="0.03em">Mystic</text>
+</svg>

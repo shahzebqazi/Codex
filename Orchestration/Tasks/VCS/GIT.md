@@ -15,9 +15,14 @@ In the dotAi system, git is the human-facing VCS layer. Humans commit with git; 
 
 ```
 main                        -- stable, human-approved code
-  feature/name              -- human feature branches
+  feature/name              -- human feature branches (e.g. feature/auth-module)
+  docs/name                 -- documentation-only (e.g. docs/glossary)
+  chore/name                -- config, CI, chores (e.g. chore/ci-pages)
+  hotfix/name               -- from production only
   agent-name/task-id        -- AI agent working branches (managed by jj)
 ```
+
+**CI/CD:** CI runs on all PRs to `main` or `production`. GitHub Pages deploys on push to `main` (Settings → Pages → GitHub Actions).
 
 ## Interaction with jj
 
