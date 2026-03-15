@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Executive Document — Mystic Core Values</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+  <link rel="stylesheet" href="css/brand.css">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: var(--mystic-font-body);
+      background: var(--mystic-bg-dark);
+      color: var(--mystic-fg-primary);
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+    .nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 50;
+      background: rgba(10,10,11,0.9);
+      border-bottom: 1px solid var(--mystic-fg-border);
+      backdrop-filter: blur(16px);
+    }
+    .nav-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 3rem;
+    }
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      text-decoration: none;
+      color: var(--mystic-fg-primary);
+      font-weight: 600;
+      font-size: 1rem;
+    }
+    .nav-brand:hover { color: var(--mystic-accent-gold); }
+    .nav-brand img { width: 24px; height: 24px; image-rendering: pixelated; }
+    .nav-links { display: flex; gap: 1.5rem; }
+    .nav-links a {
+      text-decoration: none;
+      color: var(--mystic-fg-muted);
+      font-size: 0.875rem;
+    }
+    .nav-links a:hover,
+    .nav-links a.active { color: var(--mystic-accent-gold); }
+    .doc {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 5rem 1.5rem 4rem;
+    }
+    .doc h1 {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+      background: linear-gradient(135deg, var(--mystic-accent-gold), var(--mystic-primary-light));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .doc-subtitle {
+      color: var(--mystic-fg-muted);
+      font-size: 0.95rem;
+      margin-bottom: 2.5rem;
+    }
+    .doc h2 {
+      font-size: 1.25rem;
+      color: var(--mystic-accent-gold);
+      margin: 2rem 0 0.75rem;
+      font-weight: 600;
+    }
+    .doc h3 {
+      font-size: 1rem;
+      color: var(--mystic-accent-seafoam);
+      margin: 1.5rem 0 0.5rem;
+      font-weight: 500;
+    }
+    .doc p, .doc li {
+      color: var(--mystic-fg-secondary);
+      margin-bottom: 0.5rem;
+    }
+    .doc ul {
+      margin: 0.5rem 0 1rem 1.5rem;
+    }
+    .doc .intro {
+      font-size: 1.05rem;
+      color: var(--mystic-fg-primary);
+      margin-bottom: 2rem;
+    }
+    .audience-block {
+      background: var(--mystic-bg-surface);
+      border: 1px solid var(--mystic-fg-border);
+      border-radius: 10px;
+      padding: 1.25rem;
+      margin-bottom: 1rem;
+    }
+    .audience-block h3 {
+      margin-top: 0;
+      margin-bottom: 0.5rem;
+    }
+    .overlap-section {
+      margin-top: 2.5rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--mystic-fg-border);
+    }
+    .traits-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 0.75rem;
+    }
+    .traits-list span {
+      padding: 0.25rem 0.6rem;
+      background: var(--mystic-bg-panel);
+      border-radius: 6px;
+      font-size: 0.8rem;
+      color: var(--mystic-fg-muted);
+    }
+  </style>
+</head>
+<body>
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="./" class="nav-brand">
+        <img src="icons/pixel/icon-dark-64x64.png" alt="">
+        Mystic
+      </a>
+      <div class="nav-links">
+        <a href="./">Home</a>
+        <a href="preview/">Design Guide</a>
+        <a href="executive.html" class="active">Executive Document</a>
+        <a href="mockups/">Mockups</a>
+      </div>
+    </div>
+  </nav>
+
+  <article class="doc">
+    <h1>Executive Document</h1>
+    <p class="doc-subtitle">Core values Mystic delivers to its audiences</p>
+
+    <p class="intro">
+      Mystic serves creative and technical professionals who work with complex information, value productivity and automation, and prefer deep, customizable tools. Below are the core audiences and the values Mystic delivers to each.
+    </p>
+
+    <h2>AI Coding Assistants</h2>
+    <p>Cursor, Codex, Cloud Code, OpenCode, OpenClaw</p>
+    <ul>
+      <li>Software engineers and developers</li>
+      <li>Students learning to code</li>
+      <li>Technical founders and solo devs</li>
+      <li>DevOps/SRE engineers</li>
+      <li>Data scientists and ML engineers</li>
+      <li>Technical writers</li>
+      <li>QA engineers writing tests</li>
+      <li>Anyone who writes code regularly and wants AI help</li>
+    </ul>
+    <p><strong>Mystic delivers:</strong> Markdown-first orchestration, local inference, agent workflows, and a system that integrates with your existing tools without lock-in.</p>
+
+    <h2>AI Search & Research</h2>
+    <p>Perplexity and similar tools</p>
+    <ul>
+      <li>Researchers and academics</li>
+      <li>Students</li>
+      <li>Journalists and writers</li>
+      <li>Professionals doing quick research</li>
+      <li>Developers looking up docs and examples</li>
+      <li>Consultants and analysts</li>
+    </ul>
+    <p><strong>Mystic delivers:</strong> Structured research protocols, symbolic language for status and findings, and memory management that preserves context across sessions.</p>
+
+    <h2>Note-Taking & Knowledge Bases</h2>
+    <p>Notion, Obsidian</p>
+    <ul>
+      <li>Knowledge workers</li>
+      <li>Researchers and academics</li>
+      <li>Students</li>
+      <li>Product and project managers</li>
+      <li>Writers and content creators</li>
+      <li>Consultants</li>
+      <li>People who use a "second brain" or PKM system</li>
+    </ul>
+    <p><strong>Mystic delivers:</strong> Files as the protocol—markdown, version control, and agent-accessible knowledge without proprietary formats.</p>
+
+    <h2>Power-User Editors</h2>
+    <p>Emacs, Neovim</p>
+    <ul>
+      <li>Developers who prefer keyboard-first workflows</li>
+      <li>System administrators</li>
+      <li>Linux/Unix users</li>
+      <li>Minimalists who avoid GUIs</li>
+      <li>People who want highly customizable editors</li>
+    </ul>
+    <p><strong>Mystic delivers:</strong> Declarative, markdown-first design; no protocol servers; local-first with optional GGUF inference.</p>
+
+    <h2>CAD & Design</h2>
+    <p>AutoCAD, 3ds Max</p>
+    <ul>
+      <li>Architects</li>
+      <li>Civil, mechanical, and industrial engineers</li>
+      <li>Drafters and CAD technicians</li>
+      <li>Industrial designers</li>
+      <li>Interior designers</li>
+      <li>Construction and manufacturing professionals</li>
+    </ul>
+    <p><strong>Mystic delivers:</strong> Brand assets, design tokens, and asset generators that integrate with your design workflow.</p>
+
+    <h2>3D & Game Engines</h2>
+    <p>Blender, Godot, Unreal Engine, Unity, Maya</p>
+    <ul>
+      <li>3D artists and animators</li>
+      <li>Game developers (indie and studio)</li>
+      <li>VFX and film artists</li>
+      <li>VR/AR developers</li>
+      <li>Technical artists</li>
+      <li>Architects and designers doing visualization</li>
+      <li>Hobbyists and content creators</li>
+      <li>Educators and trainers</li>
+    </ul>
+    <p><strong>Mystic delivers:</strong> Pixel-art and brand asset generation, design guides, and workflows that bridge code and visual creation.</p>
+
+    <div class="overlap-section">
+      <h2>Audience Overlap</h2>
+      <p>Many users span several categories:</p>
+      <ul>
+        <li>Indie game devs → Unity/Godot + Cursor + Notion</li>
+        <li>Technical founders → Cursor + Perplexity + Notion</li>
+        <li>3D artists → Blender/Maya + Notion for project notes</li>
+        <li>Researchers → Perplexity + Obsidian + Emacs/Neovim</li>
+      </ul>
+    </div>
+
+    <div class="overlap-section">
+      <h2>Shared Traits</h2>
+      <p>People who use these tools often:</p>
+      <div class="traits-list">
+        <span>Work in creative or technical roles</span>
+        <span>Value productivity and automation</span>
+        <span>Prefer deep, customizable tools over simple ones</span>
+        <span>Are early adopters of new tools</span>
+        <span>Care about workflows and toolchains</span>
+        <span>Work with complex information or projects</span>
+      </div>
+      <p style="margin-top: 1rem;"><strong>Mystic delivers:</strong> A unified system that respects these traits—declarative, local-first, extensible, and built for people who want control over their tools.</p>
+    </div>
+  </article>
+</body>
+</html>

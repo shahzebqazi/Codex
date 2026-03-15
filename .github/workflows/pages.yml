@@ -57,13 +57,18 @@ jobs:
           mkdir -p _site
           cp -r Assets/output/* _site/
           if [ -d Mockups/dist ]; then cp -r Mockups/dist _site/mockups; fi
-          cat > _site/index.html <<'REDIRECT'
+          if [ -f Mockups/static/landing.html ]; then
+            cp Mockups/static/landing.html _site/index.html
+            cp Mockups/static/executive.html _site/executive.html
+          else
+            cat > _site/index.html <<'REDIRECT'
           <!DOCTYPE html>
           <html lang="en">
           <head><meta charset="UTF-8"><meta http-equiv="refresh" content="0;url=preview/"></head>
           <body><p>Redirecting to <a href="preview/">Brand Guide</a>…</p></body>
           </html>
           REDIRECT
+          fi
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3

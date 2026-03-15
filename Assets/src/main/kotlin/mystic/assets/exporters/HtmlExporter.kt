@@ -81,9 +81,9 @@ class HtmlExporter(private val outputDir: File) {
             appendLine("""<nav class="top-nav">""")
             appendLine("""  <div class="top-nav-inner">""")
             appendLine("""    <div class="top-nav-links">""")
-            appendLine("""      <a href="#section-overview">Overview</a>""")
-
-            appendLine("""      <a href="#" class="top-nav-active">Brand Guide</a>""")
+            appendLine("""      <a href="../">Home</a>""")
+            appendLine("""      <a href="#" class="top-nav-active">Design Guide</a>""")
+            appendLine("""      <a href="../executive.html">Executive Document</a>""")
             appendLine("""      <a href="../mockups/" class="top-nav-ext">Mockups</a>""")
             appendLine("""    </div>""")
             appendLine("""  </div>""")
