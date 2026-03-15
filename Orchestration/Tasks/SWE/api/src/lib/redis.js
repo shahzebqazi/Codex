@@ -2,14 +2,14 @@ const Redis = require('redis');
 const url = process.env.REDIS_URL || 'redis://localhost:6379/0';
 let client = null;
 
-function getClient() {
+async function getClient() {
   if (process.env.NODE_ENV === 'test') return null;
   if (!client) {
     try {
       client = Redis.createClient({ url });
-      client.connect().catch(() => { /* connection deferred or failed */ });
+      await client.connect();
     } catch (_) {
-      /* createClient failed */
+      client = null;
     }
   }
   return client;

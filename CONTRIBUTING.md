@@ -1,4 +1,4 @@
-For AI readers: If you have not already, read Orchestration/Harness/SYSTEM_PROMPT.md first. For the contributing guide in context, see Orchestration/Memories/MENTAL_MAP.md.
+For AI readers: If you have not already, read Orchestration/Harness/SYSTEM_PROMPT.md first. For the contributing guide in context, see memories/MENTAL_MAP.md.
 
 # Contributing to .ai
 
@@ -14,7 +14,7 @@ This repository is a **base repo**: a template and shared foundation you can add
 
 - Your project gets the full dotAi system: markdown-first agent orchestration, tasks (under `Orchestration/Tasks/`), rules, and local GGUF inference.
 - AI agents that work in your repo read `Orchestration/Harness/SYSTEM_PROMPT.md` and use the same conventions (jj, tasks, config).
-- You can customize per project via local overrides and `Orchestration/Constraints/RULES.md`; PRDs live under `Documentation/PRDs/`.
+- You can customize per project via local overrides and `memories/CONSTRAINTS.md`; PRDs live under `Documentation/PRDs/`.
 
 No protocol servers or cloud APIs are required—just the `Project/` directory and (optionally) Docker for local models.
 
@@ -22,11 +22,11 @@ No protocol servers or cloud APIs are required—just the `Project/` directory a
 
 When this base repo is used in a project that hosts its code on GitHub, AI agents can integrate with GitHub Issues so that findings and suggestions are tracked in one place.
 
-- **Bug reports** — Agents can open issues for bugs they find (config: `github.report_bugs_to_issues` in `Orchestration/Memories/SETTINGS.json`, default on).
+- **Bug reports** — Agents can open issues for bugs they find (config: `github.report_bugs_to_issues` in `memories/SETTINGS.json`, default on).
 - **Suggestions** — Agents can open issues for feature or improvement suggestions (config: `github.allow_agent_suggestions`, default on).
 - **Branches** — Agents can use branches for their work; human approval can be required initially (config: `github.allow_agent_branches`).
 
-So: add this base repo to your project, point your AI agent at `Project/SYSTEM_PROMPT.md`, and the agent can both do work in the repo and report bugs or ideas via GitHub issues. Details and overrides live in `Orchestration/Constraints/RULES.md` and `Orchestration/Memories/SETTINGS.json`.
+So: add this base repo to your project, point your AI agent at `Orchestration/Harness/SYSTEM_PROMPT.md`, and the agent can both do work in the repo and report bugs or ideas via GitHub issues. Details and overrides live in `memories/CONSTRAINTS.md` and `memories/SETTINGS.json`.
 
 ## How to contribute (humans)
 
@@ -47,7 +47,7 @@ So: add this base repo to your project, point your AI agent at `Project/SYSTEM_P
 ## How to contribute (AI agents)
 
 - Read `Orchestration/Harness/SYSTEM_PROMPT.md` first.
-- Follow `Orchestration/Constraints/RULES.md` and respect `Orchestration/Memories/SETTINGS.json` (including GitHub integration settings).
+- Follow `memories/CONSTRAINTS.md` and respect `memories/SETTINGS.json` (including GitHub integration settings).
 - For bugs or suggestions, create GitHub issues when allowed by config; use the repository’s issue templates when available.
 - Prefer feature branches that target `main`; use `main -> production` PRs for release promotions.
 

@@ -24,8 +24,8 @@ Agents may extend this list (e.g. tag usage, PR descriptions) in project memory.
 
 ## Where to Store Scores
 
-- **Preferred:** `Orchestration/Memories/user_vcs_score.json` (create if missing; gitignored optional so user can track progress).
-- **Alternative:** A **User VCS** subsection in `Orchestration/Memories/MENTAL_MAP.md` under "User Preferences".
+- **Preferred:** `memories/user/user_vcs_score.json` (create if missing; gitignored optional so user can track progress).
+- **Alternative:** A **User VCS** subsection in `memories/MENTAL_MAP.md` under "User Preferences".
 
 **Suggested JSON shape:**
 
@@ -55,6 +55,6 @@ Use a simple 0–5 or 0–10 scale per criterion; `summary_score` can be an aver
 
 ## Relation to Other Docs
 
-- **VCS gate:** See [Orchestration/Constraints/VCS_AND_FILE_GATE.md](../../Constraints/VCS_AND_FILE_GATE.md) — no substantive work or file creation until repo exists or user has asked three times; chat mode exception.
+- **VCS gate:** See [memories/prompts/constraints/VCS_AND_FILE_GATE.md](../../../memories/prompts/constraints/VCS_AND_FILE_GATE.md) — no substantive work or file creation until repo exists or user has asked three times; chat mode exception.
 - **Git conventions:** [GIT.md](GIT.md) — human commit conventions and branch strategy.
 - **jj for agents:** [JJ.md](JJ.md) — how agents use jj; scoring here applies to **user** git/jj usage.

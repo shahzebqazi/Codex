@@ -1,25 +1,23 @@
 # Skill: swarm
 
-**Keywords:** `swarm`, `generate swarm`, `agent swarm`, `swarm for PRD <name>`, `swarm all PRDs`, `run swarm`
+**Keywords:** `swarm`, `generate swarm`, `agent swarm`, `swarm for PRD <name>`, `swarm all PRDs`, `run swarm`, `workflow <id>`, `consolidate`, `merge PRDs`, `code review pipeline`, `release readiness`, and any [Workflows/](Workflows/) trigger keywords
 
 **Effect (deterministic):**
 
-1. **Interpret intent** — Determine whether the user wants:
-   - **Single PRD:** A swarm focused on one PRD (all its todos and acceptance criteria), or
-   - **All PRDs in parallel:** Separate swarms per PRD, to be executed in parallel.
-2. **Follow the Generator Protocol** — Execute the steps in [GENERATOR_PROTOCOL.md](GENERATOR_PROTOCOL.md):
-   - Read PRDs from `Documentation/PRDs/` (or project-configured PRD path).
-   - Decompose work into tasks with dependencies and acceptance criteria.
-   - Assign models/experts per task using [MODELS_AND_EXPERTS.md](MODELS_AND_EXPERTS.md).
-   - Decide sub-agent usage per task using [SUBAGENTS.md](SUBAGENTS.md).
-   - Emit a **swarm plan** (markdown) and, when requested or when tooling is used, a **swarm config** (JSON conforming to [swarm_config.schema.json](swarm_config.schema.json)).
-3. **Output location:**
-   - **In-chat:** Always present a concise summary of the swarm (mode, PRD(s), task count, model assignments). Optionally show full plan in chat.
+1. **Swarm guard rail** — Before any swarm or workflow execution, check `SETTINGS.json → swarm.enabled`. If `false` or absent, do NOT produce swarm plans, do NOT role-play multiple agents, do NOT generate delegation language. Inform the user that swarm mode is disabled and how to enable it. If `confirm_before_dispatch` is true, present the confirmation summary and wait for user approval before proceeding.
+2. **Route by intent** — Determine which mode applies:
+   - **Workflow:** User message matches a [Workflows/](Workflows/) trigger keyword (e.g. "consolidate", "merge PRDs", "code review pipeline", "release readiness") or says "workflow &lt;id&gt;" or "run workflow &lt;id&gt;". Use [WORKFLOW_GENERATOR_PROTOCOL.md](WORKFLOW_GENERATOR_PROTOCOL.md) and emit a workflow swarm plan and config per [workflow_config.schema.json](workflow_config.schema.json).
+   - **Single PRD:** User names one PRD (by name or path). Use [GENERATOR_PROTOCOL.md](GENERATOR_PROTOCOL.md) with mode = `single_prd`, prd_ref = that PRD.
+   - **All PRDs in parallel:** User says "all PRDs", "parallel PRDs", or equivalent. Use GENERATOR_PROTOCOL with mode = `all_prds_parallel`, prd_list = PRDs from `Documentation/PRDs/`.
+   - **Ambiguous:** List available workflows (from [Workflows/README.md](Workflows/README.md)) and available PRDs; ask which to run.
+3. **Execute the chosen protocol** — For workflow mode: follow [WORKFLOW_GENERATOR_PROTOCOL.md](WORKFLOW_GENERATOR_PROTOCOL.md). For PRD modes: follow [GENERATOR_PROTOCOL.md](GENERATOR_PROTOCOL.md) (read PRDs, decompose tasks, assign models/subagents, emit plan and config).
+4. **Output location:**
+   - **In-chat:** Always present a concise summary (mode, scope, stage/task count, model assignments). Optionally show full plan in chat.
    - **Files (when user or protocol asks to persist):**
      - Swarm plan: `Documentation/Plans/SWARM_PLAN_<date>_<scope>.md` or path given by user.
      - Swarm config: `Documentation/Plans/SWARM_CONFIG_<date>_<scope>.json` or path given by user.
-     - Task graph: `project/TASK_GRAPH.md` (or path per project convention) when the swarm is intended for orchestrator consumption.
+     - Task graph: `project/TASK_GRAPH.md` (or path per project convention) when intended for orchestrator consumption.
 
-**When to apply:** User or orchestrator message clearly requests generating or running an agent swarm for one PRD, all PRDs in parallel, or "swarm" with scope implied by context.
+**When to apply:** User or orchestrator message clearly requests generating or running an agent swarm (workflow, one PRD, or all PRDs in parallel), or uses a workflow trigger keyword.
 
-**Dependencies:** PRDs must exist in the project. If no PRDs exist, the agent should say so and offer to create a minimal PRD or point to where to add one.
+**Dependencies:** For PRD modes, PRDs must exist in the project. For workflow mode, workflow definitions must exist under `Orchestration/Skills/Swarm/Workflows/`. If the chosen scope is missing, say so and offer to create or point to where to add it.

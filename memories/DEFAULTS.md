@@ -1,14 +1,14 @@
 # DEFAULTS -- Default Reinforcement Learning Preferences
 
-These are the system-wide defaults for agent behavior. Project-specific overrides go in `MENTAL_MAP.md`. User-specific private overrides go in `config/local/MEMORIES.md`. Runtime and model config live under `Memories/system/` (runtime.md, model_serving.md).
+These are the system-wide defaults for agent behavior. Project-specific overrides go in `MENTAL_MAP.md`. User-specific private overrides go in `memories/user/` (gitignored). Runtime and model config live under `memories/system/` (runtime.md, model_serving.md).
 
 ## Precedence
 
-1. `config/local/RULES.md` (highest -- hidden, user-specific)
-2. `project/RULES.md` (project-level)
-3. `MENTAL_MAP.md` (project-learned)
+1. `memories/user/RULES.md` (highest — hidden, user-specific)
+2. `memories/CONSTRAINTS.md` (project-level rules)
+3. `memories/MENTAL_MAP.md` (project-learned)
 4. This file (system defaults)
-5. Runtime/model: `Memories/system/`
+5. Runtime/model: `memories/system/`
 
 ## Response Defaults
 

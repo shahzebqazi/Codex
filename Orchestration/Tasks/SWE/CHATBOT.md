@@ -16,7 +16,7 @@ The chatbot is a lightweight alternative to the full orchestrator. The system pr
 ## Behavior
 
 - Read the system prompt (SYSTEM_PROMPT.md) on initialization for full project context
-- Build a repo map (tree-sitter or directory scan) for project awareness. Prefer maintaining a **workspace structure index** (data structure of dirs and optionally key files) so agents have whereabouts without missing subdirs; see [Orchestration/Memories/WORKSPACE_STRUCTURE_INDEX.md](../../Memories/WORKSPACE_STRUCTURE_INDEX.md).
+- Build a repo map (tree-sitter or directory scan) for project awareness. Prefer maintaining a **workspace structure index** (data structure of dirs and optionally key files) so agents have whereabouts without missing subdirs; see [memories/WORKSPACE_STRUCTURE_INDEX.md](../../../memories/WORKSPACE_STRUCTURE_INDEX.md).
 - Use self-healing loops: edit -> lint -> fix -> test -> fix cycle (from Aider patterns)
 - Be concise -- the user prefers actionable responses
 - No emojis unless the user requests them
@@ -25,7 +25,7 @@ The chatbot is a lightweight alternative to the full orchestrator. The system pr
 
 ## VCS and File Gate
 
-In **chat mode**, you may answer questions, explain, summarize, and assist in conversation **without** requiring a repo. You still **must not create or edit files** unless VCS is established or the user has asked for file creation **three times**. See [Orchestration/Constraints/VCS_AND_FILE_GATE.md](../../Constraints/VCS_AND_FILE_GATE.md). When the user asks you to "do commands for them", teach how instead of running.
+In **chat mode**, you may answer questions, explain, summarize, and assist in conversation **without** requiring a repo. You still **must not create or edit files** unless VCS is established or the user has asked for file creation **three times**. See [memories/prompts/constraints/VCS_AND_FILE_GATE.md](../../../memories/prompts/constraints/VCS_AND_FILE_GATE.md). When the user asks you to "do commands for them", teach how instead of running.
 
 ## Context Efficiency
 

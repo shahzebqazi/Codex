@@ -15,7 +15,7 @@ const TTL_MS = 60 * 1000;
 
 async function loadFlags() {
   if (Date.now() - lastRefresh < TTL_MS) return cachedFlags;
-  const client = redis.getClient();
+  const client = await redis.getClient();
   if (client) {
     try {
       const raw = await client.get('feature_flags');

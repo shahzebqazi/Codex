@@ -38,7 +38,7 @@ This directory holds specs and the **harness implementation**: **Python backend*
 - **Conversation** — In-memory history; last N messages sent to Ollama (cap 20); in-memory cap 50.
 - **Guard rails** — Input length cap (32k chars), response truncation (16k chars), optional blocklist.
 - **System prompt** — Loads `Orchestration/Harness/SYSTEM_PROMPT.md` by default (dotAi convention / system prompt); overridable via API.
-- **Blocklist** — `Orchestration/Memories/blocklist.txt` (one pattern per line); messages matching are rejected.
+- **Blocklist** — `memories/blocklist.txt` (one pattern per line); messages matching are rejected.
 
 **API (for Lua or any client):**
 
@@ -55,8 +55,8 @@ This directory holds specs and the **harness implementation**: **Python backend*
 The **scaffold** is the markdown protocol agents use; it lives alongside the harness:
 
 - Entry: `Orchestration/Harness/SYSTEM_PROMPT.md`
-- Rules: `Orchestration/Constraints/RULES.md`
-- System / memory: `Orchestration/Memories/system/` (runtime, model_serving), `Memories/prompts/CONTEXT_REFRESH.md`, `MENTAL_MAP.md`
+- Rules: `memories/CONSTRAINTS.md`
+- System / memory: `memories/system/` (runtime, model_serving), `memories/prompts/CONTEXT_REFRESH.md`, `memories/MENTAL_MAP.md`
 - Tasks: `Orchestration/Tasks/`, `Orchestration/Agents/AGENT_PROMPT.md`
 - PRDs: `Documentation/PRDs/`
 

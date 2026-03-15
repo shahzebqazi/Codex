@@ -4,7 +4,7 @@ When generating a swarm, assign **task types** to the best available **model or 
 
 ## Task type → expert mapping
 
-Use these categories to choose a model (or subagent role). Override per project via `Orchestration/Memories/SETTINGS.json` or a local Swarm override file.
+Use these categories to choose a model (or subagent role). Override per project via `memories/SETTINGS.json` or a local Swarm override file.
 
 | Task type | Suggested expert role | Rationale |
 |-----------|------------------------|-----------|
@@ -25,7 +25,7 @@ In [swarm_config.schema.json](swarm_config.schema.json), each task can reference
 - **code** — Best available for code (may be same as default or a code-specialist).
 - **review** — Model used for review/QA (often same as default but distinct from implementer).
 
-Projects can add keys (e.g. **cloud-fast**, **cloud-deep**) and map them in `Orchestration/Memories/SETTINGS.json` or in the swarm config itself.
+Projects can add keys (e.g. **cloud-fast**, **cloud-deep**) and map them in `memories/SETTINGS.json` or in the swarm config itself.
 
 ## State-of-the-art and local-first
 

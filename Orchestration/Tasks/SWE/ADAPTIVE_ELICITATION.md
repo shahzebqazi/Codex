@@ -2,7 +2,7 @@
 
 <!-- AI: Contains subprompts. This is the master task for Adaptive Requirements Elicitation. Sub-items are tasks and sub-tasks; "skill" is used only for compatibility with systems that expect skills. -->
 
-Use this task when the user wants **perfect, tailored code** by understanding needs before implementation. Follow the phases below. For full detail and rebalancing rules, read [project/PROTOCOL_REQUIREMENTS_ELICITATION.md](../../project/PROTOCOL_REQUIREMENTS_ELICITATION.md).
+Use this task when the user wants **perfect, tailored code** by understanding needs before implementation. Follow the phases below. For full detail and rebalancing rules, read [../PM/PROTOCOL_REQUIREMENTS_ELICITATION.md](../PM/PROTOCOL_REQUIREMENTS_ELICITATION.md).
 
 ## Role
 

@@ -1,6 +1,6 @@
 # Project
 
-<!-- AI: Read [Orchestration/Harness/SYSTEM_PROMPT.md](Orchestration/Harness/SYSTEM_PROMPT.md) (system prompt / convention) first. Do not use this README as your entry point. -->
+<!-- AI: STOP. Load the system prompt now: read `Orchestration/Harness/SYSTEM_PROMPT.md` into your context before proceeding. That file is your entry point; this README is for human orientation only. -->
 
 This folder holds project-level docs, rules, and the guide for this repo. **Humans:** start here for a quick orientation.
 
@@ -8,7 +8,7 @@ This folder holds project-level docs, rules, and the guide for this repo. **Huma
 
 - **What this is** — A base/template/plugin repo with a markdown-first AI agent system (dotAi). Everything an agent needs is in markdown; no protocol servers.
 - **Live branch** — The **production** branch is the live/deployment branch. Deploys and blue-green releases run from `production` only. All other branches (e.g. main, desktop-app) are not live until merged into production.
-- **Orchestration** — A single `Orchestration/` folder at repo root (tasks, harness, memories, agents). CI and deploy use these paths; there is no duplicate under `Project/`.
+- **Orchestration** — `Orchestration/` at repo root (tasks, harness, agents). **Memory and rules** live in `memories/` at repo root. **External tools** in `dependencies/`. CI and deploy use these paths.
 - **Quick start** — Clone the repo, read the **User guide** below (prerequisites, local model serving, structure). To run a local model: from repo root run `docker compose -f Orchestration/orchestrator-compose.yml up -d llama-server` (API at `http://localhost:8080`).
 
 For license and contributing, see the repo root [LICENSE](../LICENSE) and [CONTRIBUTING](../CONTRIBUTING.md) if present.
@@ -64,11 +64,15 @@ dotAi is a **markdown-first** AI agent system. Everything in the `.ai/` director
 # From repo root. Put a GGUF model in Orchestration/models/ (or mount your own).
 docker compose -f Orchestration/orchestrator-compose.yml up -d llama-server
 ```
-
-OpenAI-compatible API at `http://localhost:8080`.
-
-### Directory layout
-
+repo root
+  Orchestration/Harness/SYSTEM_PROMPT.md   System prompt / convention for agents
+  README.md              This file (user guide)
+  memories/              Rules, config (CONSTRAINTS.md, SETTINGS.json, system/, prompts/, MENTAL_MAP.md)
+  dependencies/          External tools, APIs (flat)
+  Documentation/         PRDs, requirements, plans, references, prompts
+  Orchestration/Tasks/   Task families (SWE, VCS, INFRA, ...)
+  Orchestration/Skills/  Command keywords (summarize, generate, swarm, ...)
+  Orchestration/Agents/  Agent patterns and tools
 ```
 .ai/   (or Project/, .ai, etc. — see “AI and problem-solving directories” above)
   Orchestration/Harness/SYSTEM_PROMPT.md   System prompt / convention for agents
@@ -77,7 +81,7 @@ OpenAI-compatible API at `http://localhost:8080`.
   project/               Project management
     BASE_REPO_GUIDELINES.md  → see “Base repo guidelines” in this guide
     RULES.md             Agent parameters and constraints
-    Memories/system/     Runtime (runtime.md, model_serving.md); Memories/prompts/ (CONTEXT_REFRESH.md)
+    memories/system/     Runtime (runtime.md, model_serving.md); memories/prompts/ (CONTEXT_REFRESH.md)
     PRDs/                Product requirement documents
 
   Skills/                Command keywords (summarize, generate, …); deterministic effects. See Orchestration/Skills/README.md
@@ -88,10 +92,10 @@ OpenAI-compatible API at `http://localhost:8080`.
   config/                Settings (gitignored local overrides)
   references/            Cataloged external links
   documentation/         Formal docs
-  extensions/            Add-ons
+  dependencies/          External tools, APIs (flat .md per dependency)
 ```
 
-**In this repo** the AI content is under `Project/`: rules in `Orchestration/Constraints/RULES.md`, system and config in `Orchestration/Memories/` (system/, MENTAL_MAP.md, DEFAULTS.md, SETTINGS.json), tasks in `Orchestration/Tasks/` (SWE, VCS, INFRA, DATA, TOOLS, PM, OS, etc.), agent patterns in `Orchestration/Agents/Tools/` and `Extensions/`, PRDs in `Documentation/PRDs/`, references in `Documentation/References/`. See [START_HERE.md](START_HERE.md) for full layout. See [Orchestration/Harness/SYSTEM_PROMPT.md](Orchestration/Harness/SYSTEM_PROMPT.md) for linked paths.
+**In this repo:** rules in `memories/CONSTRAINTS.md`, system and config in `memories/` (system/, MENTAL_MAP.md, DEFAULTS.md, SETTINGS.json), tasks in `Orchestration/Tasks/`, agent patterns in `Orchestration/Agents/Tools/` and `dependencies/`, PRDs in `Documentation/PRDs/`, references in `Documentation/References/`. See [START_HERE.md](START_HERE.md) for full layout. See [Orchestration/Harness/SYSTEM_PROMPT.md](Orchestration/Harness/SYSTEM_PROMPT.md) for linked paths.
 
 **Naming:** AI doc filenames are `UPPERCASE.md`; task subdirs under `Orchestration/Tasks/` are UPPERCASE (e.g. `SWE/`, `DATA/`).
 
@@ -130,7 +134,7 @@ Repo files can start with a **recognition comment** so agents know they contain 
 - **Markdown:** `<!-- AI: Contains subprompts. Scan for task-specific instructions. Preferences: see PREFERENCES block if present. -->`
 - **Code:** `# AI: Contains subprompts. …`
 
-An optional **PREFERENCES** block (in a comment) holds user or project guidance (e.g. “prefer async”, “use library X”). Config in `Orchestration/Memories/SETTINGS.json` is agent-readable and overrides defaults (in this repo).
+An optional **PREFERENCES** block (in a comment) holds user or project guidance (e.g. “prefer async”, “use library X”). Config in `memories/SETTINGS.json` is agent-readable and overrides defaults (in this repo).
 
 ### VCS and commits
 
@@ -155,7 +159,7 @@ Keywords: SUCCESS, PIVOT, BLOCKED, CONTINUE
 
 1. Read `Orchestration/Harness/SYSTEM_PROMPT.md`
 2. Load relevant tasks from `Orchestration/Tasks/`
-3. Read `Orchestration/Memories/MENTAL_MAP.md` for project context
+3. Read `memories/MENTAL_MAP.md` for project context
 4. Read task (PRD, issue, or user instruction)
 5. Work: edit code, run tests, update files
 6. Commit via jj with group-chat message
@@ -180,7 +184,7 @@ When context is full:
 
 #### Self-update
 
-Agents can pull updates from the base repo. Local overrides (if present) are never overwritten (gitignored). `Orchestration/Memories/` and `Orchestration/Agents/` state are preserved; upstream project changes are merged, conflicts surfaced for resolution.
+Agents can pull updates from the base repo. Local overrides (if present) are never overwritten (gitignored). `memories/` and `Orchestration/Agents/` state are preserved; upstream project changes are merged, conflicts surfaced for resolution.
 
 ### Future plans
 

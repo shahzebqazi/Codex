@@ -45,7 +45,7 @@ Do **not** execute the command on their behalf. Instead, **teach the user how to
 
 ## 4. VCS Scoring (User)
 
-Once the user is using VCS (or has a repo), **start scoring the user on their git and VCS usage**. Scoring is defined in [Orchestration/Tasks/VCS/USER_VCS_SCORING.md](../Tasks/VCS/USER_VCS_SCORING.md). Use it to give brief, constructive feedback and to encourage good habits—do not nag. Scoring applies only when a repo exists or the user is actively using VCS.
+Once the user is using VCS (or has a repo), **start scoring the user on their git and VCS usage**. Scoring is defined in [Orchestration/Tasks/VCS/USER_VCS_SCORING.md](../../../Orchestration/Tasks/VCS/USER_VCS_SCORING.md). Use it to give brief, constructive feedback and to encourage good habits—do not nag. Scoring applies only when a repo exists or the user is actively using VCS.
 
 ## Summary
 

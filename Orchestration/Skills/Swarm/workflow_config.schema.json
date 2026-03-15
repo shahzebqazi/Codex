@@ -1,10 +1,10 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://dotai.dev/schemas/swarm_config.json",
-  "title": "SwarmConfig",
-  "description": "Configuration for an AI agent swarm (single PRD or all PRDs in parallel)",
+  "$id": "https://dotai.dev/schemas/workflow_config.json",
+  "title": "WorkflowConfig",
+  "description": "Configuration for a workflow-based agent swarm (extends swarm config with workflow mode and stage-level fields)",
   "type": "object",
-  "required": ["version", "mode", "tasks"],
+  "required": ["version", "mode"],
   "properties": {
     "version": {
       "type": "string",
@@ -15,10 +15,6 @@
       "enum": ["single_prd", "all_prds_parallel", "workflow"],
       "description": "Execution mode: one PRD, all PRDs in parallel, or workflow-driven"
     },
-    "workflow_ref": {
-      "type": "string",
-      "description": "For workflow mode: workflow id or path (e.g. consolidate-prds)"
-    },
     "prd_ref": {
       "type": "string",
       "description": "For single_prd: PRD id or path"
@@ -28,10 +24,19 @@
       "items": { "type": "string" },
       "description": "For all_prds_parallel: list of PRD ids or paths"
     },
+    "workflow_ref": {
+      "type": "string",
+      "description": "For workflow mode: workflow id or path (e.g. consolidate-prds, Workflows/CONSOLIDATE_PRDS.md)"
+    },
     "tasks": {
       "type": "array",
       "items": { "$ref": "#/definitions/Task" },
-      "description": "Task graph: id, prd_ref, dependencies, model and subagent assignment"
+      "description": "Task graph; when mode is workflow, tasks may include stage fields (role, context_budget, etc.)"
+    },
+    "stages": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/Stage" },
+      "description": "For workflow mode: pipeline stages with role, budgets, inputs/outputs. Alternative to tasks when emitting workflow config."
     },
     "models": {
       "type": "object",
@@ -81,6 +86,39 @@
           "type": "array",
           "items": { "type": "string" },
           "description": "What this stage produces"
+        }
+      }
+    },
+    "Stage": {
+      "type": "object",
+      "required": ["stage_id", "role", "task_type"],
+      "properties": {
+        "stage_id": { "type": "string" },
+        "role": { "type": "string" },
+        "task_type": {
+          "type": "string",
+          "enum": ["planning", "code", "review", "refactor", "docs", "research"]
+        },
+        "model_key": { "type": "string" },
+        "context_budget": { "type": "integer" },
+        "output_budget": { "type": "integer" },
+        "turns": { "type": ["string", "integer"] },
+        "depends_on": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "inputs": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "outputs": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "acceptance_criteria": { "type": "string" },
+        "subagent_type": {
+          "type": "string",
+          "enum": ["generalPurpose", "explore", "shell", "code-reviewer", "ci-watcher", "other"]
         }
       }
     },

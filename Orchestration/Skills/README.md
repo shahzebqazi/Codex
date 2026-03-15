@@ -17,7 +17,7 @@ Skills are **user-typed commands or keywords** that trigger **deterministic beha
 |----------------|--------|
 | **summarize**  | Summarize the current context window of the chat so the user can copy-paste it or start a new agent with that summary. No file output unless the user explicitly asks to save. See [Summarize/](Summarize/). |
 | **generate**   | Produce the requested text on screen only. Do not create or overwrite files unless the user explicitly asks for a persisted artifact. See [Generate/](Generate/). |
-| **swarm**      | Generate an agent swarm plan for one PRD or all PRDs in parallel. Uses mixture-of-experts/model routing and sub-agent capabilities. See [Swarm/](Swarm/). |
+| **swarm**      | Generate an agent swarm plan for one PRD, all PRDs in parallel, or a workflow (e.g. consolidate PRDs, code review pipeline, release readiness). Uses mixture-of-experts/model routing, sub-agent capabilities, and workflow definitions in [Swarm/Workflows/](Swarm/Workflows/). See [Swarm/](Swarm/). |
 | **negotiation**| Resolve conflicts among distributed AI agents via negotiation (progressive negotiation, concessions, facilitator). Goal and resource conflicts. See [negotiation/](negotiation/). |
 | **consensus**  | Resolve conflicts by voting or consensus (majority, quorum, BFT-style). Information and decision conflicts among peers. See [consensus/](consensus/). |
 | **priority**   | Resolve conflicts by priority or authority rules (arbiter, role hierarchy, policy overrides). Predictable, low-latency, safety-critical. See [priority/](priority/). |

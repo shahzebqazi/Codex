@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """
 Installer for dotAi project layout.
-Ensures Documents, Extensions, Orchestration, Project, and README exist in the target
-directory; creates them if missing. Intended for use from xonsh or any Python-capable shell.
+Ensures Orchestration and README exist in the target directory; creates them if missing.
+Does not create Project/, Documents/, or Extensions/ (use repo root memories/, dependencies/, Documentation/).
+Intended for use from xonsh or any Python-capable shell.
 
 Usage: python install.py [TARGET_DIR]
   TARGET_DIR defaults to current directory (e.g. run from repo root).
@@ -13,57 +14,20 @@ import sys
 
 LAYOUT = [
     (
-        "Documents",
-        "Documents/README.md",
-        """# Documents
-
-This directory is the placeholder for document index. Project and user documents (PRDs, requirements, user stories, reports, plans, references) live under **Project/Product/**.
-
-See Project/README.md and SYSTEM_PROMPT.md for layout and conventions.
-""",
-    ),
-    (
-        "Extensions",
-        "Extensions/README.md",
-        """# Extensions
-
-Technology compatibility and integration points (APIs, runtimes, platforms). One subfolder per technology; primary doc per folder in UPPERCASE.md.
-
-See Project/README.md and Orchestration/Memories/system/ for config and model routing.
-""",
-    ),
-    (
         "Orchestration",
         "Orchestration/README.md",
         """# Orchestration
 
-Tasks, constraints, memories, harness, and agent config for the dotAi stack. Local model via llama-server; see orchestrator-compose.yml when present.
+Tasks, harness, and agent config for the dotAi stack. Memory and rules live in repo root memories/. External tools in dependencies/. Local model via llama-server; see orchestrator-compose.yml when present.
 
-See Project/README.md for quick start and directory layout.
-""",
-    ),
-    (
-        "Project",
-        "Project/README.md",
-        """# Project
-
-Project-level docs, rules, and guide. Read SYSTEM_PROMPT.md first (convention). Product docs, PRDs, and requirements live under Project/Product/.
-
-See repo root README.md for user guide and quick start.
+See repo root README.md for quick start and directory layout. System prompt: Orchestration/Harness/SYSTEM_PROMPT.md.
 """,
     ),
 ]
 
 ROOT_README = """# dotAi project
 
-Required layout (created by Orchestration/Harness/install.py):
-
-- **Documents/** — Document index; see Project/Product/ for PRDs, requirements, reports.
-- **Extensions/** — Technology compatibility (APIs, runtimes).
-- **Orchestration/** — Tasks, memories, harness, agent config.
-- **Project/** — Project docs and guide; read Project/README.md and Project/SYSTEM_PROMPT.md.
-
-Quick start: see Project/README.md. Local model: `docker compose -f Orchestration/orchestrator-compose.yml up -d llama-server` (when present).
+Layout: memories/ (rules, config), dependencies/ (external tools), Documentation/ (PRDs, requirements), Orchestration/ (tasks, harness). System prompt: Orchestration/Harness/SYSTEM_PROMPT.md. Quick start: see README.md. Local model: `docker compose -f Orchestration/orchestrator-compose.yml up -d llama-server` (when present).
 """
 
 
@@ -112,9 +76,9 @@ def main() -> int:
     else:
         print("All required items already exist. Nothing created.")
 
-    system_prompt = target / "Project" / "SYSTEM_PROMPT.md"
+    system_prompt = target / "Orchestration" / "Harness" / "SYSTEM_PROMPT.md"
     if not system_prompt.is_file():
-        print("Note: Project/SYSTEM_PROMPT.md not found. For full dotAi setup, clone the repo or copy system prompt and tasks from a full install.")
+        print("Note: Orchestration/Harness/SYSTEM_PROMPT.md not found. For full dotAi setup, clone the repo or copy system prompt and tasks from a full install.")
 
     return 0
 

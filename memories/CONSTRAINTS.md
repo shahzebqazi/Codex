@@ -17,10 +17,10 @@ By default, AI agents in the dotAi system have **no guardrails**. Agents have fu
 
 1. **Architectural decisions** require human approval. The LEAD_ARCHITECT agent enforces this.
 2. **User-defined rules** in `.ai/config/local/RULES.md` (gitignored) override defaults.
-3. **VCS and file-creation gate** — Read [Orchestration/Constraints/VCS_AND_FILE_GATE.md](VCS_AND_FILE_GATE.md). Do not do substantive work or create files until the user has a repo or is using VCS (or has asked for file creation three times). In chat mode, chat-only help is allowed without a repo. When the user asks you to "do commands for them", teach them how instead of running commands. Once VCS is in use, score the user on git/VCS usage per [Orchestration/Tasks/VCS/USER_VCS_SCORING.md](../Tasks/VCS/USER_VCS_SCORING.md).
+3. **VCS and file-creation gate** — Read [prompts/constraints/VCS_AND_FILE_GATE.md](prompts/constraints/VCS_AND_FILE_GATE.md). Do not do substantive work or create files until the user has a repo or is using VCS (or has asked for file creation three times). In chat mode, chat-only help is allowed without a repo. When the user asks you to "do commands for them", teach them how instead of running commands. Once VCS is in use, score the user on git/VCS usage per [USER_VCS_SCORING.md](../Orchestration/Tasks/VCS/USER_VCS_SCORING.md).
 4. **Environment variables** in `.env` (gitignored) can set hidden constraints.
 5. **Merging to `main`** — Do **not** merge any branch (including `prod` or `benchmarks`) into `main` unless the user has explicitly approved. You may propose a merge, open a PR, or summarize what would be merged, but the final merge to `main` must be done by the user or after explicit user approval.
-6. **Feature branch per task** — AI agents must create a **feature branch for each task** they work on. All work for that task must happen on that branch. See [JJ.md](Orchestration/Tasks/VCS/JJ.md) (§ Feature branch per task). Applies to every agent (orchestrator-spawned, chatbot, Cursor, Codex, etc.).
+6. **Feature branch per task** — AI agents must create a **feature branch for each task** they work on. All work for that task must happen on that branch. See [JJ.md](../Orchestration/Tasks/VCS/JJ.md) (§ Feature branch per task). Applies to every agent (orchestrator-spawned, chatbot, Cursor, Codex, etc.).
 
 ## Budget-Aware Agent Protocol
 

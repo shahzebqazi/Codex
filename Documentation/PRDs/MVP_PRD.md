@@ -48,7 +48,7 @@ todos:
     content: "Create a template agent directory at .ai/agents/TEMPLATE/ with AGENT.md and PERSONA.md showing the expected format. This helps new agents bootstrap their own state files."
     status: pending
   - id: memories-bootstrap
-    content: "Run system detection and populate Orchestration/Memories/system/runtime.md with actual hardware info (OS, arch, GPU, RAM). Update memories/MENTAL_MAP.md with real project patterns after the first agent session."
+    content: "Run system detection and populate memories/system/runtime.md with actual hardware info (OS, arch, GPU, RAM). Update memories/MENTAL_MAP.md with real project patterns after the first agent session."
     status: pending
   - id: readme-setup
     content: "Expand README.md with Prerequisites section (jj, Docker, a GGUF model), step-by-step Getting Started, and Troubleshooting. Align with BASE_REPO_GUIDELINES requirement for clone-to-running-in-minutes."
@@ -88,7 +88,7 @@ This repo contains the dotAi system -- a declarative, markdown-first AI agent or
 **Key files to understand the system:**
 - `.ai/README.md` (User guide) -- full system explanation, directory layout, conventions
 - `.ai/project/RULES.md` -- your rules (no guardrails by default)
-- `Orchestration/Memories/system/runtime.md`, `system/model_serving.md` -- runtime and model config (populate with real data)
+- `memories/system/runtime.md`, `system/model_serving.md` -- runtime and model config (populate with real data)
 - `.ai/project/BASE_REPO_GUIDELINES.md` -- this repo is both a template and a shared foundation
 
 **What has been done:**
@@ -133,11 +133,11 @@ User
 SYSTEM_PROMPT.md (reads this first)
   |
   +-> README.md (User guide; system explanation)
-  +-> Orchestration/Memories/Constraints.md (rules)
+  +-> memories/CONSTRAINTS.md (rules)
   +-> Memories/system/ (runtime, model_serving)
   +-> Orchestration/Tasks/ (30+ tasks), Orchestration/Skills/ (command keywords)
   +-> memories/MENTAL_MAP.md (project knowledge)
-  +-> Orchestration/Memories/SETTINGS.json (settings, mode)
+  +-> memories/SETTINGS.json (settings, mode)
   |
   v
 Harness (Python Flask API)

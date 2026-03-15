@@ -42,7 +42,7 @@ To **check if a directory exists** or list its contents, use **tool calls** — 
 | List directory contents | **Glob** | Same as above; use returned paths as the list. |
 | File exists? | **Read** or **Glob** | **Read** the file (success ⇒ exists); or **Glob** with a pattern matching the file. |
 
-Cursor does not expose a separate `list_dir`; **Glob** with `target_directory` + `glob_pattern` is the way to list a directory or confirm it exists. Full constraint: [Orchestration/Memories/prompts/Constraints/FILE_STRUCTURE_VERIFICATION.md](../../Memories/prompts/Constraints/FILE_STRUCTURE_VERIFICATION.md).
+Cursor does not expose a separate `list_dir`; **Glob** with `target_directory` + `glob_pattern` is the way to list a directory or confirm it exists. Full constraint: [memories/prompts/constraints/FILE_STRUCTURE_VERIFICATION.md](../../../memories/prompts/constraints/FILE_STRUCTURE_VERIFICATION.md).
 
 ## MCP Integration
 

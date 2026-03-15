@@ -5,7 +5,7 @@ const redis = require('../lib/redis');
 
 async function healthHandler(req, res) {
   const checks = { status: 'ok', timestamp: new Date().toISOString() };
-  const client = redis.getClient();
+  const client = await redis.getClient();
   if (client) {
     try {
       await client.ping();

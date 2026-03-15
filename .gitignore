@@ -23,3 +23,12 @@ Thumbs.db
 # Node
 node_modules/
 dist/
+
+# Gradle / Kotlin build
+Assets/.gradle/
+Assets/build/
+.gradle/
+build/
+
+# Vite cache
+.vite/

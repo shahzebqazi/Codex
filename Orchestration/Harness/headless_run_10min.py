@@ -29,9 +29,9 @@ except ImportError:
 
 # Paths: script lives at Orchestration/Harness/headless_run_10min.py
 HARNESS_DIR = Path(__file__).resolve().parent
-REPO_ROOT = HARNESS_DIR.parent.parent.parent  # Harness -> Orchestration -> Project -> repo root
+REPO_ROOT = HARNESS_DIR.parent.parent  # Harness -> Orchestration -> repo root
 START_HERE_PATH = REPO_ROOT / "START_HERE.md"
-DEFAULT_PRD_PATH = REPO_ROOT / "Project" / "Product Documents" / "PRDs" / "CODE_REVIEW_HARNESS_AND_API_PRD.md"
+DEFAULT_PRD_PATH = REPO_ROOT / "Documentation" / "PRDs" / "CODE_REVIEW_HARNESS_AND_API_PRD.md"
 SESSION_LOG_DIR = HARNESS_DIR / "headless_sessions"
 
 
