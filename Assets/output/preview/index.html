@@ -138,6 +138,28 @@
     .star-field { position: relative; overflow: hidden; }
     .star { position: absolute; background: var(--mystic-accent-gold); animation-name: twinkle; animation-iteration-count: infinite; animation-timing-function: ease-in-out; border-radius: 50%; }
     .star-bright { position: absolute; animation: twinkle 2s ease-in-out infinite; }
+    .ds-glossary { padding: 0; margin: 0; }
+    .ds-glossary dt { font-family: var(--mystic-font-mono); color: var(--mystic-accent-seafoam); font-size: 0.85rem; margin-top: 0.75rem; margin-bottom: 0.2rem; }
+    .ds-glossary dt:first-child { margin-top: 0; }
+    .ds-glossary dd { margin: 0 0 0 1rem; color: var(--mystic-fg-secondary); font-size: 0.9rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--mystic-fg-border); }
+    .ds-breakpoints-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; margin: 0.75rem 0; }
+    .ds-breakpoints-table th { text-align: left; padding: 0.5rem 0.75rem; border-bottom: 2px solid var(--mystic-accent-gold); color: var(--mystic-accent-gold); font-weight: 500; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; font-family: var(--mystic-font-mono); }
+    .ds-breakpoints-table td { padding: 0.45rem 0.75rem; border-bottom: 1px solid var(--mystic-fg-border); }
+    .ds-breakpoints-table tr:hover td { background: var(--mystic-bg-surface); }
+    .ds-state-row { display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; margin-bottom: 1rem; }
+    .ds-state-label { font-size: 0.75rem; color: var(--mystic-fg-muted); font-family: var(--mystic-font-mono); margin-bottom: 0.25rem; }
+    .ds-btn-primary { padding: 0.5rem 1rem; background: linear-gradient(135deg, var(--mystic-accent-gold), var(--mystic-primary)); color: #000; border: none; border-radius: 8px; font-family: var(--mystic-font-body); font-size: 0.875rem; font-weight: 500; cursor: pointer; transition: opacity 0.2s, transform 0.2s; }
+    .ds-btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }
+    .ds-btn-primary:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+    .ds-btn-secondary { padding: 0.5rem 1rem; background: transparent; color: var(--mystic-accent-gold); border: 1px solid var(--mystic-fg-border); border-radius: 8px; font-family: var(--mystic-font-body); font-size: 0.875rem; cursor: pointer; transition: border-color 0.2s, color 0.2s; }
+    .ds-btn-secondary:hover { border-color: var(--mystic-accent-gold); color: var(--mystic-primary-light); }
+    .ds-link { color: var(--mystic-accent-lavender); text-decoration: none; font-size: 0.9rem; transition: color 0.15s; }
+    .ds-link:hover { color: var(--mystic-accent-gold); text-decoration: underline; }
+    .ds-link:focus { outline: 2px solid var(--mystic-accent-gold); outline-offset: 2px; }
+    .ds-dos-donts { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 0.75rem; }
+    .ds-dos-donts .do { padding: 0.75rem; background: rgba(94, 196, 171, 0.08); border-left: 3px solid var(--mystic-accent-seafoam); border-radius: 0 6px 6px 0; font-size: 0.85rem; }
+    .ds-dos-donts .dont { padding: 0.75rem; background: rgba(232, 114, 138, 0.06); border-left: 3px solid var(--mystic-accent-rose); border-radius: 0 6px 6px 0; font-size: 0.85rem; }
+    @media (max-width: 600px) { .ds-dos-donts { grid-template-columns: 1fr; } }
     @media (max-width: 768px) {
       h1 { font-size: 1.75rem; }
       .top-nav-brand span { display: none; }
@@ -197,6 +219,13 @@
       <li><a href="#section-heroes"><svg class="section-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> Heroes</a></li>
       <li><a href="#section-svg-assets"><svg class="section-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/></svg> SVG Assets</a></li>
       <li><a href="#section-design-tokens"><svg class="section-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1Z"/></svg> Design Tokens</a></li>
+    </ul>
+    <h3>Design System</h3>
+    <ul>
+      <li><a href="#section-voice-tone"><svg class="section-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg> Voice &amp; Tone</a></li>
+      <li><a href="#section-terminology"><svg class="section-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="16" y2="10"/></svg> Terminology</a></li>
+      <li><a href="#section-layout-navigation"><svg class="section-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg> Layout &amp; Navigation</a></li>
+      <li><a href="#section-component-states"><svg class="section-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M12 11v6"/><path d="M9 14h6"/></svg> Component States</a></li>
     </ul>
     <h3>Research</h3>
     <ul>
@@ -419,6 +448,7 @@
     <div class="swatch" style="background:#A78BDB;color:#000">--mystic-accent-lavender<br>#A78BDB</div>
     <div class="swatch" style="background:#F5EDDA;color:#000">--mystic-accent-ivory<br>#F5EDDA</div>
   </div>
+  <p class="overview-note" style="margin-top:1rem">Text and interactive elements should meet <a href="https://www.w3.org/TR/WCAG21/#contrast-minimum" class="ds-link" target="_blank" rel="noopener">WCAG 2.1 Level AA</a> contrast (4.5:1 for normal text, 3:1 for large). Use gold and seafoam on dark backgrounds for sufficient contrast.</p>
     </div>
   </details>
   <details class="section" id="section-typography">
@@ -870,6 +900,93 @@
       <tr><td>--mystic-tracking</td><td>0.03em</td><td>Default letter-spacing</td></tr>
     </tbody>
   </table>
+    </div>
+  </details>
+  <div class="group-heading"><svg class="section-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M12 11v6"/><path d="M9 14h6"/></svg> Design System</div>
+  <details class="section" id="section-voice-tone">
+    <summary><h2 style="display:inline"><svg class="section-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg> Voice & Tone</h2></summary>
+    <div class="section-content">
+  <p class="overview-content">Use a clear, warm, and inclusive voice. Be concise in UI; allow personality in marketing and notes.</p>
+  <h3>Examples</h3>
+  <div class="type-specimen">
+    <div class="ds-state-label">Headline</div>
+    <div style="font-family:var(--mystic-font-display);font-size:1.5rem;color:var(--mystic-fg-primary)">Mystic &mdash; Notes, Code, Design</div>
+  </div>
+  <div class="type-specimen">
+    <div class="ds-state-label">Body</div>
+    <div style="font-family:var(--mystic-font-body);font-size:0.95rem;line-height:1.6;color:var(--mystic-fg-secondary)">We believe machines need human beings to know what is true and what is wrong. Please use AI responsibly.</div>
+  </div>
+  <div class="type-specimen">
+    <div class="ds-state-label">CTA</div>
+    <div style="font-family:var(--mystic-font-body);font-size:0.9rem;color:var(--mystic-accent-gold)">Enter Mystic &rarr;</div>
+  </div>
+    </div>
+  </details>
+  <details class="section" id="section-terminology">
+    <summary><h2 style="display:inline"><svg class="section-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="16" y2="10"/></svg> Terminology</h2></summary>
+    <div class="section-content">
+  <p class="overview-content">Terms used consistently across Mystic docs and UI.</p>
+  <dl class="ds-glossary">
+    <dt>Mystic</dt>
+    <dd>The creative workspace product (notes, code, design).</dd>
+    <dt>Harness</dt>
+    <dd>Framework that controls how agents run: same inputs, tools, and evaluation.</dd>
+    <dt>PRD</dt>
+    <dd>Product Requirements Document; defines scope and acceptance criteria.</dd>
+    <dt>Agent</dt>
+    <dd>AI system that takes multiple steps (read, edit, run tools) to reach a goal.</dd>
+    <dt>Design system</dt>
+    <dd>Centralized documentation of UI components and brand for reuse.</dd>
+  </dl>
+    </div>
+  </details>
+  <details class="section" id="section-layout-navigation">
+    <summary><h2 style="display:inline"><svg class="section-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg> Layout & Navigation</h2></summary>
+    <div class="section-content">
+  <h3>Breakpoints</h3>
+  <p class="subtitle" style="margin-bottom:0.5rem">Use these to keep layout and navigation consistent across devices.</p>
+  <table class="ds-breakpoints-table">
+    <thead><tr><th>Name</th><th>Min width</th><th>Use</th></tr></thead>
+    <tbody>
+      <tr><td>Mobile</td><td>0</td><td>Single column, full-width tap targets</td></tr>
+      <tr><td>Tablet</td><td>768px</td><td>Optional sidebar, grid layouts</td></tr>
+      <tr><td>Desktop</td><td>1024px</td><td>Full layout, sidebars, multi-column</td></tr>
+      <tr><td>Wide</td><td>1280px</td><td>Max content width ~1200px, centered</td></tr>
+    </tbody>
+  </table>
+  <h3>Units</h3>
+  <p class="overview-content">Spacing: <code>rem</code> for typography and padding (1rem = 16px base). Use design tokens (e.g. <code>--mystic-tracking</code>) for consistency.</p>
+  <h3>Navigation</h3>
+  <div class="ds-dos-donts">
+    <div class="do"><strong>Do:</strong> Keep primary nav in a fixed top bar; use clear labels; highlight active section.</div>
+    <div class="dont"><strong>Don't:</strong> Nest more than two levels; use vague labels; hide primary actions.</div>
+  </div>
+    </div>
+  </details>
+  <details class="section" id="section-component-states">
+    <summary><h2 style="display:inline"><svg class="section-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M12 11v6"/><path d="M9 14h6"/></svg> Component States</h2></summary>
+    <div class="section-content">
+  <p class="overview-content">Button and link states must be visible and consistent. Use these patterns in UI.</p>
+  <h3>Buttons</h3>
+  <div class="ds-state-row">
+    <div><div class="ds-state-label">Default</div><button type="button" class="ds-btn-primary">Primary</button></div>
+    <div><div class="ds-state-label">Hover / focus</div><button type="button" class="ds-btn-primary" style="opacity:0.9">Primary</button></div>
+    <div><div class="ds-state-label">Disabled</div><button type="button" class="ds-btn-primary" disabled>Primary</button></div>
+  </div>
+  <div class="ds-state-row">
+    <div><div class="ds-state-label">Secondary default</div><button type="button" class="ds-btn-secondary">Secondary</button></div>
+  </div>
+  <h3>Links</h3>
+  <div class="ds-state-row">
+    <div><div class="ds-state-label">Default</div><a href="#section-overview" class="ds-link">Overview</a></div>
+    <div><div class="ds-state-label">Hover</div><a href="#section-overview" class="ds-link" style="color:var(--mystic-accent-gold);text-decoration:underline">Overview</a></div>
+  </div>
+  <h3>Cards</h3>
+  <p class="subtitle" style="margin-bottom:0.5rem">Use the same <code>.card</code> pattern as in this guide: surface background, border, rounded corners, hover lift.</p>
+  <div class="card" style="max-width:280px">
+    <div style="font-family:var(--mystic-font-display);font-size:1rem;margin-bottom:0.25rem">Card title</div>
+    <div style="font-size:0.85rem;color:var(--mystic-fg-muted)">Short description or metadata.</div>
+  </div>
     </div>
   </details>
   <div id="lightbox" onclick="closeLightbox(event)">

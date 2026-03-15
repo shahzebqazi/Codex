@@ -32,6 +32,10 @@ class HtmlExporter(private val outputDir: File) {
         val research    = svg("""<circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>""")
         val cursorBrand = svg("""<path d="M6.5 6.5 17.5 12 6.5 17.5z"/><rect x="2" y="2" width="20" height="20" rx="2"/>""")
         val brandGuide  = svg("""<path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>""")
+        val layoutNav   = svg("""<rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/>""")
+        val voiceTone   = svg("""<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>""")
+        val glossary    = svg("""<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="16" y2="10"/>""")
+        val components  = svg("""<path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M12 11v6"/><path d="M9 14h6"/>""")
     }
 
     fun export(assets: List<Asset>, config: BrandConfig): File {
@@ -127,6 +131,13 @@ class HtmlExporter(private val outputDir: File) {
                 if (svgAssets.isNotEmpty()) appendLine("""      <li><a href="#section-svg-assets">${Icons.svgAsset} SVG Assets</a></li>""")
                 appendLine("""      <li><a href="#section-design-tokens">${Icons.tokens} Design Tokens</a></li>""")
                 appendLine("""    </ul>""")
+                appendLine("""    <h3>Design System</h3>""")
+                appendLine("""    <ul>""")
+                appendLine("""      <li><a href="#section-voice-tone">${Icons.voiceTone} Voice &amp; Tone</a></li>""")
+                appendLine("""      <li><a href="#section-terminology">${Icons.glossary} Terminology</a></li>""")
+                appendLine("""      <li><a href="#section-layout-navigation">${Icons.layoutNav} Layout &amp; Navigation</a></li>""")
+                appendLine("""      <li><a href="#section-component-states">${Icons.components} Component States</a></li>""")
+                appendLine("""    </ul>""")
                 appendLine("""    <h3>Research</h3>""")
                 appendLine("""    <ul>""")
                 appendLine("""      <li><a href="#section-cursor-brand">${Icons.cursorBrand} Cursor Brand</a></li>""")
@@ -158,6 +169,7 @@ class HtmlExporter(private val outputDir: File) {
                 appendLine("""  <div class="swatch-grid">""")
                 appendSwatches(config)
                 appendLine("  </div>")
+                appendLine("""  <p class="overview-note" style="margin-top:1rem">Text and interactive elements should meet <a href="https://www.w3.org/TR/WCAG21/#contrast-minimum" class="ds-link" target="_blank" rel="noopener">WCAG 2.1 Level AA</a> contrast (4.5:1 for normal text, 3:1 for large). Use gold and seafoam on dark backgrounds for sufficient contrast.</p>""")
             }
 
             appendSection("typography", "${Icons.typography} Typography Specimens") {
@@ -279,6 +291,25 @@ class HtmlExporter(private val outputDir: File) {
 
             appendSection("design-tokens", "${Icons.tokens} Design Tokens Reference") {
                 appendDesignTokens(config)
+            }
+
+            // ── Design System (99designs-aligned) ──
+            appendLine("""  <div class="group-heading">${Icons.components} Design System</div>""")
+
+            appendSection("voice-tone", "${Icons.voiceTone} Voice & Tone") {
+                appendVoiceTone(config)
+            }
+
+            appendSection("terminology", "${Icons.glossary} Terminology") {
+                appendTerminology(config)
+            }
+
+            appendSection("layout-navigation", "${Icons.layoutNav} Layout & Navigation") {
+                appendLayoutNavigation(config)
+            }
+
+            appendSection("component-states", "${Icons.components} Component States") {
+                appendComponentStates(config)
             }
 
             appendLightbox()
@@ -478,6 +509,30 @@ class HtmlExporter(private val outputDir: File) {
         appendLine("    .star { position: absolute; background: var(--mystic-accent-gold); animation-name: twinkle; animation-iteration-count: infinite; animation-timing-function: ease-in-out; border-radius: 50%; }")
         appendLine("    .star-bright { position: absolute; animation: twinkle 2s ease-in-out infinite; }")
 
+        // ── Design System sections ──
+        appendLine("    .ds-glossary { padding: 0; margin: 0; }")
+        appendLine("    .ds-glossary dt { font-family: var(--mystic-font-mono); color: var(--mystic-accent-seafoam); font-size: 0.85rem; margin-top: 0.75rem; margin-bottom: 0.2rem; }")
+        appendLine("    .ds-glossary dt:first-child { margin-top: 0; }")
+        appendLine("    .ds-glossary dd { margin: 0 0 0 1rem; color: var(--mystic-fg-secondary); font-size: 0.9rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--mystic-fg-border); }")
+        appendLine("    .ds-breakpoints-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; margin: 0.75rem 0; }")
+        appendLine("    .ds-breakpoints-table th { text-align: left; padding: 0.5rem 0.75rem; border-bottom: 2px solid var(--mystic-accent-gold); color: var(--mystic-accent-gold); font-weight: 500; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; font-family: var(--mystic-font-mono); }")
+        appendLine("    .ds-breakpoints-table td { padding: 0.45rem 0.75rem; border-bottom: 1px solid var(--mystic-fg-border); }")
+        appendLine("    .ds-breakpoints-table tr:hover td { background: var(--mystic-bg-surface); }")
+        appendLine("    .ds-state-row { display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; margin-bottom: 1rem; }")
+        appendLine("    .ds-state-label { font-size: 0.75rem; color: var(--mystic-fg-muted); font-family: var(--mystic-font-mono); margin-bottom: 0.25rem; }")
+        appendLine("    .ds-btn-primary { padding: 0.5rem 1rem; background: linear-gradient(135deg, var(--mystic-accent-gold), var(--mystic-primary)); color: #000; border: none; border-radius: 8px; font-family: var(--mystic-font-body); font-size: 0.875rem; font-weight: 500; cursor: pointer; transition: opacity 0.2s, transform 0.2s; }")
+        appendLine("    .ds-btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }")
+        appendLine("    .ds-btn-primary:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }")
+        appendLine("    .ds-btn-secondary { padding: 0.5rem 1rem; background: transparent; color: var(--mystic-accent-gold); border: 1px solid var(--mystic-fg-border); border-radius: 8px; font-family: var(--mystic-font-body); font-size: 0.875rem; cursor: pointer; transition: border-color 0.2s, color 0.2s; }")
+        appendLine("    .ds-btn-secondary:hover { border-color: var(--mystic-accent-gold); color: var(--mystic-primary-light); }")
+        appendLine("    .ds-link { color: var(--mystic-accent-lavender); text-decoration: none; font-size: 0.9rem; transition: color 0.15s; }")
+        appendLine("    .ds-link:hover { color: var(--mystic-accent-gold); text-decoration: underline; }")
+        appendLine("    .ds-link:focus { outline: 2px solid var(--mystic-accent-gold); outline-offset: 2px; }")
+        appendLine("    .ds-dos-donts { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 0.75rem; }")
+        appendLine("    .ds-dos-donts .do { padding: 0.75rem; background: rgba(94, 196, 171, 0.08); border-left: 3px solid var(--mystic-accent-seafoam); border-radius: 0 6px 6px 0; font-size: 0.85rem; }")
+        appendLine("    .ds-dos-donts .dont { padding: 0.75rem; background: rgba(232, 114, 138, 0.06); border-left: 3px solid var(--mystic-accent-rose); border-radius: 0 6px 6px 0; font-size: 0.85rem; }")
+        appendLine("    @media (max-width: 600px) { .ds-dos-donts { grid-template-columns: 1fr; } }")
+
         // ── Responsive ──
         appendLine("    @media (max-width: 768px) {")
         appendLine("      h1 { font-size: 1.75rem; }")
@@ -673,6 +728,85 @@ class HtmlExporter(private val outputDir: File) {
         }
         appendLine("    </tbody>")
         appendLine("  </table>")
+    }
+
+    private fun StringBuilder.appendVoiceTone(config: BrandConfig) {
+        appendLine("""  <p class="overview-content">Use a clear, warm, and inclusive voice. Be concise in UI; allow personality in marketing and notes.</p>""")
+        appendLine("""  <h3>Examples</h3>""")
+        appendLine("""  <div class="type-specimen">""")
+        appendLine("""    <div class="ds-state-label">Headline</div>""")
+        appendLine("""    <div style="font-family:var(--mystic-font-display);font-size:1.5rem;color:var(--mystic-fg-primary)">${config.name} &mdash; Notes, Code, Design</div>""")
+        appendLine("""  </div>""")
+        appendLine("""  <div class="type-specimen">""")
+        appendLine("""    <div class="ds-state-label">Body</div>""")
+        appendLine("""    <div style="font-family:var(--mystic-font-body);font-size:0.95rem;line-height:1.6;color:var(--mystic-fg-secondary)">We believe machines need human beings to know what is true and what is wrong. Please use AI responsibly.</div>""")
+        appendLine("""  </div>""")
+        appendLine("""  <div class="type-specimen">""")
+        appendLine("""    <div class="ds-state-label">CTA</div>""")
+        appendLine("""    <div style="font-family:var(--mystic-font-body);font-size:0.9rem;color:var(--mystic-accent-gold)">Enter ${config.name} &rarr;</div>""")
+        appendLine("""  </div>""")
+    }
+
+    private fun StringBuilder.appendTerminology(config: BrandConfig) {
+        appendLine("""  <p class="overview-content">Terms used consistently across ${config.name} docs and UI.</p>""")
+        appendLine("""  <dl class="ds-glossary">""")
+        val terms = listOf(
+            config.name to "The creative workspace product (notes, code, design).",
+            "Harness" to "Framework that controls how agents run: same inputs, tools, and evaluation.",
+            "PRD" to "Product Requirements Document; defines scope and acceptance criteria.",
+            "Agent" to "AI system that takes multiple steps (read, edit, run tools) to reach a goal.",
+            "Design system" to "Centralized documentation of UI components and brand for reuse."
+        )
+        for ((term, def) in terms) {
+            appendLine("""    <dt>$term</dt>""")
+            appendLine("""    <dd>$def</dd>""")
+        }
+        appendLine("""  </dl>""")
+    }
+
+    private fun StringBuilder.appendLayoutNavigation(config: BrandConfig) {
+        appendLine("""  <h3>Breakpoints</h3>""")
+        appendLine("""  <p class="subtitle" style="margin-bottom:0.5rem">Use these to keep layout and navigation consistent across devices.</p>""")
+        appendLine("""  <table class="ds-breakpoints-table">""")
+        appendLine("""    <thead><tr><th>Name</th><th>Min width</th><th>Use</th></tr></thead>""")
+        appendLine("""    <tbody>""")
+        appendLine("""      <tr><td>Mobile</td><td>0</td><td>Single column, full-width tap targets</td></tr>""")
+        appendLine("""      <tr><td>Tablet</td><td>768px</td><td>Optional sidebar, grid layouts</td></tr>""")
+        appendLine("""      <tr><td>Desktop</td><td>1024px</td><td>Full layout, sidebars, multi-column</td></tr>""")
+        appendLine("""      <tr><td>Wide</td><td>1280px</td><td>Max content width ~1200px, centered</td></tr>""")
+        appendLine("""    </tbody>""")
+        appendLine("""  </table>""")
+        appendLine("""  <h3>Units</h3>""")
+        appendLine("""  <p class="overview-content">Spacing: <code>rem</code> for typography and padding (1rem = 16px base). Use design tokens (e.g. <code>--mystic-tracking</code>) for consistency.</p>""")
+        appendLine("""  <h3>Navigation</h3>""")
+        appendLine("""  <div class="ds-dos-donts">""")
+        appendLine("""    <div class="do"><strong>Do:</strong> Keep primary nav in a fixed top bar; use clear labels; highlight active section.</div>""")
+        appendLine("""    <div class="dont"><strong>Don't:</strong> Nest more than two levels; use vague labels; hide primary actions.</div>""")
+        appendLine("""  </div>""")
+    }
+
+    private fun StringBuilder.appendComponentStates(config: BrandConfig) {
+        appendLine("""  <p class="overview-content">Button and link states must be visible and consistent. Use these patterns in UI.</p>""")
+        appendLine("""  <h3>Buttons</h3>""")
+        appendLine("""  <div class="ds-state-row">""")
+        appendLine("""    <div><div class="ds-state-label">Default</div><button type="button" class="ds-btn-primary">Primary</button></div>""")
+        appendLine("""    <div><div class="ds-state-label">Hover / focus</div><button type="button" class="ds-btn-primary" style="opacity:0.9">Primary</button></div>""")
+        appendLine("""    <div><div class="ds-state-label">Disabled</div><button type="button" class="ds-btn-primary" disabled>Primary</button></div>""")
+        appendLine("""  </div>""")
+        appendLine("""  <div class="ds-state-row">""")
+        appendLine("""    <div><div class="ds-state-label">Secondary default</div><button type="button" class="ds-btn-secondary">Secondary</button></div>""")
+        appendLine("""  </div>""")
+        appendLine("""  <h3>Links</h3>""")
+        appendLine("""  <div class="ds-state-row">""")
+        appendLine("""    <div><div class="ds-state-label">Default</div><a href="#section-overview" class="ds-link">Overview</a></div>""")
+        appendLine("""    <div><div class="ds-state-label">Hover</div><a href="#section-overview" class="ds-link" style="color:var(--mystic-accent-gold);text-decoration:underline">Overview</a></div>""")
+        appendLine("""  </div>""")
+        appendLine("""  <h3>Cards</h3>""")
+        appendLine("""  <p class="subtitle" style="margin-bottom:0.5rem">Use the same <code>.card</code> pattern as in this guide: surface background, border, rounded corners, hover lift.</p>""")
+        appendLine("""  <div class="card" style="max-width:280px">""")
+        appendLine("""    <div style="font-family:var(--mystic-font-display);font-size:1rem;margin-bottom:0.25rem">Card title</div>""")
+        appendLine("""    <div style="font-size:0.85rem;color:var(--mystic-fg-muted)">Short description or metadata.</div>""")
+        appendLine("""  </div>""")
     }
 
     private fun StringBuilder.appendCursorBrandResearch() {

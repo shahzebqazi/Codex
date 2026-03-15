@@ -35,5 +35,13 @@
     "preserve_memories": true,
     "preserve_local_config": true,
     "base_repo": "shahzebqazi/Codex"
+  },
+  "swarm": {
+    "enabled": false,
+    "capabilities": ["subagent", "parallel_context", "workflow"],
+    "max_concurrent_agents": 4,
+    "confirm_before_dispatch": true,
+    "allowed_models": ["claude-4.6-opus-high", "cursor-agent", "kimi-k2.5"],
+    "budget_cap_tokens": 500000
   }
 }

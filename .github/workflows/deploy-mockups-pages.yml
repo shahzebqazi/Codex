@@ -12,6 +12,7 @@ on:
     branches: [main, docs/documentation-reorg]
     paths:
       - 'Mockups/**'
+      - 'Assets/**'
       - '.github/workflows/deploy-mockups-pages.yml'
   workflow_dispatch:
 

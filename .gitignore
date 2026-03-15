@@ -1,6 +1,10 @@
 # dotAi local config (user-specific, private)
 .ai/config/local/
 
+# Memories: user prefs and local cache (plugin: .config/ai/memories/)
+memories/user/
+memories/cache/
+
 # Environment variables (may contain secrets)
 .env
 
