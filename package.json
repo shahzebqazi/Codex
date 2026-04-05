@@ -1,9 +1,9 @@
 {
-  "name": "cursor-killer",
+  "name": "mystic-ai-labs",
   "private": true,
   "scripts": {
-    "setup": "python Orchestration/Harness/install.py .",
-    "layout": "python Orchestration/Harness/install.py .",
-    "package": "python Orchestration/Harness/install.py . && python Orchestration/Harness/package.py"
+    "setup": "python3 Orchestration/Harness/install.py .",
+    "layout": "python3 Orchestration/Harness/install.py .",
+    "package": "python3 Orchestration/Harness/install.py . && python3 Orchestration/Harness/package.py"
   }
 }

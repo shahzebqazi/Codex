@@ -31,7 +31,7 @@ So: add this base repo to your project, point your AI agent at `Project/SYSTEM_P
 ## How to contribute (humans)
 
 - **Code and docs** — Open a pull request from a branch. Prefer small, focused PRs.
-- **Bugs and ideas** — Open a [GitHub issue](https://github.com/shahzebqazi/Codex/issues). Use the issue templates if present (e.g. bug report, feature suggestion).
+- **Bugs and ideas** — Open a [GitHub issue](https://github.com/mystic-ai-labs/mystic-ai-labs/issues). Use the issue templates if present (e.g. bug report, feature suggestion).
 - **Base repo changes** — Keep backward compatibility in mind; this repo is a template and foundation for other projects. See the README (Base repo guidelines section) for design principles.
 
 ### Branch and release flow

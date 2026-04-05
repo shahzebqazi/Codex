@@ -49,7 +49,7 @@ jobs:
         working-directory: Mockups
         continue-on-error: true
         env:
-          BASE_PATH: /Codex/mockups/
+          BASE_PATH: /mystic-ai-labs/mockups/
         run: npx vite build --outDir dist
 
       - name: Assemble site

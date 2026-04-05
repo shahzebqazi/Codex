@@ -74,7 +74,7 @@ Configurable in `config/SETTINGS.json`:
 
 ## Self-Update Protocol
 
-When the base repo (shahzebqazi/Codex) is updated:
+When the base repo (mystic-ai-labs/mystic-ai-labs) is updated:
 1. Agents can pull updates on reinit or automatically
 2. jj's conflict-as-data model ensures agent-modified files are preserved
 3. Agent-created files in `.ai/agents/`, `.ai/memories/`, and `.ai/config/local/` are never overwritten

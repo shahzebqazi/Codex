@@ -3,7 +3,7 @@ import path from 'path'
 import tailwindcss from '@tailwindcss/vite'
 import react from '@vitejs/plugin-react'
 
-// GitHub Pages: set BASE_PATH in CI to e.g. '/Codex/' for project site
+// GitHub Pages: set BASE_PATH in CI to e.g. '/mystic-ai-labs/mockups/' for this repo’s site
 const base = process.env.BASE_PATH ?? '/'
 
 export default defineConfig({

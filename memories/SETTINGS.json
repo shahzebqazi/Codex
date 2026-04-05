@@ -1,8 +1,8 @@
 {
   "version": "0.1.0",
   "project": {
-    "name": "dotai",
-    "description": "Declarative markdown-first AI agent orchestration system"
+    "name": "mystic-ai-labs",
+    "description": "Mystic AI Labs — declarative markdown-first AI agent orchestration"
   },
   "agents": {
     "email": "ai@dotai.dev",
@@ -34,7 +34,7 @@
     "preserve_agent_files": true,
     "preserve_memories": true,
     "preserve_local_config": true,
-    "base_repo": "shahzebqazi/Codex"
+    "base_repo": "mystic-ai-labs/mystic-ai-labs"
   },
   "swarm": {
     "enabled": false,
